@@ -1,0 +1,36 @@
+{
+  "name": "dacn-da21ttc-lamhuetrung-leanonline-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LamHueTrung/dacn-da21ttc-lamhuetrung-leanonline-nodejs.git"
+  },
+  "keywords": [
+    "doanchuyennganh",
+    "education",
+    "website",
+    "lamhuetrung",
+    "tvu",
+    "ithubs",
+    "learning",
+    "LHT"
+  ],
+  "author": "huetrungcoder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LamHueTrung/dacn-da21ttc-lamhuetrung-leanonline-nodejs/issues"
+  },
+  "homepage": "https://github.com/LamHueTrung/dacn-da21ttc-lamhuetrung-leanonline-nodejs#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
