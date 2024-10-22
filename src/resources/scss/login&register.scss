@@ -1,0 +1,250 @@
+body.LoginRegister {
+    background: linear-gradient(270deg, #681DC5 6.1%, #5817A7 27.6%, #341084 54.1%, #2F0F7F 76.1%, #020752 92.1%);
+}
+.container-fluid {
+    padding: 0 !important;
+    width: 100%;
+}
+.row.dangnhap {
+    margin: 0 5%;
+}
+.text-title {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-top: 30% ;
+}
+
+.text-description{
+    color: #FFF;
+    font-family: Inter;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+.form-dangnhap {
+    width: 435px;
+    height: 540px;
+    flex-shrink: 0;
+    border-radius: 57px;
+    background: linear-gradient(270deg, #2D99AE 15.6%, #1D7993 34.1%, #0C5776 77.1%);
+    box-shadow: -35px 35px 4px 0px rgba(0, 28, 68, 0.25), -20px 20px 4px 0px rgba(0, 28, 68, 0.25);
+    margin: 14% 10%;
+    text-align: center;
+}
+.tendangnhap {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+.input-dangnhap {
+    margin: 0px 10%;
+    width: 350px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #FFF;
+    font-size: 18px;
+}
+.input-dangnhap::placeholder {
+    font-size: 18px;
+}
+.btn-dangnhap {
+    color: #fff;
+    width: 190px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 45px;
+    background: linear-gradient(90deg, #2D99AE 0%, #133F48 100%);
+    font-weight: 700;
+    font-size: 18px;
+    margin: 5%;
+    transition: background 0.5s ease;
+}
+.btn-dangnhap:hover {
+    background: linear-gradient(90deg, #133F48 0% , #2D99AE 100%);
+    color: #fff;
+    transition: background 0.5s ease;
+}
+.text-or {
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 5%;
+}
+.btn-dangnhapgg {
+    width: 320px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 29px;
+    background: #FFF;
+    font-size: 18px;
+    font-weight: 500;
+    color: #00000091;
+    margin-bottom: 5%;
+}
+.btn-dangnhapgg:hover {
+    background: #e0e0e0;
+    color: #00000099;
+}
+.btn-dangnhapgg .icon {
+    width: 7%;
+    margin: -1% 5px 0 0%;
+}
+.href-formdangnhap {
+    display: block;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration: none;
+}
+.href-formdangnhap:hover {
+    color: #dbdbdb;
+}
+
+/* Màn hình rất lớn */
+@media (min-width: 1921px) {
+    .form-dangnhap {
+        width: 700px;
+        height: 800px;
+    }
+    .tendangnhap {
+        font-size: 50px;
+    }
+    .input-dangnhap {
+        width: 80%;
+        height: 70px;
+        font-size: 30px;
+    }
+    .input-dangnhap::placeholder {
+        font-size: 30px;
+    }
+    .fisrt-input {
+        margin-bottom: 2rem !important;
+    }
+    .btn-dangnhap {
+        width: 40%;
+        height: 70px;
+        font-size: 25px;
+    }
+    .text-or {
+        font-size: 25px;
+    }
+    .btn-dangnhapgg {
+        width: 75%;
+        height: 70px;
+        font-size: 25px;
+    }
+    .href-formdangnhap {
+        font-size: 30px;
+    }
+    .text-title {
+        font-size: 50px;
+    }
+    .text-description {
+        font-size: 35px;
+    }
+}
+
+/* Máy tính bảng */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .form-dangnhap {
+        width: 350px;
+    }
+    .input-dangnhap {
+        width: 80%;
+    }
+}
+
+/* Điện thoại vừa và lớn */
+@media (min-width: 641px) and (max-width: 768px) {
+    .form-dangnhap {
+        width: 350px;
+        margin-left: 0;
+    }
+    .input-dangnhap {
+        width: 80%;
+    }
+    .text-description {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 641px) {
+    .form-dangnhap {
+        width: 350px;
+        margin-left: 0;
+        height: 500px;
+    }
+    .input-dangnhap {
+        width: 80%;
+    }
+    .mobilde-dangnhap {
+        display: none;
+    }
+    .container-fluid {
+        justify-content: center;
+    }
+}
+
+/* Điện thoại nhỏ */
+@media (min-width: 376px) and (max-width: 425px) {
+    .form-dangnhap {
+        width: 350px;
+        margin-left: 0%;
+        height: 500px;
+    }
+    .input-dangnhap {
+        width: 80%;
+    }
+    .mobilde-dangnhap {
+        display: none;
+    }
+    .container-fluid {
+        display: block !important;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 376px) {
+    .form-dangnhap {
+        width: 350px;
+        margin-left: 0;
+        height: 500px;
+    }
+    .input-dangnhap {
+        width: 80%;
+    }
+    .mobilde-dangnhap {
+        display: none;
+    }
+    .container-fluid {
+        justify-content: center;
+        display: block !important;
+    }
+    .row.dangnhap {
+        width: 100%;
+        margin: 0 1.5%;
+    }
+    .row>* {
+        padding: 2%;
+    }
+}
+@media (max-width: 320px) {
+    .row>* {
+        padding: 0 !important;
+    }
+}

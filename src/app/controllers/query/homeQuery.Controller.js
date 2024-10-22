@@ -1,8 +1,9 @@
-class SitesQuerry {
+class HomeQuery {
+    
     //Home pages
     index(req, res) {
         res.render('home');
     }
 };
 
-module.exports = new SitesQuerry;
+module.exports = new HomeQuery;

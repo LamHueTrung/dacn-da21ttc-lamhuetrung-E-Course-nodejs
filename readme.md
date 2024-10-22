@@ -43,7 +43,7 @@
 - Giải đáp thắc mắc, cung cấp thông tin
 
 ### Chức năng tìm kiếm và lọc khóa học
-- Tìm kiếm theo tên, danh mục, giảng viên
+- Tìm kiếm theo tên, danh mục
 
 ## Đối tượng sử dụng
 ### Học viên
@@ -59,3 +59,6 @@
 
 ### Admin
 - Quyền quản lý người dùng và khóa học
+
+## Liên kết Figma
+[Khoá Học Online - Figma](https://www.figma.com/design/s8yD7U6qwx13wWfCMd4lj7/Kho%C3%A1-H%E1%BB%8Dc-ONline?node-id=0-1&t=N6f3f8eVztFxmzEa-1)

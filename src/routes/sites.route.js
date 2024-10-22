@@ -1,7 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const sitesQuerry = require('../app/controllers/query/SitesQuerry.Controller');
+const sitesQuery = require('../app/controllers/query/SitesQuery.Controller');
 
-router.use('/', sitesQuerry.index);
+router.use('/Register', sitesQuery.register);
+router.use('/Login', sitesQuery.login);
+router.use('/', sitesQuery.index);
 
 module.exports = router;
