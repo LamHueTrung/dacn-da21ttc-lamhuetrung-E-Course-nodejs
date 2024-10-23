@@ -12,7 +12,7 @@ class SitesQuery {
 
     //Home pages
     index(req, res) {
-        res.render('home');
+        res.render('pages/home');
     }
 };
 

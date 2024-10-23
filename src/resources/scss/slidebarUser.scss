@@ -1,0 +1,43 @@
+.slidebar {
+    padding: 0;
+    background: #0C5776;
+    border-radius: 0;
+    z-index: 1;
+    height: auto;
+}
+.list-group-item {
+    background: none;
+    border: none;
+    text-align: center;
+}
+.list-group-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%; 
+    height: 1px; 
+    background-color: #FFF; 
+    text-align: center;
+    margin: 0 10%;
+}
+.list-group-item:hover {
+    background: #ffffff14;
+}
+.icon-slidebar {
+    width: 40px;
+    margin: 5px 25%;
+    display: block;
+    text-decoration: none;
+}
+.name-slidebar {
+    display: block;
+    font-family: Inter;
+    text-decoration: none !important;
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 5px;
+}
