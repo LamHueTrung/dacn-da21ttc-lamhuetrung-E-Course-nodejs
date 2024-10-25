@@ -9,7 +9,7 @@
 }
 .navbar-brand {
     color: #FFF;
-    font-family: Inter;
+    font-family: inherit;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -37,7 +37,7 @@
 }
 .form-control::placeholder {
     color: rgba(0, 0, 0, 0.48);
-    font-family: Inter;
+    font-family: inherit;
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -59,7 +59,7 @@
     border-radius: 30px;
     background: #2D99AE;
     color: #FFF;
-    font-family: Inter;
+    font-family: inherit;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -78,7 +78,7 @@
     border-radius: 23px;
     background: #FFF;
     color: #000;
-    font-family: Inter;
+    font-family: inherit;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
