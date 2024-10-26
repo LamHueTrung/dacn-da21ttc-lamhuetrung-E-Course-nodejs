@@ -51,3 +51,42 @@ footer {
     text-align: center;
     padding: 15px;
 }
+/* Màn hình rất lớn */
+@media (min-width: 1921px) {
+
+}
+
+/* Máy tính bảng */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .icon-ithub-footer {
+        display: none;
+    }
+    footer {
+        padding-bottom: 4.1rem;
+    }
+}
+
+/* Điện thoại vừa và lớn */
+@media (max-width: 768px) {
+    footer {
+        box-shadow: none;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 641px) {
+
+}
+
+/* Điện thoại nhỏ */
+@media (min-width: 376px) and (max-width: 425px) {
+
+}
+
+@media (max-width: 376px) {
+
+}
+@media (max-width: 320px) {
+    .icon-ithub-footer {
+        display: none;
+    }
+}

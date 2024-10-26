@@ -1,11 +1,26 @@
+.app {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+}
 .icon {
     width: 40px;
     margin-left: 50px;
     margin-right: 10px;
 }
+header {
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+    
+}
+.main {
+    padding-top: 4.1rem;
+}
 .navbar {
     background: #001C44 !important;
     box-shadow: 0px 7px 0px 0px rgba(0, 28, 68, 0.73);
+    height: 66px !important;
 }
 .navbar-brand {
     color: #FFF;
@@ -20,16 +35,19 @@
 }
 .collapse.navbar-collapse{
     justify-content: space-around;
-    margin-left: 6%;
+    margin-left: 4%;
 }
 .form-control{
     border-radius: 20px;
     border: 1px solid #000;
     background: #FFF;
     width: 100%;
-    min-width: 500px;
     height: 35px;
     font-size: 18px;
+}
+.form-search {
+    position: relative;
+    width: 50%;
 }
 .input-timkiem {
     position: relative;
@@ -48,8 +66,8 @@
     height: 20px;
     position: absolute;
     z-index: 1;
-    top: 35%;
-    left: 35%;
+    top: 24%;
+    left: 4%;
 }
 
 .btn-outline-dangnhap {
@@ -88,4 +106,65 @@
     box-shadow: inset 2px 2px #0C5776;
     background: #2D99AE;
     color: #ffff;
+}
+
+/* Màn hình rất lớn */
+@media (min-width: 1921px) {
+    .collapse.navbar-collapse {
+        margin: 4%;
+    }
+}
+
+/* Máy tính bảng */
+@media  (max-width: 1024px) {
+    .navbar-toggler {
+        color: white;
+        background: white;
+        margin-right: 5%;
+    }
+    .navbar-collapse.collapse.show .form-search{
+        margin: 10px 0;
+    }
+    .navbar-collapse.collapse.show .form-button {
+        display: grid;
+    }
+    .navbar-collapse.collapse.show .form-button button{
+        margin-bottom: 10px;
+    }
+    .navbar.navbar-expand-lg.bg-body-tertiary .container-fluid,.collapse.navbar-collapse {
+        background-color: #001C44;
+        z-index: 1000;
+    }
+}
+
+/* Điện thoại vừa và lớn */
+@media (min-width: 641px) and (max-width: 768px) {
+    .form-search, .form-button button {
+        width: 90%;
+    }
+}
+
+@media  (max-width: 641px) {
+    .icon {
+        margin-left: 10px;
+    }
+    .navbar-brand {
+        margin-right: 0;
+    }
+    .form-search, .form-button button {
+        width: 100%;
+    }
+}
+
+/* Điện thoại nhỏ */
+@media (min-width: 376px) and (max-width: 425px) {
+
+}
+
+@media (max-width: 376px) {
+}
+@media (max-width: 320px) {
+    .icon {
+        display: none;
+    }
 }

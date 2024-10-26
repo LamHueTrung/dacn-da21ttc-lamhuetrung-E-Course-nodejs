@@ -59,13 +59,13 @@
 
 .container.cousrse {
     margin: auto;
-    width: 100%;
-    margin-top: 3%;
+    width: 90%;
     margin-bottom: 3%;
 }
 .cousrse .cousrse-title {
     width: 100%;
     display: flex;
+    margin-top: 3%;
 }
 
 .cousrse .text-course {
@@ -143,4 +143,58 @@ font-size: 16px;
 font-style: italic;
 font-weight: 400;
 line-height: normal;
+}
+/* Màn hình rất lớn */
+@media (min-width: 1921px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 2200px !important;
+    }
+}
+
+/* Máy tính bảng */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+}
+
+/* Điện thoại vừa và lớn */
+@media (max-width: 768px) {
+    .carousel-inner {
+        height: 200px;
+    }
+    .slideshow-row .col-sm-6 {
+        margin-top: 5%;
+    }
+    .carousel-indicators {
+        margin-bottom: 2%;
+    }
+}
+
+@media (min-width: 425px) and (max-width: 641px) {
+
+}
+
+/* Điện thoại nhỏ */
+@media (min-width: 376px) and (max-width: 425px) {
+
+}
+
+@media (max-width: 376px) {
+    .slideshow {
+        border-radius: 25px;
+        background: #710FEA;
+        box-shadow: 10px 10px 4px 0px rgba(0, 28, 68, 0.73);
+        width: 100%;
+        height: auto;
+        margin: auto;
+        margin-top: 3%;
+        margin-left: 5%;
+    }
+}
+@media (max-width: 320px) {
+    .slideshow {
+        margin-left: 3%;
+    }
+    .container.cousrse {
+        padding: 0;
+    }
 }
