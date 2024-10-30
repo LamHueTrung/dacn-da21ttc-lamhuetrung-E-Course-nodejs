@@ -162,6 +162,12 @@ header {
 }
 
 @media (max-width: 376px) {
+    .icon {
+        display: none;
+    }
+    .navbar-brand {
+        font-size: 16px;
+    }
 }
 @media (max-width: 320px) {
     .icon {

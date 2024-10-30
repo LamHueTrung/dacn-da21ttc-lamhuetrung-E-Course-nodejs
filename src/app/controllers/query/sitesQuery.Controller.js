@@ -10,6 +10,10 @@ class SitesQuery {
         res.render('Register', { layout: 'Login&Register'});
     }
 
+    //Home course pages
+    homeCourse(req, res) {
+        res.render('pages/courses/home');
+    }
     //Home pages
     index(req, res) {
         res.render('pages/home');
