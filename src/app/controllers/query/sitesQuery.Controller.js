@@ -11,6 +11,11 @@ class SitesQuery {
     }
 
     //Home course pages
+    learningCourse(req, res) {
+        res.render('pages/courses/learning', { layout: 'learing'});
+    }
+
+    //Home course pages
     homeCourse(req, res) {
         res.render('pages/courses/home');
     }
