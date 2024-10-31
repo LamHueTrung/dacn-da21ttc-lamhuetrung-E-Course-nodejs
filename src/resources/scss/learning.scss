@@ -124,6 +124,7 @@
     font-size: 12px !important;
     text-align: center;
     font-weight: 400 !important;
+    padding-top: 8px;
 }
 
 a {
@@ -150,6 +151,7 @@ button.reaplay:hover {
 }
 .tuongtac-comment .col-sm-1 {
     width: auto;
+    display: flex;
 }
 
 .dropdown-menu.show {

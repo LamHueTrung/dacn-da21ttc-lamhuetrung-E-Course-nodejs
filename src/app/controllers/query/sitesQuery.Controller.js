@@ -10,6 +10,10 @@ class SitesQuery {
         res.render('Register', { layout: 'Login&Register'});
     }
 
+    // Home Post page
+    homeBlog(req, res) {
+        res.render('pages/blogs/home');
+    }
     //Home course pages
     learningCourse(req, res) {
         res.render('pages/courses/learning', { layout: 'learing'});
