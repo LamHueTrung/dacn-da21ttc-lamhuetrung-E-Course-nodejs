@@ -164,3 +164,13 @@
     margin-bottom: 5%;
     margin-top: 10%;
 }
+
+@media (max-width: 576px) {
+    .container-blog .img-blog {
+        display: none;
+    }
+    
+    .col-sm-11 .row {
+        width: 100%;
+    }
+}

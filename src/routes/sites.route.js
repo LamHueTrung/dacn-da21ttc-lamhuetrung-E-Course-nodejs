@@ -2,6 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const sitesQuery = require('../app/controllers/query/SitesQuery.Controller');
 
+router.use('/Detail', sitesQuery.detailBlog);
 router.use('/Blog', sitesQuery.homeBlog);
 router.use('/Learning', sitesQuery.learningCourse);
 router.use('/Course', sitesQuery.homeCourse);
