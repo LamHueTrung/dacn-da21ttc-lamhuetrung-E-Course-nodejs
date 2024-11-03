@@ -1,3 +1,14 @@
+<script>
+    // Kiểm tra xem token có tồn tại hay không
+    const token = "{{token}}"; // Lấy giá trị token từ server
+    if (token) {
+        // Lưu token vào localStorage
+        localStorage.setItem('token', token);
+        console.log('Token saved to localStorage:', token);
+    } else {
+        console.log('No token provided');
+    }
+</script>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>

@@ -1,0 +1,32 @@
+.container-admin {
+    background: linear-gradient(270deg, #2D99AE 20.1%, #0C5776 64.1%, #001C44 100%);
+    height: 730px;
+}
+.dangnhap-admin {
+    display: block;
+    width: 100%;
+    margin: 0;
+}
+.admin {
+    border-radius: 80px;
+    background: linear-gradient(0deg, #C654FF 0%, #702EC1 15.6%, #5603BB 33.33%, #360B7A 66.67%, #32057B 100%);
+    box-shadow: -35px 35px 4px 0px #001C44, -20px 20px 4px 0px #2F0F7F;
+    width: 435px;
+    height: auto;
+    padding-bottom: 25px;
+    padding: 0;
+    margin: auto;
+    margin-top: 10%;
+
+}
+.admin .text-danger {
+    color: #aaf900 !important;
+
+}
+.admin .btn-dangnhap {
+    border-radius: 32px;
+    background: linear-gradient(180deg, #710FEA 0%, #400884 100%);
+}
+.admin .btn-dangnhap:hover {
+    background: linear-gradient(180deg,  #400884 0%, #710FEA 100%);
+}

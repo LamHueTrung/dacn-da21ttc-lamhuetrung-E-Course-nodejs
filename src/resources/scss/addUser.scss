@@ -1,0 +1,33 @@
+.add-user {
+    width: 80%;
+    margin: auto;
+}
+
+.add-user .title-add-user {
+    color: #2d99ae;
+}
+
+.add-user .form-label {
+    text-transform: capitalize;
+    color: #2d99ae;
+}
+
+.btn-submit {
+    background-color: #2d99ae;
+    border: none;
+}
+
+.btn-submit:hover {
+    background-color: #2d98aebc;
+}
+
+.btn-previou {
+    background-color: #d8d9da;
+    color: #333;
+    border: none;
+}
+
+.btn-previou:hover {
+    background-color: #d8d9daa2;
+    color: #333;
+}

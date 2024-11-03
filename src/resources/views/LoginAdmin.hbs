@@ -1,0 +1,20 @@
+<div class="container-fluid d-flex container-admin">
+    <div class="row dangnhap-admin">
+        <form class="form-dangnhap admin" action="/admin" method="POST">
+            <legend class="tendangnhap">Đăng Nhập</legend>
+            <div class="mb-3 fisrt-input">
+                <input type="text" id="username" name="username" class="form-control input-dangnhap" placeholder="Tên đăng nhập" value="{{username}}" >
+                {{#if errors.username}}
+                    <div class="text-danger">{{errors.username}}</div>
+                {{/if}}
+            </div>
+            <div class="mb-3">
+                <input type="password" id="password" name="password" class="form-control input-dangnhap" placeholder="Mật khẩu" value="" >
+                {{#if errors.password}}
+                    <div class="text-danger">{{errors.password}}</div>
+                {{/if}}
+            </div>
+            <button type="submit" class="btn btn-dangnhap">Đăng Nhập</button>
+        </form>
+    </div>
+</div>

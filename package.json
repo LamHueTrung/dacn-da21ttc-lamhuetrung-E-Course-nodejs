@@ -29,10 +29,14 @@
   },
   "homepage": "https://github.com/LamHueTrung/dacn-da21ttc-lamhuetrung-leanonline-nodejs#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
-    "mongoose": "^8.8.0"
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.0",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

@@ -1,0 +1,83 @@
+<div class="row">
+    <!-- Profile Picture -->
+    <div class="col-md-4 text-center">
+        {{#if data.avatar}}
+            <img src=".{{data.avatar}}" class="rounded-square img-thumbnail" alt="Admin Profile Picture">
+        {{/if}}
+        <p class="text-muted">{{ data.role }}</p>
+    </div>
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Thông tin cá nhân</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Họ tên: </strong>{{data.fullName}}</li>
+                    <li class="list-group-item"><strong>Ngày sinh: </strong>{{formatDate  data.birthDate}}</li>
+                    <li class="list-group-item"><strong>Chuyên ngành: </strong>{{data.specialty}}</li>
+                    <li class="list-group-item"><strong>Số điện thoại: </strong>{{data.phone}}</li>
+                    <li class="list-group-item"><strong>Địa chỉ: </strong>{{data.address}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Change Password</h4>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" enctype="multipart/form-data" class="list-group list-group-flush col-md-6 ">
+                    <div class="mb-3">
+                        <label class="form-label">Password Old</label>
+                        <input type="password" class="form-control" name="passwordOld" id="passwordOld" placeholder="Enter password old">
+                        {{#if errors.passwordOld}}
+                            <div class="text-danger">{{errors.passwordOld}}</div>
+                        {{/if}}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password New</label>
+                        <input type="password" class="form-control" name="passwordNew" id="passwordNew" placeholder="Enter password new">
+                        {{#if errors.passwordNew}}
+                            <div class="text-danger">{{errors.passwordNew}}</div>
+                        {{/if}}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Add degree</h4>
+            </div>
+            <div class="card-body">
+                <form action="#" method="POST" enctype="multipart/form-data" class="list-group list-group-flush col-md-6 ">
+                    <div class="mb-3">
+                        <label class="form-label">degreeName</label>
+                        <input type="text" class="form-control" name="degreeName" id="degreeName" placeholder="Enter degree name">
+                        {{#if errors.degreeName}}
+                            <div class="text-danger">{{errors.degreeName}}</div>
+                        {{/if}}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">degreeFile</label>
+                        <input type="file" class="form-control" name="degreeFile" id="degreeFile">
+                        {{#if errors.degreeFile}}
+                            <div class="text-danger">{{errors.degreeFile}}</div>
+                        {{/if}}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-right mt-4">
+            <a href="/admin" class="btn btn-primary">Quay lại</a>
+        </div>
+    </div>
+</div>

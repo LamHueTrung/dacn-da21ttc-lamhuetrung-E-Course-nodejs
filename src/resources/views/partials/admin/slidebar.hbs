@@ -28,15 +28,15 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-user"></i>
             <span>User</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom User Manager:</h6>
-                <a class="collapse-item" href="buttons.html">Add User</a>
+                <a class="collapse-item" href="/admin/addUser">Add User</a>
                 <a class="collapse-item" href="cards.html">List User</a>
             </div>
         </div>
@@ -111,8 +111,46 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider">
 
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/profiles">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Profile</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" onclick="handleLogout()">
+            <i class="fas fa-fw fa-cogs"></i>
+            <span>Log out</span></a>
+            <script>
+                function handleLogout() {
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn đăng xuất?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Đồng ý',
+                        cancelButtonText: 'Hủy',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            sessionStorage.removeItem('hasLoggedIn');
+                            fetch('/admin/logout', { method: 'POST' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message === 'Logged out successfully') {
+                                        window.location.href = '/admin';
+                                    } else {
+                                        Swal.fire('Lỗi', 'Đăng xuất thất bại', 'error');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    Swal.fire('Lỗi', 'Đăng xuất thất bại', 'error');
+                                });
+                        }
+                    });
+                }
+            </script>
+    </li>
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

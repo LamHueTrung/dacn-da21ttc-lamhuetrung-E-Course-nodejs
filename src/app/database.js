@@ -8,7 +8,7 @@ const connectDB = async () => {
             useUnifiedTopology: true,
             maxPoolSize: 10, 
             serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 45000 
+            socketTimeoutMS: 450000 
         });
         console.log('Kết nối thành công tới MongoDB');
     } catch (error) {
