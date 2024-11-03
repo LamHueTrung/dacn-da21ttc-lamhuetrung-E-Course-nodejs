@@ -4,6 +4,7 @@ class AdminQuery {
     //Logout pages
     Logout(req, res, next) {
         req.session.isLoggedIn = false;
+        req.session.isChangePassword = false;
         req.session.destroy(err => {
             if (err) {
                 console.error('Failed to destroy session during logout:', err);

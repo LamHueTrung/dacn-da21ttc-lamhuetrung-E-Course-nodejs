@@ -26,7 +26,7 @@
                 <h4>Change Password</h4>
             </div>
             <div class="card-body">
-                <form action="" method="POST" enctype="multipart/form-data" class="list-group list-group-flush col-md-6 ">
+                <form action="/admin/changPassword" method="POST" enctype="application/x-www-form-urlencoded" class="list-group list-group-flush col-md-6 ">
                     <div class="mb-3">
                         <label class="form-label">Password Old</label>
                         <input type="password" class="form-control" name="passwordOld" id="passwordOld" placeholder="Enter password old">
@@ -81,3 +81,23 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const isChangePassword = {{isChangePassword}};
+        if (isChangePassword) {
+            Swal.fire({
+                title: 'Thay đổi mật khẩu thành công. Vui lòng đăng nhập lại.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/admin/logout', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = '/admin'; 
+                    });
+            }
+        });
+        }
+    });
+</script>

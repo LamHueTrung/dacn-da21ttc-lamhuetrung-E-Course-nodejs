@@ -49,6 +49,14 @@ class LoginAdmin {
 
             const isMatch = await bcrypt.compare(password, admin.password);
             if (!isMatch) {
+                return res.render('LoginAdmin', {
+                    layout: 'Login&Register',
+                    errors: {
+                        password: 'Mật khẩu không chính xác'
+                    },
+                    username: req.body.username,
+                    password: req.body.password
+                });
                 return res.status(401).json({ message: messages.login.invalidCredentials });
             }
 

@@ -1,5 +1,8 @@
 node_modules/
 src/public/css/
 src/public/vendor/
+src/public/file/
+src/public/js/
+src/public/avatars/
 .vscode
 doc/

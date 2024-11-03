@@ -1,4 +1,4 @@
-const Admin = require('../../../model/admin/Acount');
+const Acount = require('../../../model/admin/Acount');
 const jwt = require('jsonwebtoken');
 
 class UserQuery {
@@ -21,7 +21,7 @@ class UserQuery {
 
             req.userId = decoded.id; 
 
-            Admin.findById(req.userId)
+            Acount.findById(req.userId)
             .then(admin => {
                 if (!admin) {
                     return res.status(404).send('Admin not found'); 
