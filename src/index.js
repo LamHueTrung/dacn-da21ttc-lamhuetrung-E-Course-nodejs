@@ -4,10 +4,12 @@ const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const route = require('./routes/index.route');
 const connectDB = require('./app/database'); 
+const dotenv = require('dotenv');
 const CreateAdmin = require('./app/controllers/command/admin/user/createAdmin.Controller');
 const app = express();
 const port = 3000;
 
+dotenv.config();
 
 // Kết nối tới MongoDB
 connectDB();

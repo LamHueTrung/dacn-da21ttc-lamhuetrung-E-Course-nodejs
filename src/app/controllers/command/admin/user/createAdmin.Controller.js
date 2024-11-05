@@ -1,5 +1,5 @@
 const Acount = require('../../../../model/admin/Acount');
-const bcrypt = require('bcrypt');
+const CryptoService = require('../../../../Extesions/cryptoService');
 
 class CreateAdmin {
     CreateAdmin = async () => {
@@ -12,11 +12,10 @@ class CreateAdmin {
             }
     
             const password = 'Lht080103*';
-            const saltRounds = 12; 
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const encryptedPassword = CryptoService.encrypt(password); // Sử dụng CryptoService để mã hóa mật khẩu
             const newAdmin = new Acount({
                 username: 'LamHueTrung',
-                password: hashedPassword, 
+                password: encryptedPassword, 
                 role: 'system_admin',
                 profile: {
                     fullName: 'Lâm Huệ Trung',
@@ -40,7 +39,6 @@ class CreateAdmin {
             console.error('Lỗi khi kiểm tra hoặc tạo tài khoản admin:', error);
         }
     };
-
 }
 
-module.exports = new CreateAdmin;
+module.exports = new CreateAdmin();

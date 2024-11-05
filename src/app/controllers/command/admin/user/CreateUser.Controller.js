@@ -1,11 +1,11 @@
 const Acount = require('../../../../model/admin/Acount');
 const Validator = require('../../../../Extesions/validator');
 const messages = require('../../../../Extesions/messCost');
-const bcrypt = require('bcrypt');
+const CryptoService = require('../../../../Extesions/cryptoService');
 
-class UserCommand {
-    //Add user
-    Validate(req)  {
+class CreateUser {
+    // Thêm người dùng
+    Validate(req) {
         const {
             userName,
             fullName,
@@ -23,19 +23,19 @@ class UserCommand {
             specialty: '',
             numberPhone: '',
             address: '',
-            avatar: '', 
+            avatar: '',
             role: ''
         };
-        
+
         // Validate các trường text
-        const userNameError = 
+        const userNameError =
             Validator.notEmpty(userName, 'User name') ||
             Validator.notNull(userName, 'User name') ||
             Validator.maxLength(userName, 50, 'User name') ||
             Validator.containsVietnamese(userName);
         if (userNameError) errors.userName = userNameError;
 
-        const fullNameError = 
+        const fullNameError =
             Validator.notEmpty(fullName, 'Họ và tên') ||
             Validator.notNull(fullName, 'Họ và tên') ||
             Validator.maxLength(fullName, 50, 'Họ và tên');
@@ -44,12 +44,12 @@ class UserCommand {
         const birthdayError = Validator.isDate(birthday, 'Ngày sinh');
         if (birthdayError) errors.birthday = birthdayError;
 
-        const specialtyError = 
+        const specialtyError =
             Validator.notEmpty(specialty, 'Chuyên ngành') ||
             Validator.maxLength(specialty, 100, 'Chuyên ngành');
         if (specialtyError) errors.specialty = specialtyError;
 
-        const numberPhoneError = 
+        const numberPhoneError =
             Validator.notEmpty(numberPhone, 'Số điện thoại') ||
             Validator.isPhoneNumber(numberPhone);
         if (numberPhoneError) errors.numberPhone = numberPhoneError;
@@ -59,9 +59,9 @@ class UserCommand {
 
         // Validate avatar file
         if (req.file) {
-            const avatarError = 
+            const avatarError =
                 Validator.maxFileSize(req.file.size, 10, 'Ảnh đại diện'); // Kích thước tối đa là 10MB
-                //Validator.isImageFile(req.file.mimetype, 'Ảnh đại diện'); // Kiểm tra định dạng file
+            // Validator.isImageFile(req.file.mimetype, 'Ảnh đại diện'); // Kiểm tra định dạng file
             if (avatarError) errors.avatar = avatarError;
         } else {
             errors.avatar = "Ảnh đại diện là bắt buộc.";
@@ -72,7 +72,6 @@ class UserCommand {
         if (roleError) errors.role = roleError;
 
         return errors;
-        
     }
 
     Handle = async (req, res) => {
@@ -90,7 +89,7 @@ class UserCommand {
                 address: req.body.address,
                 role: req.body.role
             });
-        } 
+        }
 
         const { userName, fullName, birthday, specialty, numberPhone, address, role } = req.body;
 
@@ -108,15 +107,15 @@ class UserCommand {
                     address,
                     role
                 });
-            } 
+            }
 
-            const saltRounds = 12; 
-            const hashedPassword = await bcrypt.hash(userName+"*", saltRounds);
+            const password = userName + "*"; // Mật khẩu dự kiến
+            const encryptedPassword = CryptoService.encrypt(password); // Mã hóa mật khẩu bằng AES
             req.session.isCreate = true;
 
             const newAccount = new Acount({
                 username: userName,
-                password: hashedPassword, 
+                password: encryptedPassword,
                 role: role,
                 profile: {
                     fullName: fullName,
@@ -131,23 +130,18 @@ class UserCommand {
             await newAccount.save();
 
             return res.render('pages/admin/addUser', {
-                layout: 'admin', 
+                layout: 'admin',
                 isCreate: req.session.isCreate
             });
-            
-        } catch (error) {
 
+        } catch (error) {
             console.error('Lỗi khi xử lý đăng ký:', error);
             return res.status(500).json({ message: messages.serverError });
-            
-        } finally {
 
+        } finally {
             delete req.session.isCreate;
         }
-        
     }
-
-    //Chang
 }
 
-module.exports = new UserCommand;
+module.exports = new CreateUser();

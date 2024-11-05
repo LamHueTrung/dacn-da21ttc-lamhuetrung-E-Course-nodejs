@@ -30,6 +30,7 @@
   "homepage": "https://github.com/LamHueTrung/dacn-da21ttc-lamhuetrung-leanonline-nodejs#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",

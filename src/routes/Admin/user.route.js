@@ -6,15 +6,24 @@ const UserQuery = require('../../app/controllers/query/admin/userQuery.Controlle
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 const upload = require('../../app/Extesions/upload');
 
-router.post('/addUser', upload.single('avatar'), authenticateToken, (req, res) => {
+
+//Route add user
+router.post('/addUser', upload.single('avatar'), (req, res) => {
     CreateUserCommand.Handle(req, res);
 });
+router.use('/addUser', authenticateToken, UserQuery.AddUser);
+
+
 router.post('/admin/clear-create-flag', authenticateToken, (req, res) => {
     delete req.session.isCreate;
     res.sendStatus(200);
 });
-router.post('/changPassword', authenticateToken, updateUserCommand.ChangePassword);
-router.use('/addUser', authenticateToken, UserQuery.AddUser);
+
+// route profile user
 router.use('/profiles', authenticateToken, UserQuery.Profile);
+router.post('/changPassword', authenticateToken, updateUserCommand.ChangePassword);
+
+// Route List all user
+router.use('/listAllUser', authenticateToken, UserQuery.ListAllUser);
 
 module.exports = router;

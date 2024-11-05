@@ -1,7 +1,7 @@
 const Acount = require('../../../../model/admin/Acount');
 const Validator = require('../../../../Extesions/validator');
 const messages = require('../../../../Extesions/messCost');
-const bcrypt = require('bcrypt');
+const CryptoService = require('../../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
 
 class UpdateUser {
@@ -30,16 +30,18 @@ class UpdateUser {
             Validator.notNull(passwordNew, 'password') ||
             Validator.isPassword(passwordNew);
         if (passwordNewError) errors.passwordNew = passwordNewError;
-        
-        jwt.verify(token, jwtSecretKey, (err, decoded) => {
+
+        // Verify the JWT token
+        jwt.verify(token, jwtSecretKey, async (err, decoded) => {
             if (err) {
                 console.error('Token verification failed:', err);
+                return res.status(401).send('Unauthorized');
             }
 
             req.userId = decoded.id; 
 
-            Acount.findById(req.userId)
-            .then(admin => {
+            try {
+                const admin = await Acount.findById(req.userId);
                 if (!admin) {
                     return res.status(404).send('Admin not found'); 
                 }
@@ -52,74 +54,67 @@ class UpdateUser {
                         passwordOld: req.body.passwordOld,
                         passwordNew: req.body.passwordNew,
                         data: {
-                            role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
+                            role: admin.role === 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
                             fullName: admin.profile.fullName,
                             birthDate: admin.profile.birthDate,
                             specialty: admin.profile.specialty,
                             avatar: admin.profile.avatar,
                             address: admin.profile.address,
                             phone: admin.profile.phone,
-                            }
-                            , year: currentYear
+                        },
+                        year: currentYear
                     });
                 } 
-            })
-            .catch(error => {
-                console.error('Error fetching admin data:', error);
-                res.status(500).send('Internal Server Error'); 
-            });
-        });
-        
-        try {
-            const admin = await Acount.findById(req.userId);
-            const isMatch = await bcrypt.compare(passwordOld, admin.password);
-            if (!isMatch) {
-                errors.passwordOld = 'Mật khẩu không chính xác';
+
+                // Decrypt the stored password
+                const decryptedPassword = CryptoService.decrypt(admin.password);
+                if (passwordOld !== decryptedPassword) {
+                    errors.passwordOld = 'Mật khẩu không chính xác';
+                    return res.render('pages/admin/profile', {
+                        layout: 'admin',
+                        errors,
+                        passwordOld,
+                        passwordNew,
+                        data: {
+                            role: admin.role === 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
+                            fullName: admin.profile.fullName,
+                            birthDate: admin.profile.birthDate,
+                            specialty: admin.profile.specialty,
+                            avatar: admin.profile.avatar,
+                            address: admin.profile.address,
+                            phone: admin.profile.phone,
+                        },
+                        year: currentYear
+                    });
+                }
+
+                // Encrypt the new password
+                const encryptedPassword = CryptoService.encrypt(passwordNew);
+                admin.password = encryptedPassword;
+                await admin.save();
+                req.session.isChangePassword = true;
+
                 return res.render('pages/admin/profile', {
                     layout: 'admin',
-                    errors,
-                    passwordOld,
-                    passwordNew,
                     data: {
-                        role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
+                        role: admin.role === 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
                         fullName: admin.profile.fullName,
                         birthDate: admin.profile.birthDate,
                         specialty: admin.profile.specialty,
                         avatar: admin.profile.avatar,
                         address: admin.profile.address,
                         phone: admin.profile.phone,
-                        },
-                    year: currentYear
-                });
-            }
-
-            const hashedPassword = await bcrypt.hash(passwordNew, 12);
-            admin.password = hashedPassword;
-            await admin.save();
-            req.session.isChangePassword = true;
-
-            return res.render('pages/admin/profile', {
-                layout: 'admin',
-                data: {
-                    role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
-                    fullName: admin.profile.fullName,
-                    birthDate: admin.profile.birthDate,
-                    specialty: admin.profile.specialty,
-                    avatar: admin.profile.avatar,
-                    address: admin.profile.address,
-                    phone: admin.profile.phone,
                     },
-                year: currentYear,
-                isChangePassword: req.session.isChangePassword
-            });
-            
-        } catch (error) {
-            console.error('Lỗi khi xử lý thay đổi mật khẩu:', error);
-            return res.status(500).json({ message: messages.serverError });
-        }
-        
+                    year: currentYear,
+                    isChangePassword: req.session.isChangePassword
+                });
+                
+            } catch (error) {
+                console.error('Lỗi khi xử lý thay đổi mật khẩu:', error);
+                return res.status(500).json({ message: messages.serverError });
+            }
+        });
     }
-
 }
 
-module.exports = new UpdateUser;
+module.exports = new UpdateUser();

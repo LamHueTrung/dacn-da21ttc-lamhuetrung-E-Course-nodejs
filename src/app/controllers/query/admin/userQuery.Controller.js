@@ -1,4 +1,5 @@
 const Acount = require('../../../model/admin/Acount');
+const CryptoService = require('../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
 
 class UserQuery {
@@ -7,6 +8,7 @@ class UserQuery {
         const currentYear = new Date().getFullYear();
         res.render('pages/admin/addUser', {layout: 'admin', year: currentYear, isCreate: req.session.isCreate});
     }
+
     //Profile pages
     Profile(req, res, next) {
         const currentYear = new Date().getFullYear();
@@ -47,6 +49,40 @@ class UserQuery {
             });
         });
     }
+
+    // List all user pages
+    async ListAllUser(req, res, next) {
+        const currentYear = new Date().getFullYear();
+
+        try {
+            // Lấy tất cả tài khoản ngoại trừ tài khoản có role là 'system_admin'
+            const accounts = await Acount.find({ role: { $ne: 'system_admin' } });
+
+            if (accounts.length === 0) {
+                return res.render('pages/admin/listAllUser', {
+                    layout: 'admin',
+                    year: currentYear,
+                });
+            }
+
+            const accountData = accounts.map(account => ({
+                ...account.toObject(),
+                passwordDecrypted: CryptoService.decrypt(account.password) // Giải mã mật khẩu
+            }));
+
+            // Render trang listAllUser với danh sách tài khoản
+            res.render('pages/admin/listAllUser', { 
+                layout: 'admin', 
+                year: currentYear,
+                accounts: accountData
+            });
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách tài khoản:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
+
 }
 
 module.exports = new UserQuery;

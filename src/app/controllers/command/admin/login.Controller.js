@@ -1,7 +1,7 @@
 const Acount = require('../../../model/admin/Acount');
 const Validator = require('../../../Extesions/validator');
 const messages = require('../../../Extesions/messCost');
-const bcrypt = require('bcrypt'); 
+const CryptoService = require('../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
 
 class LoginAdmin {
@@ -25,11 +25,10 @@ class LoginAdmin {
         if (vietnameseCheck) errors.username = vietnameseCheck;
 
         return errors;
+    }
 
-    };
-
-    Handle = async (req, res) => {   
-        const errors = this.Validate(req); 
+    Handle = async (req, res) => {
+        const errors = this.Validate(req);
 
         if (errors.username || errors.password) {
             return res.render('LoginAdmin', {
@@ -38,26 +37,33 @@ class LoginAdmin {
                 username: req.body.username,
                 password: req.body.password
             });
-        } 
-        const { username, password } = req.body;    
+        }
+        const { username, password } = req.body;
 
         try {
             const admin = await Acount.findOne({ username });
             if (!admin) {
-                return res.status(401).json({ message: messages.login.invalidCredentials });
+                return res.render('LoginAdmin', {
+                    layout: 'Login&Register',
+                    errors: {
+                        username: 'Tài khoản không chính xác'
+                    },
+                    username,
+                    password
+                });
             }
 
-            const isMatch = await bcrypt.compare(password, admin.password);
-            if (!isMatch) {
+            // Giải mã mật khẩu lưu trữ trong DB
+            const decryptedPassword = CryptoService.decrypt(admin.password);
+            if (password !== decryptedPassword) {
                 return res.render('LoginAdmin', {
                     layout: 'Login&Register',
                     errors: {
                         password: 'Mật khẩu không chính xác'
                     },
-                    username: req.body.username,
-                    password: req.body.password
+                    username,
+                    password
                 });
-                return res.status(401).json({ message: messages.login.invalidCredentials });
             }
 
             if (admin.role !== 'system_admin' && admin.role !== 'sub_admin') {
@@ -68,15 +74,15 @@ class LoginAdmin {
                     password
                 });
             }
-            
+
             // Tạo token cho admin bằng JWT
             const jwtSecretKey = process.env.JWT_SECRET_KEY;
             const token = jwt.sign({ id: admin._id, role: admin.role }, jwtSecretKey, { expiresIn: '1h' });
             req.session.token = token;
-            req.session.isLoggedIn = true; 
+            req.session.isLoggedIn = true;
 
             // Chuyển đến trang Home
-            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn});
+            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn });
         } catch (error) {
             console.error('Lỗi khi xử lý đăng nhập:', error);
             return res.status(500).json({ message: messages.serverError });
@@ -84,5 +90,4 @@ class LoginAdmin {
     }
 }
 
-
-module.exports = new LoginAdmin;
+module.exports = new LoginAdmin();

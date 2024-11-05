@@ -1,0 +1,54 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">List all users</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Full name</th>
+                        <th>Age</th>
+                        <th>Specialty</th>
+                        <th>Phone</th>
+                        <th>User name</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each accounts}}
+                    <tr>
+                        <td>{{#if (eq this.role "sub_admin")}}SUB ADMIN{{else}}USER{{/if}}</td>
+                        <td>{{this.profile.fullName}}</td>
+                        <td>{{this.profile.age}}</td>
+                        <td>{{this.profile.specialty}}</td>
+                        <td>{{this.profile.phone}}</td>
+                        <td>{{this.username}}</td>
+                        <td>
+                            <span class="password-hidden" id="password-{{@index}}">********</span>
+                            <span class="password-visible" id="password-visible-{{@index}}" style="display: none;">{{this.passwordDecrypted}}</span>
+                            <button type="button" onclick="togglePassword({{@index}})" class="btn btn-sm btn-outline-primary">Xem mật khẩu</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(index) {
+        const hiddenPassword = document.getElementById(`password-${index}`);
+        const visiblePassword = document.getElementById(`password-visible-${index}`);
+        
+        if (hiddenPassword.style.display === "none") {
+            hiddenPassword.style.display = "inline";
+            visiblePassword.style.display = "none";
+        } else {
+            hiddenPassword.style.display = "none";
+            visiblePassword.style.display = "inline";
+        }
+    }
+</script>
