@@ -14,7 +14,7 @@ router.post('/addUser', upload.single('avatar'), (req, res) => {
 router.use('/addUser', authenticateToken, UserQuery.AddUser);
 
 
-router.post('/admin/clear-create-flag', authenticateToken, (req, res) => {
+router.post('/clear-create-flag', authenticateToken, (req, res) => {
     delete req.session.isCreate;
     res.sendStatus(200);
 });
@@ -25,5 +25,6 @@ router.post('/changPassword', authenticateToken, updateUserCommand.ChangePasswor
 
 // Route List all user
 router.use('/listAllUser', authenticateToken, UserQuery.ListAllUser);
+router.use('/profiles/:id', UserQuery.ViewsProfileUser);
 
 module.exports = router;

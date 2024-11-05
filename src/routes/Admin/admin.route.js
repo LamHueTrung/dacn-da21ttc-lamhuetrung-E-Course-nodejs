@@ -7,7 +7,7 @@ const userRoute = require('./user.route');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 
 //user route
-router.use(userRoute);
+router.use('/user', userRoute);
 
 // admin route
 router.use('/home', authenticateToken, adminQuery.Index);

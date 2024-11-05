@@ -4,12 +4,9 @@ const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const route = require('./routes/index.route');
 const connectDB = require('./app/database'); 
-const dotenv = require('dotenv');
 const CreateAdmin = require('./app/controllers/command/admin/user/createAdmin.Controller');
 const app = express();
 const port = 3000;
-
-dotenv.config();
 
 // Kết nối tới MongoDB
 connectDB();
@@ -31,6 +28,18 @@ app.use(morgan('combined'));
 app.engine('hbs', handlebars.engine({
   extname: '.hbs',
   helpers: {
+    calculateAge: function(birthDate) {
+      const date = new Date(birthDate);
+      const today = new Date();
+      let age = today.getFullYear() - date.getFullYear();
+      const monthDifference = today.getMonth() - date.getMonth();
+
+      // Nếu chưa đến sinh nhật trong năm nay, giảm tuổi đi 1
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < date.getDate())) {
+          age--;
+      }
+      return age;
+    },
     formatDate: function(dateString) {
         const date = new Date(dateString);
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };

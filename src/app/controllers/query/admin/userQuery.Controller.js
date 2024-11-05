@@ -82,6 +82,36 @@ class UserQuery {
         }
     }
 
+    ViewsProfileUser(req, res, next) {
+        const currentYear = new Date().getFullYear();
+        const userId = req.params.id; 
+    
+        Acount.findById(userId)
+        .then(admin => {
+            if (!admin) {
+                return res.status(404).send('Admin not found'); 
+            }
+    
+            res.render('pages/admin/profile', {
+                layout: 'admin',
+                data: {
+                    role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
+                    fullName: admin.profile.fullName,
+                    birthDate: admin.profile.birthDate,
+                    specialty: admin.profile.specialty,
+                    avatar: admin.profile.avatar,
+                    address: admin.profile.address,
+                    phone: admin.profile.phone,
+                },
+                year: currentYear
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching admin data:', error);
+            res.status(500).send('Internal Server Error'); 
+        });
+    }
+
 
 }
 

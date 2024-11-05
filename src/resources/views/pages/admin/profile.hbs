@@ -2,7 +2,7 @@
     <!-- Profile Picture -->
     <div class="col-md-4 text-center">
         {{#if data.avatar}}
-            <img src=".{{data.avatar}}" class="rounded-square img-thumbnail" alt="Admin Profile Picture">
+            <img src="{{data.avatar}}" class="rounded-square img-thumbnail" alt="Admin Profile Picture">
         {{/if}}
         <p class="text-muted">{{ data.role }}</p>
     </div>
@@ -26,7 +26,7 @@
                 <h4>Change Password</h4>
             </div>
             <div class="card-body">
-                <form action="/admin/changPassword" method="POST" enctype="application/x-www-form-urlencoded" class="list-group list-group-flush col-md-6 ">
+                <form action="/admin/user/changPassword" method="POST" enctype="application/x-www-form-urlencoded" class="list-group list-group-flush col-md-6 ">
                     <div class="mb-3">
                         <label class="form-label">Password Old</label>
                         <input type="password" class="form-control" name="passwordOld" id="passwordOld" placeholder="Enter password old">
@@ -92,6 +92,7 @@
                 confirmButtonText: 'OK'
             }).then((result) => {
             if (result.isConfirmed) {
+                sessionStorage.removeItem('hasLoggedIn');
                 fetch('/admin/logout', { method: 'POST' })
                     .then(() => {
                         window.location.href = '/admin'; 

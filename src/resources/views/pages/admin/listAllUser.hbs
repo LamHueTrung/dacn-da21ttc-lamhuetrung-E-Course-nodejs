@@ -9,11 +9,10 @@
                     <tr>
                         <th>Role</th>
                         <th>Full name</th>
-                        <th>Age</th>
                         <th>Specialty</th>
-                        <th>Phone</th>
                         <th>User name</th>
                         <th>Password</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,14 +20,18 @@
                     <tr>
                         <td>{{#if (eq this.role "sub_admin")}}SUB ADMIN{{else}}USER{{/if}}</td>
                         <td>{{this.profile.fullName}}</td>
-                        <td>{{this.profile.age}}</td>
                         <td>{{this.profile.specialty}}</td>
-                        <td>{{this.profile.phone}}</td>
                         <td>{{this.username}}</td>
                         <td>
                             <span class="password-hidden" id="password-{{@index}}">********</span>
                             <span class="password-visible" id="password-visible-{{@index}}" style="display: none;">{{this.passwordDecrypted}}</span>
                             <button type="button" onclick="togglePassword({{@index}})" class="btn btn-sm btn-outline-primary">Xem mật khẩu</button>
+                        </td>
+                        <td>
+                            <button type="button" onclick="" class="btn btn-sm btn-outline-success">Edit</button>
+                            <button type="button" onclick="" class="btn btn-sm btn-outline-danger">Delete</button>
+                            <button type="button" onclick="window.location.href='/admin/user/profiles/{{this._id}}'" class="btn btn-sm btn-outline-primary">Views</button>
+
                         </td>
                     </tr>
                     {{/each}}

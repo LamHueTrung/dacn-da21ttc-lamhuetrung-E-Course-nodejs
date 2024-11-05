@@ -21,7 +21,7 @@ class CreateAdmin {
                     fullName: 'Lâm Huệ Trung',
                     birthDate: new Date('2003-08-01'),
                     specialty: 'Quản lý hệ thống',
-                    avatar: './img/user-LHT.jpg',
+                    avatar: '/img/user-LHT.jpg',
                     address: 'Trà Vinh',
                     phone: '0763849007',
                     degree: [ 

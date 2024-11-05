@@ -121,7 +121,7 @@ class CreateUser {
                     fullName: fullName,
                     birthDate: new Date(birthday),
                     specialty: specialty,
-                    avatar: req.file ? './avatars/' + req.file.filename : null,
+                    avatar: req.file ? '/avatars/' + req.file.filename : null,
                     address: address,
                     phone: numberPhone,
                 }

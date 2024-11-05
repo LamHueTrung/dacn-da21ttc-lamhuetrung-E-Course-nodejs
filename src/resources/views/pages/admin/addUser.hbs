@@ -1,6 +1,6 @@
 <div class="row add-user mb-4">
     <h1 class="title-add-user text-center mb-4">Add User</h1>
-    <form action="/admin/addUser" method="POST" enctype="multipart/form-data" class="col-md-6 offset-md-3">
+    <form action="/admin/user/addUser" method="POST" enctype="multipart/form-data" class="col-md-6 offset-md-3">
         <div class="mb-3">
             <label class="form-label">User Name</label>
             <input type="text" class="form-control" name="userName" id="userName" placeholder="Example: LamHueTrung" value="{{userName}}">
@@ -85,7 +85,7 @@
                 confirmButtonText: 'OK'
             });
             // Xóa cờ session để không hiện lại thông báo
-            fetch('/admin/clear-create-flag', { method: 'POST' });
+            fetch('/admin/user/clear-create-flag', { method: 'POST' });
         }
     });
 </script>
