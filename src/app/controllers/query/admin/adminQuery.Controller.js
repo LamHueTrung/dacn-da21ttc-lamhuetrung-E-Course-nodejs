@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const messages = require('../../../Extesions/messCost');
 class AdminQuery {
     //Logout pages
     Logout(req, res, next) {
@@ -7,13 +7,12 @@ class AdminQuery {
         req.session.isChangePassword = false;
         req.session.destroy(err => {
             if (err) {
-                console.error('Failed to destroy session during logout:', err);
-                return res.status(500).json({ message: 'Failed to logout' });
+                console.error(messages.session.sessionDestroyFailed, err);
+                return res.status(500).json({ message: messages.session.sessionDestroyFailed });
             }
     
-            // Xóa cookie và trả về phản hồi
             res.clearCookie('connect.sid');
-            res.status(200).json({ message: 'Logged out successfully' });
+            res.status(200).json({ message: messages.session.sessionDestroySucces});
         });
     }
 

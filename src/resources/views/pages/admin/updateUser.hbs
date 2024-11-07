@@ -1,0 +1,103 @@
+<div class="row add-user mb-4">
+    <h1 class="title-add-user text-center mb-4">Update User</h1>
+    <form action="/admin/user/updateUser/{{data.id}}" method="POST" enctype="multipart/form-data" class="col-md-6 offset-md-3">
+        <div class="mb-3">
+            <label class="form-label">User Name</label>
+            <input type="text" class="form-control" name="userName" id="userName" placeholder="Example: MaDaiPhu" value="{{data.username}}" readonly>
+            {{#if errors.userName}}
+                <div class="text-danger">{{errors.userName}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Example: Mã Đại Phú" value="{{data.fullName}}">
+            {{#if errors.fullName}}
+                <div class="text-danger">{{errors.fullName}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Birthday</label>
+            <input type="date" class="form-control" name="birthday" id="birthday" value="{{formatDatePreviou data.birthDate}}">
+            {{#if errors.birthday}}
+                <div class="text-danger">{{errors.birthday}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Specialty</label>
+            <input type="text" class="form-control" name="specialty" id="specialty" placeholder="Example: Front-end, Back-end, Design UI/UX, v.v" value="{{data.specialty}}">
+            {{#if errors.specialty}}
+                <div class="text-danger">{{errors.specialty}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" name="numberPhone" id="numberPhone" placeholder="Examples: 0763849007" value="{{data.phone}}">
+            {{#if errors.numberPhone}}
+                <div class="text-danger">{{errors.numberPhone}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" name="address" id="address" placeholder="Examples: Phước Hưng, Tp. HCM" value="{{data.address}}">
+            {{#if errors.address}}
+                <div class="text-danger">{{errors.address}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Avatar</label>
+            <input type="file" class="form-control" name="avatar" id="avatar">
+            {{#if data.avatar}}
+                <div class="mt-2">
+                    <img src="{{data.avatar}}" alt="Avatar" class="img-fluid" width="100">
+                </div>
+            {{/if}}
+            {{#if errors.avatar}}
+                <div class="text-danger">{{errors.avatar}}</div>
+            {{/if}}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-control" name="role" id="role">
+                <option value="sub_admin" {{#if (eq data.role "sub_admin")}}selected{{/if}}>Sub Admin</option>
+                <option value="user" {{#if (eq data.role "user")}}selected{{/if}}>User</option>
+            </select>
+            {{#if errors.role}}
+                <div class="text-danger">{{errors.role}}</div>
+            {{/if}}
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+            <a href="/admin" class="btn btn-secondary btn-previou">Previous</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const isUpdate = {{isUpdate}};
+        if (isUpdate) {
+            Swal.fire({
+                title: 'Cập nhật người dùng thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Sau khi nhấn OK, chuyển hướng đến trang danh sách người dùng
+                    window.location.href = '/admin/user/listAllUser';
+                }
+            });
+            
+            // Xóa cờ session để không hiện lại thông báo
+            fetch('/admin/user/clear-update-flag', { method: 'POST' });
+        }
+    });
+</script>
+

@@ -17,7 +17,6 @@ const connectDB = async () => {
     }
 };
 
-// Xử lý các sự kiện kết nối
 mongoose.connection.on('connected', () => {
     console.log('MongoDB đã được kết nối.');
 });

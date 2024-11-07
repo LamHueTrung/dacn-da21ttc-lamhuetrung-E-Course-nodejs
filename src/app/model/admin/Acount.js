@@ -27,7 +27,7 @@ const profileSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: null // Đường dẫn đến ảnh đại diện
+        default: null 
     },
     address: {
         type: String,
@@ -57,7 +57,11 @@ const acountSchema = new mongoose.Schema({
         enum: ['system_admin', 'sub_admin', 'user'], 
         required: true
     },
-    profile: profileSchema
+    profile: profileSchema,
+    isDeleted: {
+        type: Boolean,
+        default: false 
+    }
 }, {
     timestamps: true
 });

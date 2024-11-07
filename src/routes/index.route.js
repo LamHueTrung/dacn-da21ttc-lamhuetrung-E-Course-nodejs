@@ -3,7 +3,6 @@ const adminsRouter = require('./Admin/admin.route');
 const session = require('express-session');
 
 function Route(app) {
-    // Cấu hình middleware session
     app.use(session({
         secret: process.env.JWT_SECRET_KEY, 
         resave: false,

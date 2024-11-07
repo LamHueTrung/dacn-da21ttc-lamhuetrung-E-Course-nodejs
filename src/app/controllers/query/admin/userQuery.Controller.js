@@ -1,6 +1,7 @@
 const Acount = require('../../../model/admin/Acount');
 const CryptoService = require('../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
+const messages = require('../../../Extesions/messCost');
 
 class UserQuery {
     //User pages
@@ -9,16 +10,48 @@ class UserQuery {
         res.render('pages/admin/addUser', {layout: 'admin', year: currentYear, isCreate: req.session.isCreate});
     }
 
+    async UpdateUser(req, res, next) {
+        const currentYear = new Date().getFullYear();
+        const userId = req.params.id;
+
+        try {
+            const admin = await Acount.findById(userId);
+
+            if (!admin) {
+                return res.status(404).send(messages.token.tokenNotFound);
+            }
+
+            res.render('pages/admin/updateUser', {
+                layout: 'admin',
+                year: currentYear,
+                isUpdate: req.session.isUpdate,
+                data: {
+                    id: admin._id,
+                    username: admin.username,
+                    role: admin.role,
+                    fullName: admin.profile.fullName,
+                    birthDate: admin.profile.birthDate,
+                    specialty: admin.profile.specialty,
+                    avatar: admin.profile.avatar,
+                    address: admin.profile.address,
+                    phone: admin.profile.phone,
+                }
+            });
+        } catch (error) {
+            console.error(messages.token.tokenFetchingError, error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
     //Profile pages
     Profile(req, res, next) {
         const currentYear = new Date().getFullYear();
         const token = req.session.token;
         const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
-        // Giải mã token để lấy thông tin người dùng
         jwt.verify(token, jwtSecretKey, (err, decoded) => {
             if (err) {
-                console.error('Token verification failed:', err);
+                console.error(messages.token.tokenVerificationFailed, err);
             }
 
             req.userId = decoded.id; 
@@ -44,7 +77,7 @@ class UserQuery {
                 });
             })
             .catch(error => {
-                console.error('Error fetching admin data:', error);
+                console.error(messages.token.tokenFetchingError, error);
                 res.status(500).send('Internal Server Error'); 
             });
         });
@@ -53,31 +86,31 @@ class UserQuery {
     // List all user pages
     async ListAllUser(req, res, next) {
         const currentYear = new Date().getFullYear();
-
         try {
-            // Lấy tất cả tài khoản ngoại trừ tài khoản có role là 'system_admin'
-            const accounts = await Acount.find({ role: { $ne: 'system_admin' } });
+            const accounts = await Acount.find({ role: { $ne: 'system_admin' }});
 
             if (accounts.length === 0) {
                 return res.render('pages/admin/listAllUser', {
                     layout: 'admin',
                     year: currentYear,
+                    isSoftDelete: req.session.isSoftDelete
                 });
             }
 
             const accountData = accounts.map(account => ({
                 ...account.toObject(),
-                passwordDecrypted: CryptoService.decrypt(account.password) // Giải mã mật khẩu
+                passwordDecrypted: CryptoService.decrypt(account.password) 
             }));
 
-            // Render trang listAllUser với danh sách tài khoản
             res.render('pages/admin/listAllUser', { 
                 layout: 'admin', 
                 year: currentYear,
-                accounts: accountData
+                isDeleted: req.session.isDeleted,
+                accounts: accountData, 
+                isSoftDelete: req.session.isSoftDelete
             });
         } catch (error) {
-            console.error('Lỗi khi lấy danh sách tài khoản:', error);
+            console.error(messages.getAllUser.getAllUserError, error);
             res.status(500).send('Internal Server Error');
         }
     }
@@ -85,17 +118,16 @@ class UserQuery {
     ViewsProfileUser(req, res, next) {
         const currentYear = new Date().getFullYear();
         const userId = req.params.id; 
-    
         Acount.findById(userId)
         .then(admin => {
             if (!admin) {
-                return res.status(404).send('Admin not found'); 
+                return res.status(404).send(messages.token.tokenNotFound); 
             }
     
             res.render('pages/admin/profile', {
                 layout: 'admin',
                 data: {
-                    role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : 'SUB ADMIN',
+                    role: admin.role == 'system_admin' ? 'SYSTEM ADMIN' : admin.role == 'sub_admin'? 'SUB ADMIN' : 'USER',
                     fullName: admin.profile.fullName,
                     birthDate: admin.profile.birthDate,
                     specialty: admin.profile.specialty,
@@ -107,7 +139,7 @@ class UserQuery {
             });
         })
         .catch(error => {
-            console.error('Error fetching admin data:', error);
+            console.error(messages.token.tokenFetchingError, error);
             res.status(500).send('Internal Server Error'); 
         });
     }

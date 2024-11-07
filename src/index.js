@@ -47,7 +47,14 @@ app.engine('hbs', handlebars.engine({
     },
     eq: function(a, b) {
       return a === b;
-    }
+    }, 
+    formatDatePreviou: function(date) {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = ('0' + (d.getMonth() + 1)).slice(-2); // Add leading zero if necessary
+      const day = ('0' + d.getDate()).slice(-2); // Add leading zero if necessary
+      return `${year}-${month}-${day}`;
+  }
 }
 }));
 app.set('view engine', 'hbs');

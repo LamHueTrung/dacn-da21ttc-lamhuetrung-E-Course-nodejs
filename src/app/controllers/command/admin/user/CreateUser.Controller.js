@@ -4,7 +4,6 @@ const messages = require('../../../../Extesions/messCost');
 const CryptoService = require('../../../../Extesions/cryptoService');
 
 class CreateUser {
-    // Thêm người dùng
     Validate(req) {
         const {
             userName,
@@ -27,7 +26,6 @@ class CreateUser {
             role: ''
         };
 
-        // Validate các trường text
         const userNameError =
             Validator.notEmpty(userName, 'User name') ||
             Validator.notNull(userName, 'User name') ||
@@ -57,17 +55,14 @@ class CreateUser {
         const addressError = Validator.notEmpty(address, 'Địa chỉ');
         if (addressError) errors.address = addressError;
 
-        // Validate avatar file
         if (req.file) {
             const avatarError =
-                Validator.maxFileSize(req.file.size, 10, 'Ảnh đại diện'); // Kích thước tối đa là 10MB
-            // Validator.isImageFile(req.file.mimetype, 'Ảnh đại diện'); // Kiểm tra định dạng file
+                Validator.maxFileSize(req.file.size, 10, 'Ảnh đại diện'); 
             if (avatarError) errors.avatar = avatarError;
         } else {
-            errors.avatar = "Ảnh đại diện là bắt buộc.";
+            errors.avatar = messages.createUser.avartarRequried;
         }
 
-        // Validate role
         const roleError = Validator.isEnum(role, ['sub_admin', 'user'], 'Vai trò');
         if (roleError) errors.role = roleError;
 
@@ -98,7 +93,7 @@ class CreateUser {
             if (existingAccount) {
                 return res.render('pages/admin/addUser', {
                     layout: 'admin',
-                    errors: { userName: 'Tài khoản đã tồn tại.' },
+                    errors: { userName: messages.createUser.accountExist },
                     userName,
                     fullName,
                     birthday,
@@ -109,8 +104,8 @@ class CreateUser {
                 });
             }
 
-            const password = userName + "*"; // Mật khẩu dự kiến
-            const encryptedPassword = CryptoService.encrypt(password); // Mã hóa mật khẩu bằng AES
+            const password = userName + "*"; 
+            const encryptedPassword = CryptoService.encrypt(password); 
             req.session.isCreate = true;
 
             const newAccount = new Acount({
@@ -135,7 +130,7 @@ class CreateUser {
             });
 
         } catch (error) {
-            console.error('Lỗi khi xử lý đăng ký:', error);
+            console.error(messages.createUser.RegisterErorr, error);
             return res.status(500).json({ message: messages.serverError });
 
         } finally {

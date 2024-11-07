@@ -1,18 +1,18 @@
 const Acount = require('../../../../model/admin/Acount');
 const CryptoService = require('../../../../Extesions/cryptoService');
-
+const messages = require('../../../../Extesions/messCost');
 class CreateAdmin {
     CreateAdmin = async () => {
         try {
             const existingAdmin = await Acount.findOne({ username: 'LamHueTrung' });
             
             if (existingAdmin) {
-                console.log('Tài khoản admin đã tồn tại:', existingAdmin);
+                console.log(messages.createUser.accountAdminExist, existingAdmin);
                 return; 
             }
     
             const password = 'Lht080103*';
-            const encryptedPassword = CryptoService.encrypt(password); // Sử dụng CryptoService để mã hóa mật khẩu
+            const encryptedPassword = CryptoService.encrypt(password); 
             const newAdmin = new Acount({
                 username: 'LamHueTrung',
                 password: encryptedPassword, 
@@ -34,9 +34,9 @@ class CreateAdmin {
             });
     
             const savedAdmin = await newAdmin.save();
-            console.log('Tài khoản admin đã được tạo:', savedAdmin);
+            console.log(messages.createUser.accountCreateSuccess, savedAdmin);
         } catch (error) {
-            console.error('Lỗi khi kiểm tra hoặc tạo tài khoản admin:', error);
+            console.error(messages.createUser.accountCreateError, error);
         }
     };
 }
