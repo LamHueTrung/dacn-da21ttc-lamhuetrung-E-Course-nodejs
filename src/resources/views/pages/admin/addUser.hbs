@@ -70,7 +70,7 @@
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-            <button type="button" onclick="/admin" class="btn btn-secondary btn-previou">Previous</button>
+            <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Previou</button>
         </div>
     </form>
 </div>
@@ -83,8 +83,11 @@
                 title: 'Tạo người dùng thành công!',
                 icon: 'success',
                 confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/admin/user/listAllUser';
+                }
             });
-            // Xóa cờ session để không hiện lại thông báo
             fetch('/admin/user/clear-create-flag', { method: 'POST' });
         }
     });

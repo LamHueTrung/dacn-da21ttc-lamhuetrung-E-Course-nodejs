@@ -1,6 +1,7 @@
 const Acount = require('../../../../model/admin/Acount');
 const CryptoService = require('../../../../Extesions/cryptoService');
 const messages = require('../../../../Extesions/messCost');
+
 class CreateAdmin {
     CreateAdmin = async () => {
         try {

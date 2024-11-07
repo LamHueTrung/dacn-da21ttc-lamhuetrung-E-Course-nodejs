@@ -70,13 +70,23 @@
                         {{/if}}
                     </div>
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                        <button onclick="confirmIsDeveloping()" class="btn btn-primary btn-submit">Submit</button>
                     </div>
+                    <script>
+                        function confirmIsDeveloping() {
+                            event.preventDefault();
+                            Swal.fire({
+                                title: 'Tính năng đang được phát triển.',
+                                icon: 'warning',
+                                confirmButtonText: 'OK'
+                            })  
+                        }
+                    </script>
                 </form>
             </div>
         </div>
         <div class="text-right mt-4">
-            <a href="/admin" class="btn btn-primary">Previou</a>
+            <a href="javascript:history.back()" class="btn btn-primary">Previou</a>
         </div>
     </div>
 </div>

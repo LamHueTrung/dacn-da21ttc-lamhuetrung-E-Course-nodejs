@@ -8,7 +8,6 @@ const path = require('path');
 
 class UpdateUser {
     async ChangePassword(req, res) {
-
         const currentYear = new Date().getFullYear();
         const token = req.session.token;
         const jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -192,15 +191,11 @@ class UpdateUser {
             };
             
             if (req.file) {
-                const oldAvatarPath = path.join(__dirname, '../../../../../public', currentUser.profile.avatar); // Chú ý phần public/avatars
-                console.log('Đường dẫn ảnh cũ:', oldAvatarPath); // Debug đường dẫn ảnh cũ
+                const oldAvatarPath = path.join(__dirname, '../../../../../public', currentUser.profile.avatar); 
     
                 if (fs.existsSync(oldAvatarPath)) {
-                    fs.unlinkSync(oldAvatarPath); // Xóa ảnh cũ nếu tồn tại
-                    console.log('Ảnh cũ đã được xóa');
-                } else {
-                    console.log('Ảnh cũ không tồn tại');
-                }
+                    fs.unlinkSync(oldAvatarPath); 
+                } 
             }
             
             await Acount.findByIdAndUpdate(req.params.id, updatedData);
@@ -220,7 +215,6 @@ class UpdateUser {
             delete req.session.isUpdate;
         }
     }
-
 }
 
 module.exports = new UpdateUser();

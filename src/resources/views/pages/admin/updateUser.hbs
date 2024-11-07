@@ -75,7 +75,7 @@
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-            <a href="/admin" class="btn btn-secondary btn-previou">Previous</a>
+            <a href="javascript:history.back()" class="btn btn-secondary btn-previou">Previou</a>
         </div>
     </form>
 </div>
@@ -90,12 +90,9 @@
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Sau khi nhấn OK, chuyển hướng đến trang danh sách người dùng
                     window.location.href = '/admin/user/listAllUser';
                 }
             });
-            
-            // Xóa cờ session để không hiện lại thông báo
             fetch('/admin/user/clear-update-flag', { method: 'POST' });
         }
     });

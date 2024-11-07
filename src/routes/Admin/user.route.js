@@ -31,7 +31,7 @@ router.post('/clear-soft-delete-flag', authenticateToken, (req, res) => {
 });
 router.post('/restore/:id', authenticateToken, DeleteUserCommand.restore);
 
-//Route add user
+//Route update user
 router.post('/updateUser/:id', upload.single('avatar'), authenticateToken, (req, res) => {
     UpdateUserCommand.Handle(req, res);
 });
@@ -40,5 +40,8 @@ router.post('/clear-soft-update-flag', authenticateToken, (req, res) => {
     delete req.session.isUpdate;
     res.sendStatus(200);
 });
+
+//Route delete user
+router.post('/delete/:id', authenticateToken, DeleteUserCommand.delete);
 
 module.exports = router;

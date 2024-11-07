@@ -10,7 +10,6 @@
                         <th>Active status</th>
                         <th>Role</th>
                         <th>Full name</th>
-                        <th>Specialty</th>
                         <th>User name</th>
                         <th>Password</th>
                         <th>Actions</th>
@@ -24,7 +23,6 @@
                         </td>
                         <td>{{#if (eq this.role "sub_admin")}}SUB ADMIN{{else}}USER{{/if}}</td>
                         <td>{{this.profile.fullName}}</td>
-                        <td>{{this.profile.specialty}}</td>
                         <td>{{this.username}}</td>
                         <td>
                             <span class="password-hidden" id="password-{{@index}}">********</span>
@@ -65,7 +63,7 @@
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             fetch(`/admin/user/disable/${idUser}`, { method: 'POST' })
-                                                .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi xóa người dùng'))
+                                                .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi vô hiệu hóa người dùng'))
                                                 .then(data => {
                                                     Swal.fire({
                                                         title: data.success ? 'Người dùng đã được vô hiệu hóa!' : 'Không thể vô hiệu hóa người dùng!',
@@ -102,7 +100,32 @@
                                 }
                             </script>
 
-                            <button type="button" onclick="window.location.href='/admin/user/profiles/{{this._id}}'" class="btn btn-sm btn-outline-primary">Views</button>
+                            <button type="button" onclick="window.location.href='/admin/user/profiles/{{this._id}}'" class="btn btn-sm btn-outline-primary">View</button>
+                            <a onclick="confirmDelete('{{this._id}}')" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <script>
+                                function confirmDelete(idUser) {
+                                    Swal.fire({
+                                        title: 'Xóa người dùng này?',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Đồng ý',
+                                        cancelButtonText: 'Hủy',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            fetch(`/admin/user/delete/${idUser}`, { method: 'POST' })
+                                                .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi xóa người dùng'))
+                                                .then(data => {
+                                                    Swal.fire({
+                                                        title: data.success ? 'Người dùng đã được xóa!' : 'Không thể xóa người dùng!',
+                                                        icon: data.success ? 'success' : 'error',
+                                                        confirmButtonText: 'OK'
+                                                    }).then(() => { if (data.success) location.reload(); });
+                                                })
+                                                .catch(error => Swal.fire({ title: 'Có lỗi xảy ra!', icon: 'error', confirmButtonText: 'OK' }));
+                                        }
+                                    });
+                                }
+                            </script>
                         </td>
                     </tr>
                     {{/each}}

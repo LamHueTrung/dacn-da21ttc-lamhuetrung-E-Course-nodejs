@@ -74,6 +74,14 @@ const messages = {
     restoreUser: {
         restoreError: "Lỗi khi khôi phục người dùng.",
         restoreSuccess: "Người dùng đã được khôi phục thành công."
+    },
+
+    //Message Delete user
+    deleteUser: {
+        softDeleteError: "Không thể vô hiệu hóa người dùng.",
+        softDeleteSuccess: "Đã vô hiệu hóa người dùng thành công.",
+        deleteError: "Không thể xóa người dùng.",
+        deleteSuccess: "Đã xóa người dùng thành công."
     }
 };
 
