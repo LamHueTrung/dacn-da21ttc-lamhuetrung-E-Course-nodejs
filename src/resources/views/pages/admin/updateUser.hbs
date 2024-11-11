@@ -3,7 +3,7 @@
     <form action="/admin/user/updateUser/{{data.id}}" method="POST" enctype="multipart/form-data" class="col-md-6 offset-md-3">
         <div class="mb-3">
             <label class="form-label">User Name</label>
-            <input type="text" class="form-control" name="userName" id="userName" placeholder="Example: MaDaiPhu" value="{{data.username}}" readonly>
+            <input type="text" class="form-control" name="userName" id="userName" value="{{data.username}}" readonly>
             {{#if errors.userName}}
                 <div class="text-danger">{{errors.userName}}</div>
             {{/if}}
@@ -11,7 +11,7 @@
 
         <div class="mb-3">
             <label class="form-label">Full Name</label>
-            <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Example: Mã Đại Phú" value="{{data.fullName}}">
+            <input type="text" class="form-control" name="fullName" id="fullName" value="{{data.fullName}}">
             {{#if errors.fullName}}
                 <div class="text-danger">{{errors.fullName}}</div>
             {{/if}}
@@ -27,7 +27,7 @@
 
         <div class="mb-3">
             <label class="form-label">Specialty</label>
-            <input type="text" class="form-control" name="specialty" id="specialty" placeholder="Example: Front-end, Back-end, Design UI/UX, v.v" value="{{data.specialty}}">
+            <input type="text" class="form-control" name="specialty" id="specialty" value="{{data.specialty}}">
             {{#if errors.specialty}}
                 <div class="text-danger">{{errors.specialty}}</div>
             {{/if}}
@@ -35,7 +35,7 @@
 
         <div class="mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="text" class="form-control" name="numberPhone" id="numberPhone" placeholder="Examples: 0763849007" value="{{data.phone}}">
+            <input type="text" class="form-control" name="numberPhone" id="numberPhone" value="{{data.phone}}">
             {{#if errors.numberPhone}}
                 <div class="text-danger">{{errors.numberPhone}}</div>
             {{/if}}
@@ -43,7 +43,7 @@
 
         <div class="mb-3">
             <label class="form-label">Address</label>
-            <input type="text" class="form-control" name="address" id="address" placeholder="Examples: Phước Hưng, Tp. HCM" value="{{data.address}}">
+            <input type="text" class="form-control" name="address" id="address" value="{{data.address}}">
             {{#if errors.address}}
                 <div class="text-danger">{{errors.address}}</div>
             {{/if}}

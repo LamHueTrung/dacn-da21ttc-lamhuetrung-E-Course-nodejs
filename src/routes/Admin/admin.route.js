@@ -3,7 +3,11 @@ const router  = express.Router();
 const adminQuery = require('../../app/controllers/query/admin/adminQuery.Controller');
 const adminCommand = require('../../app/controllers/command/admin/login.Controller');
 const userRoute = require('./user.route');
+const courseRoute = require('./course.route');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
+
+//course route
+router.use('/course', courseRoute);
 
 //user route
 router.use('/user', userRoute);

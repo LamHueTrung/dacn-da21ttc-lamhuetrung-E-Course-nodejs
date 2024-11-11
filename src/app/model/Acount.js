@@ -66,4 +66,6 @@ const acountSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Acount', acountSchema);
+const Acount = mongoose.model('Acount', acountSchema);
+
+module.exports = Acount;

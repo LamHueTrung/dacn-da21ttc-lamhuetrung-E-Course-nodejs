@@ -5,7 +5,7 @@ const UpdateUserCommand = require('../../app/controllers/command/admin/user/Upda
 const DeleteUserCommand = require('../../app/controllers/command/admin/user/DeleteUser.Controller');
 const UserQuery = require('../../app/controllers/query/admin/userQuery.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
-const upload = require('../../app/Extesions/upload');
+const upload = require('../../app/Extesions/uploadAvatar');
 
 //Route add user
 router.post('/addUser', upload.single('avatar'), authenticateToken, (req, res) => {
@@ -25,10 +25,6 @@ router.post('/changPassword', authenticateToken, UpdateUserCommand.ChangePasswor
 router.use('/listAllUser', authenticateToken, UserQuery.ListAllUser);
 router.use('/profiles/:id', UserQuery.ViewsProfileUser);
 router.post('/disable/:id', authenticateToken, DeleteUserCommand.disable);
-router.post('/clear-soft-delete-flag', authenticateToken, (req, res) => {
-    delete req.session.isSoftDelete;
-    res.sendStatus(200);
-});
 router.post('/restore/:id', authenticateToken, DeleteUserCommand.restore);
 
 //Route update user
@@ -43,5 +39,9 @@ router.post('/clear-soft-update-flag', authenticateToken, (req, res) => {
 
 //Route delete user
 router.post('/delete/:id', authenticateToken, DeleteUserCommand.delete);
+router.post('/clear-soft-delete-flag', authenticateToken, (req, res) => {
+    delete req.session.isSoftDelete;
+    res.sendStatus(200);
+});
 
 module.exports = router;

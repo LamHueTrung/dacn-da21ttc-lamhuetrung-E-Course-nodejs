@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-4 text-center">
+        {{#if course.image}}
+            <img src="{{course.image}}" class="rounded-square img-thumbnail" alt="Admin Profile Picture">
+        {{/if}}
+        <p style="color: {{#if course.isDeleted}} red !important {{else}} green !important {{/if}}" class="text-muted">{{#if course.isDeleted}} Vô hiệu hóa {{else}} Đang hoạt động {{/if}}</p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Course information</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Category: </strong>{{course.category}}</li>
+                    <li class="list-group-item"><strong>Course name: </strong>{{course.name}}</li>
+                    <li class="list-group-item"><strong>Author: </strong>{{author}}</li>
+                    <li class="list-group-item"><strong>Description: </strong>{{course.description}}</li>
+                    <li class="list-group-item"><strong>Benefits: </br> </strong>{{#each course.benefits}}<span><i class="fa-solid fa-plus"></i> {{this}} </br></span> {{/each}}</li>
+                    <li class="list-group-item"><strong>Level: </strong>{{course.level}}</li>
+                    <li class="list-group-item"><strong>Old price: </strong>{{course.oldPrice}}</li>
+                    <li class="list-group-item"><strong>New price: </strong>{{course.newPrice}}</li>
+                    <li class="list-group-item"><strong>Total lessons: </strong>{{course.totalLessons}}</li>
+                    <li class="list-group-item"><strong>Total chapters: </strong>{{course.totalChapters}}</li>
+                    <li class="list-group-item"><strong>Duration: </strong>{{course.duration}}</li>
+                    <li class="list-group-item"><strong>Created at: </strong>{{course.createdAt}}</li>
+                    <li class="list-group-item"><strong>Updated at: </strong>{{course.updatedAt}}</li>
+                </ul>
+            </div>
+            <div class="card mb-4">
+            <div class="card-header">
+                <h4>Statistical</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Number of subscribers: </strong>{{registeredUserCount}}</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="text-right mt-4 mb-4">
+        <a href="javascript:history.back()" class="btn btn-primary">Previou</a>
+    </div>
+</div>

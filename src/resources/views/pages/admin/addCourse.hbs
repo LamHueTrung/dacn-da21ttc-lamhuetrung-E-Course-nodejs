@@ -1,0 +1,154 @@
+<div class="row add-course mb-4">
+    <h1 class="title-add-course text-center mb-4">Add Course</h1>
+    <form action="/admin/course/addCourse" method="POST" enctype="multipart/form-data" class="col-md-6 offset-md-3">
+        <!-- Course Name -->
+        <div class="mb-3">
+            <label class="form-label">Course Name</label>
+            <input type="text" class="form-control" name="courseName" id="courseName" placeholder="Example: Front-end Development" value="{{courseName}}">
+            {{#if errors.courseName}}
+                <div class="text-danger">{{errors.courseName}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Course Description -->
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" id="description" rows="4" placeholder="Enter course description">{{description}}</textarea>
+            {{#if errors.description}}
+                <div class="text-danger">{{errors.description}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Benefits -->
+        <div class="mb-3">
+            <label class="form-label">Benefits</label>
+            <div id="benefits-container">
+                <div class="benefit-item d-flex mb-2">
+                    <input type="text" class="form-control me-2" name="benefits[]" placeholder="Enter a benefit">
+                    <button type="button" class="btn btn-sm btn-outline-danger remove-benefit-btn">
+                        <img src="/img/minus.png" alt="Remove" style="width: 16px; height: 16px;">
+                    </button>
+                </div>
+            </div>
+            {{#if errors.benefits}}
+                <div class="text-danger">{{errors.benefits}}</div>
+            {{/if}}
+            <button type="button" id="add-benefit-btn" class="btn btn-sm btn-outline-primary mt-2">
+                <img src="/img/plus.png" alt="Remove" style="width: 16px; height: 16px;">
+            </button>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const benefitsContainer = document.getElementById("benefits-container");
+                const addBenefitBtn = document.getElementById("add-benefit-btn");
+
+                // Xử lý sự kiện khi nhấn vào nút "Add Benefit"
+                addBenefitBtn.addEventListener("click", function() {
+                    const benefitItem = document.createElement("div");
+                    benefitItem.className = "benefit-item d-flex mb-2";
+
+                    // Tạo ô input mới
+                    const newBenefitInput = document.createElement("input");
+                    newBenefitInput.type = "text";
+                    newBenefitInput.className = "form-control me-2";
+                    newBenefitInput.name = "benefits[]";
+                    newBenefitInput.placeholder = "Enter a benefit";
+
+                    // Tạo nút xóa với hình ảnh
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.className = "btn btn-sm btn-outline-danger remove-benefit-btn";
+
+                    const removeImg = document.createElement("img");
+                    removeImg.src = "/img/minus.png";
+                    removeImg.alt = "Remove";
+                    removeImg.style.width = "16px";
+                    removeImg.style.height = "16px";
+
+                    removeBtn.appendChild(removeImg);
+
+                    // Xóa ô input khi nhấn vào nút xóa
+                    removeBtn.addEventListener("click", function() {
+                        benefitItem.remove();
+                    });
+
+                    // Thêm ô input và nút xóa vào container
+                    benefitItem.appendChild(newBenefitInput);
+                    benefitItem.appendChild(removeBtn);
+                    benefitsContainer.appendChild(benefitItem);
+                });
+            });
+        </script>
+
+        <!-- Course Level -->
+        <div class="mb-3">
+            <label class="form-label">Level</label>
+            <select class="form-control" name="level" id="level">
+                <option value="Beginner" {{#if (eq level "Beginner")}}selected{{/if}}>Beginner</option>
+                <option value="Intermediate" {{#if (eq level "Intermediate")}}selected{{/if}}>Intermediate</option>
+                <option value="Advanced" {{#if (eq level "Advanced")}}selected{{/if}}>Advanced</option>
+            </select>
+            {{#if errors.level}}
+                <div class="text-danger">{{errors.level}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <div class="d-flex">
+                <input type="text" class="form-control" name="oldPrice" id="oldPrice" placeholder="Old Price" value="{{oldPrice}}">
+                <input type="text" class="form-control" name="newPrice" id="newPrice" placeholder="New Price" value="{{newPrice}}">
+            </div>
+            {{#if errors.oldPrice}}
+                <div class="text-danger">{{errors.oldPrice}}</div>
+            {{/if}}
+            {{#if errors.newPrice}}
+                <div class="text-danger">{{errors.newPrice}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <input type="text" class="form-control" name="category" id="category" placeholder="Example: Web Development, Data Science" value="{{category}}">
+            {{#if errors.category}}
+                <div class="text-danger">{{errors.category}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="mb-3">
+            <label class="form-label">Thumbnail Image</label>
+            <input type="file" class="form-control" name="thumbnail" id="thumbnail">
+            {{#if errors.thumbnail}}
+                <div class="text-danger">{{errors.thumbnail}}</div>
+            {{/if}}
+        </div>
+
+        <!-- Submit and Cancel buttons -->
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+            <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Back</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+         const isCreate = {{isCreate}};
+        if (isCreate) {
+            Swal.fire({
+                title: 'Tạo khóa học thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/admin/course/listAllCourse';
+                }
+            });
+            fetch('/admin/course/clear-create-flag', { method: 'POST' });
+        }
+    });
+</script>

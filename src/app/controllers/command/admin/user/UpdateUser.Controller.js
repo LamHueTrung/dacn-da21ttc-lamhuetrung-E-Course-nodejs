@@ -1,36 +1,36 @@
-const Acount = require('../../../../model/admin/Acount');
+const Acounts = require('../../../../model/Acount');
 const Validator = require('../../../../Extesions/validator');
 const messages = require('../../../../Extesions/messCost');
 const CryptoService = require('../../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const currentYear = new Date().getFullYear();
 
 class UpdateUser {
+
+    /**
+     * Đổi mật khẩu người dùng với các bước kiểm tra xác thực và xác minh mật khẩu cũ.
+     * 
+     * @param {Object} req - Yêu cầu chứa thông tin token và mật khẩu.
+     * @param {Object} res - Đối tượng phản hồi cho người dùng.
+     */
     async ChangePassword(req, res) {
         const currentYear = new Date().getFullYear();
         const token = req.session.token;
         const jwtSecretKey = process.env.JWT_SECRET_KEY;
-        const {
-            passwordOld,
-            passwordNew
-        } = req.body;
+        const { passwordOld, passwordNew } = req.body;
 
         let errors = {
             passwordOld: '',
             passwordNew: ''
         };
 
-        const passwordOldError = 
-            Validator.notEmpty(passwordOld, 'password') ||
-            Validator.notNull(passwordOld, 'password') ||
-            Validator.isPassword(passwordOld);
+        // Xác thực mật khẩu cũ và mới
+        const passwordOldError = Validator.notEmpty(passwordOld, 'password') || Validator.notNull(passwordOld, 'password') || Validator.isPassword(passwordOld);
         if (passwordOldError) errors.passwordOld = passwordOldError;
 
-        const passwordNewError = 
-            Validator.notEmpty(passwordNew, 'password') ||
-            Validator.notNull(passwordNew, 'password') ||
-            Validator.isPassword(passwordNew);
+        const passwordNewError = Validator.notEmpty(passwordNew, 'password') || Validator.notNull(passwordNew, 'password') || Validator.isPassword(passwordNew);
         if (passwordNewError) errors.passwordNew = passwordNewError;
 
         jwt.verify(token, jwtSecretKey, async (err, decoded) => {
@@ -39,10 +39,10 @@ class UpdateUser {
                 return res.status(401).send(messages.token.tokenVerificationSucces);
             }
 
-            req.userId = decoded.id; 
+            req.userId = decoded.id; // Đặt ID người dùng trong yêu cầu sau khi xác minh
 
             try {
-                const admin = await Acount.findById(req.userId);
+                const admin = await Acounts.findById(req.userId);
                 if (!admin) {
                     return res.status(404).send(messages.token.tokenNotFound); 
                 }
@@ -67,6 +67,7 @@ class UpdateUser {
                     });
                 } 
 
+                // Giải mã và so sánh mật khẩu
                 const decryptedPassword = CryptoService.decrypt(admin.password);
                 if (passwordOld !== decryptedPassword) {
                     errors.passwordOld = messages.updateUser.changePasswordDecrypt;
@@ -88,6 +89,7 @@ class UpdateUser {
                     });
                 }
 
+                // Mã hóa mật khẩu mới và lưu thay đổi
                 const encryptedPassword = CryptoService.encrypt(passwordNew);
                 admin.password = encryptedPassword;
                 await admin.save();
@@ -115,6 +117,13 @@ class UpdateUser {
         });
     }
 
+    /**
+     * Xác thực dữ liệu người dùng trước khi cập nhật thông tin.
+     * 
+     * @param {Object} req - Yêu cầu từ người dùng.
+     * @param {Object} currentData - Dữ liệu hiện tại của người dùng.
+     * @returns {Object} Đối tượng chứa thông tin lỗi và giá trị hợp lệ.
+     */
     async Validate(req, currentData) {
         const {
             fullName = currentData.profile.fullName,
@@ -155,15 +164,20 @@ class UpdateUser {
         const roleError = Validator.isEnum(role, ['sub_admin', 'user'], 'Vai trò');
         if (roleError) errors.role = roleError;
 
-        return { errors, values: {fullName, birthday, specialty, numberPhone, address, role } };
+        return { errors, values: { fullName, birthday, specialty, numberPhone, address, role } };
     }
 
+    /**
+     * Xử lý cập nhật thông tin người dùng.
+     * 
+     * @param {Object} req - Yêu cầu từ người dùng.
+     * @param {Object} res - Phản hồi gửi tới người dùng.
+     */
     Handle = async (req, res) => {
-
         try {
-            const currentUser = await Acount.findById(req.params.id); 
+            const currentUser = await Acounts.findById(req.params.id); 
             if (!currentUser) {
-                return res.status(404).json({ message: messages.createUser.notFound });
+                return res.status(404).json({ message: messages.updateUser.notFound });
             }
 
             const { errors, values } = await this.Validate(req, currentUser);
@@ -173,7 +187,8 @@ class UpdateUser {
                 return res.render('pages/admin/updateUser', {
                     layout: 'admin',
                     errors,
-                    ...values
+                    ...values,
+                    currentYear: currentYear
                 });
             }
 
@@ -189,28 +204,27 @@ class UpdateUser {
                     phone: values.numberPhone || currentUser.profile.phone,
                 }
             };
-            
+
+            // Xóa ảnh đại diện cũ nếu có file mới
             if (req.file) {
                 const oldAvatarPath = path.join(__dirname, '../../../../../public', currentUser.profile.avatar); 
-    
                 if (fs.existsSync(oldAvatarPath)) {
                     fs.unlinkSync(oldAvatarPath); 
-                } 
+                }
             }
             
-            await Acount.findByIdAndUpdate(req.params.id, updatedData);
-
+            await Acounts.findByIdAndUpdate(req.params.id, updatedData);
             req.session.isUpdate = true;
 
             return res.render('pages/admin/updateUser', {
                 layout: 'admin',
-                isUpdate: req.session.isUpdate
+                isUpdate: req.session.isUpdate,
+                currentYear: currentYear
             });
 
         } catch (error) {
             console.error(messages.createUser.updateError, error);
             return res.status(500).json({ message: messages.serverError });
-
         } finally {
             delete req.session.isUpdate;
         }

@@ -62,7 +62,8 @@ const messages = {
         changePasswordError: 'Lỗi khi xử lý thay đổi mật khẩu.',
         userNotFound: "Người dùng không tồn tại.",
         updateError: "Lỗi khi cập nhật người dùng.",
-        updateSuccess: "Người dùng đã được cập nhật thành công."
+        updateSuccess: "Người dùng đã được cập nhật thành công.",
+        notFound: 'tài khoản không tồn tại'
     },
 
     //Message GET user
@@ -82,6 +83,19 @@ const messages = {
         softDeleteSuccess: "Đã vô hiệu hóa người dùng thành công.",
         deleteError: "Không thể xóa người dùng.",
         deleteSuccess: "Đã xóa người dùng thành công."
+    },
+
+    //Message Create Course
+    createCourse: {
+        courseExist: 'Khóa học đã tồn tài.',
+    },
+
+    //Message Update Course
+    updateCourse: {
+        courseExist: 'Khóa học đã tồn tài.',
+        courseNotFound: "Khóa học không tồn tại.",
+        updateError: "Lỗi khi cập nhật Khóa học.",
+        updateSuccess: "Khóa học đã được cập nhật thành công.",
     }
 };
 

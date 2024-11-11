@@ -6,14 +6,14 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            maxPoolSize: 10, 
+            maxPoolSize: 10,
             serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 450000 
+            socketTimeoutMS: 450000
         });
         console.log('Kết nối thành công tới MongoDB');
     } catch (error) {
         console.error('Lỗi kết nối MongoDB:', error);
-        setTimeout(connectDB, 5000); 
+        setTimeout(connectDB, 5000);
     }
 };
 

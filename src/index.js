@@ -54,7 +54,7 @@ app.engine('hbs', handlebars.engine({
       const month = ('0' + (d.getMonth() + 1)).slice(-2); // Add leading zero if necessary
       const day = ('0' + d.getDate()).slice(-2); // Add leading zero if necessary
       return `${year}-${month}-${day}`;
-  }
+    }
 }
 }));
 app.set('view engine', 'hbs');

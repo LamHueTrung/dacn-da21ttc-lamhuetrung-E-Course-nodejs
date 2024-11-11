@@ -1,10 +1,17 @@
-const Acount = require('../../../model/admin/Acount');
+const Acounts = require('../../../model/Acount');
 const Validator = require('../../../Extesions/validator');
 const messages = require('../../../Extesions/messCost');
 const CryptoService = require('../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
+const Courses = require('../../../model/Course');
 
 class LoginAdmin {
+    
+    /**
+     * Hàm Validate kiểm tra tính hợp lệ của dữ liệu đầu vào.
+     * @param {Object} req - Request từ client
+     * @returns {Object} - Các lỗi liên quan đến username và password nếu có.
+     */
     Validate(req) {
         const { username, password } = req.body;
         let errors = {
@@ -12,25 +19,35 @@ class LoginAdmin {
             password: ''
         };
 
+        // Kiểm tra tên đăng nhập có bị bỏ trống không
         const usernameError = Validator.notEmpty(username, 'Tên đăng nhập');
         if (usernameError) errors.username = usernameError;
 
+        // Kiểm tra mật khẩu có bị bỏ trống không
         const passwordError = Validator.notEmpty(password, 'Mật khẩu');
         if (passwordError) errors.password = passwordError;
 
+        // Kiểm tra mật khẩu có hợp lệ hay không
         const passwordValidation = Validator.isPassword(password);
         if (passwordValidation) errors.password = passwordValidation;
 
+        // Kiểm tra tên đăng nhập có chứa ký tự tiếng Việt hay không
         const vietnameseCheck = Validator.containsVietnamese(username);
         if (vietnameseCheck) errors.username = vietnameseCheck;
 
         return errors;
     }
 
+    /**
+     * Hàm xử lý đăng nhập của quản trị viên.
+     * @param {Object} req - Request từ client
+     * @param {Object} res - Response trả về cho client
+     */
     Handle = async (req, res) => {
-        const currentYear = new Date().getFullYear();
-        const errors = this.Validate(req);
+        const currentYear = new Date().getFullYear(); // Lấy năm hiện tại để hiển thị
+        const errors = this.Validate(req); // Kiểm tra lỗi đầu vào
 
+        // Nếu có lỗi đầu vào, trả lại form đăng nhập kèm theo các lỗi
         if (errors.username || errors.password) {
             return res.render('LoginAdmin', {
                 layout: 'Login&Register',
@@ -39,10 +56,12 @@ class LoginAdmin {
                 password: req.body.password
             });
         }
-        const { username, password } = req.body;
+        
+        const { username, password } = req.body; // Lấy tên đăng nhập và mật khẩu từ yêu cầu
 
         try {
-            const admin = await Acount.findOne({ username });
+            // Tìm kiếm quản trị viên với tên đăng nhập từ cơ sở dữ liệu
+            const admin = await Acounts.findOne({ username });
             if (!admin) {
                 return res.render('LoginAdmin', {
                     layout: 'Login&Register',
@@ -54,6 +73,7 @@ class LoginAdmin {
                 });
             }
 
+            // Kiểm tra nếu tài khoản đã bị xóa (soft delete)
             if (admin.isDeleted) {
                 return res.render('LoginAdmin', {
                     layout: 'Login&Register',
@@ -63,6 +83,7 @@ class LoginAdmin {
                 });
             }
 
+            // Giải mã mật khẩu đã được mã hóa
             const decryptedPassword = CryptoService.decrypt(admin.password);
             if (password !== decryptedPassword) {
                 return res.render('LoginAdmin', {
@@ -75,6 +96,7 @@ class LoginAdmin {
                 });
             }
 
+            // Kiểm tra vai trò của quản trị viên (chỉ cho phép hệ thống admin và sub admin đăng nhập)
             if (admin.role !== 'system_admin' && admin.role !== 'sub_admin') {
                 return res.render('LoginAdmin', {
                     layout: 'Login&Register',
@@ -84,13 +106,20 @@ class LoginAdmin {
                 });
             }
 
+            // Tạo JWT token cho người dùng sau khi đăng nhập thành công
             const jwtSecretKey = process.env.JWT_SECRET_KEY;
             const token = jwt.sign({ id: admin._id, role: admin.role }, jwtSecretKey, { expiresIn: '1h' });
-            req.session.token = token;
-            req.session.isLoggedIn = true;
+            req.session.token = token;  // Lưu token vào session
+            req.session.isLoggedIn = true;  // Đánh dấu là đã đăng nhập
 
-            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn, currentYear: currentYear });
+            // Lấy số lượng người dùng từ cơ sở dữ liệu
+            const userCount = await Acounts.countDocuments({});
+            const courseCount = await Courses.countDocuments({});
+
+            // Trả về trang chính của quản trị viên với token và trạng thái đăng nhập
+            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn, currentYear: currentYear, userCount: userCount, courseCount: courseCount });
         } catch (error) {
+            // Xử lý lỗi nếu có
             console.error(messages.login.loginError, error);
             return res.status(500).json({ message: messages.serverError });
         }
