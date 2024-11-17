@@ -45,6 +45,10 @@ const courseSchema = new mongoose.Schema({
         default: 0, 
         required: true 
     },
+    chapters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chapter' 
+    }],
     category: {
         type: String, 
         default: null
@@ -66,7 +70,6 @@ const courseSchema = new mongoose.Schema({
     timestamps: true 
 });
 
-// Tạo model từ schema
 const Course = mongoose.model('Courses', courseSchema);
 
 module.exports = Course;

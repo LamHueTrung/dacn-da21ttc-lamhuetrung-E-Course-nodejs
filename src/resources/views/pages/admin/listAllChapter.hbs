@@ -1,0 +1,193 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="javascript:void(0);" class="btn btn-sm btn-outline-success mb-4" data-toggle="modal" data-target="#addChapterModal">Add Chapter</a>
+        <h6 class="m-0 font-weight-bold text-primary">List all chapters</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Active status</th>
+                        <th>Chapter order</th>
+                        <th>Name chapter</th>
+                        <th>Number of lessons </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each chapters}}
+                    <tr>
+                        <td style="color: {{#if this.isDeleted}} red {{else}} green {{/if}}">
+                            {{#if this.isDeleted}} Vô hiệu hóa {{else}} Đang hoạt động {{/if}}
+                        </td>
+                        <td>{{this.chapterOrder}}</td>
+                        <td>{{this.title}}</td>
+                        <td>{{this.lessons.length}}</td>
+                        <td>
+                            <!-- Dropdown for course actions -->
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img  width="30px" src="/img/dotsMenu.png" alt="">
+                                    <style>
+                                        .dropdown-toggle::after {
+                                            display: none;
+                                        }
+                                        .btn-outline-primary {
+                                            border: none;
+                                        }
+                                        .btn-outline-primary:hover {
+                                            background: none;
+                                        }
+                                    </style>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!-- Edit Chapter -->
+                                    <a class="dropdown-item" href="/admin/course/updateCourse/{{this._id}}"><i class="fa-regular fa-pen-to-square"></i> Edit Chapter</a>
+                                    
+                                    <!-- Disable/Restore -->
+                                    {{#if this.isDeleted}}
+                                        <a class="dropdown-item" onclick="confirmRestore('{{this._id}}')"><i class="fa-regular fa-eye"></i></i> Restore Chapter</a>
+                                    {{else}}
+                                        <a class="dropdown-item" onclick="confirmDisable('{{this._id}}')"> <i class="fa-regular fa-eye-slash"></i> Disable Chapter</a>
+                                    {{/if}}
+
+                                    <!-- Delete Chapter -->
+                                    <a class="dropdown-item" onclick="confirmDelete('{{this._id}}')"> <i class="fa-regular fa-trash-can"></i> Delete Chapter</a>
+
+                                    <!-- View Lessons -->
+                                    <a class="dropdown-item" href="/admin/course/listAllLesson/{{this._id}}"> <i class="fa-brands fa-openid"></i> View Lesson</a>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Back</button>
+        </div>
+    </div>
+    <input type="hidden" id="isCreate" name="isCreate" value={{isCreate}}>
+</div>
+
+<Script>
+    // Mở modal tự động nếu isCreateModal = true
+    document.addEventListener('DOMContentLoaded', function () {
+        const isCreateModal = {{isCreateModal}};
+
+        // Kiểm tra xem isCreateModal có đúng không
+        if (isCreateModal) {
+            $('#addChapterModal').modal('show');
+        }
+    });
+
+</Script>
+<!-- Modal Add Chapter -->
+<div class="modal fade" id="addChapterModal" tabindex="-1" role="dialog" aria-labelledby="addChapterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addChapterModalLabel">Add Chapter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add Chapter Form -->
+                <form action="/admin/course/listAllChapter/{{id}}" method="POST">
+                    <input type="hidden" id="courseId" name="courseId" value="{{id}}">
+
+                    <!-- Chapter Order -->
+                    <div class="mb-3">
+                        <label class="form-label">Chapter Order</label>
+                        <input type="number" class="form-control" name="chapterOrder" id="chapterOrder" placeholder="Enter order of chapter" value="{{chapterOrder}}" readonly>
+                    </div>
+
+                    <!-- Chapter Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Chapter Name</label>
+                        <input type="text" class="form-control" name="chapterName" id="chapterName" placeholder="Example: Introduction to JavaScript" value="{{this.chapterName}}">
+                        {{#if errors.chapterName}}
+                            <div class="text-danger">{{errors.chapterName}}</div>
+                        {{/if}}
+                    </div>
+
+                    <!-- Submit and Cancel buttons -->
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Common function for confirming actions
+    function confirmAction(action, idChapter) {
+        const messages = {
+            disable: 'Vô hiệu hóa chương này?',
+            restore: 'Khôi phục chương này?',
+            delete: 'Xóa chương này?'
+        };
+
+        Swal.fire({
+            title: messages[action],
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/chapter/${action}/${idChapter}`, { method: 'POST' })
+                    .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi thực hiện hành động'))
+                    .then(data => {
+                        Swal.fire({
+                            title: data.success ? `Khóa học đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
+                            icon: data.success ? 'success' : 'error',
+                            confirmButtonText: 'OK'
+                        }).then(() => { if (data.success) location.reload(); });
+                    })
+                    .catch(error => Swal.fire({ title: 'Có lỗi xảy ra!', icon: 'error', confirmButtonText: 'OK' }));
+            }
+        });
+    }
+
+    // Confirm Disable course
+    function confirmDisable(idCourse) {
+        confirmAction('disable', idCourse);
+    }
+
+    // Confirm Restore course
+    function confirmRestore(idCourse) {
+        confirmAction('restore', idCourse);
+    }
+
+    // Confirm Delete course
+    function confirmDelete(idCourse) {
+        confirmAction('delete', idCourse);
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const courseId = document.getElementById('courseId').value;
+        const isCreate = document.getElementById('isCreate').value;
+
+        if (isCreate === 'true') {
+            Swal.fire({
+                title: 'Tạo chương thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/admin/course/listAllChapter/` + courseId;
+                }
+            });
+            fetch('/admin/chapter/clear-create-flag', { method: 'POST' });
+        }
+    });
+
+</script>

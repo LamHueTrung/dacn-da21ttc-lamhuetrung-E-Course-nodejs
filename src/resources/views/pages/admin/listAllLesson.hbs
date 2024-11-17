@@ -1,6 +1,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">List all courses</h6>
+        <a href="/admin/lesson/addLesson" class="btn btn-sm btn-outline-success mb-4" >Add Lesson</a>
+        <h6 class="m-0 font-weight-bold text-primary">List all lessons</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -17,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each courses}}
+                    {{#each lessons}}
                     <tr>
                         <td style="color: {{#if this.isDeleted}} red {{else}} green {{/if}}">
                             {{#if this.isDeleted}} Vô hiệu hóa {{else}} Đang hoạt động {{/if}}
@@ -62,7 +63,7 @@
                                     <a class="dropdown-item" onclick="confirmDelete('{{this._id}}')"> <i class="fa-regular fa-trash-can"></i> Delete Course</a>
 
                                     <!-- View Lessons -->
-                                    <a class="dropdown-item" href="/admin/course/listAllChapter/{{this._id}}"> <i class="fa-brands fa-openid"></i> View Chapters</a>
+                                    <a class="dropdown-item" href="/admin/course/listAllLesson/{{this._id}}"> <i class="fa-brands fa-openid"></i> View Lessons</a>
 
                                 </div>
                             </div>

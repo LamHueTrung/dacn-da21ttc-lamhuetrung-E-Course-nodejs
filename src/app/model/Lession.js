@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const lessionSchema = new mongoose.Schema({
-    courseId: {
+const lessonSchema = new mongoose.Schema({
+    chapterId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course', 
+        ref: 'Chapter', 
         required: true
     },
     name: {
@@ -34,6 +34,6 @@ const lessionSchema = new mongoose.Schema({
     timestamps: true 
 });
 
-const Lession = mongoose.model('Lession', lessionSchema);
+const Lesson = mongoose.model('Lesson', lessonSchema);
 
-module.exports = Lession;
+module.exports = Lesson;

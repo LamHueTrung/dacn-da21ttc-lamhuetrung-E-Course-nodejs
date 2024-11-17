@@ -1,4 +1,5 @@
 const Courses = require('../../../model/Course');
+const Chapter = require('../../../model/Chapter');
 const messages = require('../../../Extesions/messCost');
 
 class CourseQuery {
@@ -137,6 +138,38 @@ class CourseQuery {
             });
         } catch (error) {
             console.error(messages.token.tokenFetchingError, error);
+            res.status(500).send('Lỗi server');  // Xử lý lỗi server
+        }
+    }
+
+    async listAllChapter(req, res, next) {
+        const currentYear = new Date().getFullYear();
+        const courseId = req.params.id;
+        try {
+            const chapters = await Chapter.find();
+            const chaptersData = chapters.map(chapter => {
+                return {
+                    ...chapter.toObject()
+                };
+            });
+
+            // Tìm chapter có số thứ tự lớn nhất cho khóa học này
+            // Sắp xếp các chapter theo trường chapterOrder từ cao đến thấp, lấy chapter đầu tiên
+            const lastChapter = await Chapter.find({ courseId: courseId }).sort({ chapterOrder: -1 }).limit(1);
+
+            // Tính toán chapterOrder tiếp theo
+            const nextChapterOrder = lastChapter.length > 0 ? lastChapter[0].chapterOrder + 1 : 1;
+
+            res.render('pages/admin/listAllChapter', { 
+                layout: 'admin', 
+                year: currentYear,
+                chapters: chaptersData, 
+                isSoftDelete: req.session.isSoftDelete, 
+                id: courseId,
+                chapterOrder: nextChapterOrder
+            });
+        } catch (error) {
+            console.error(error);
             res.status(500).send('Lỗi server');  // Xử lý lỗi server
         }
     }

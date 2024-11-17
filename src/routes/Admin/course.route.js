@@ -3,7 +3,8 @@ const router  = express.Router();
 const CourseQuery = require('../../app/controllers/query/admin/courseQuery.Controller');
 const CreateCourseCommand = require('../../app/controllers/command/admin/course/CreateCourse.Controller');
 const DeleteCourseCommand = require('../../app/controllers/command/admin/course/DeleteCourse.Controller');
-const UpdateCourseCommand = require('../../app/controllers/command/admin/course/UpdateUser.Controller');
+const UpdateCourseCommand = require('../../app/controllers/command/admin/course/UpdateCourse.Controller');
+const CreateChapterCommand = require('../../app/controllers/command/admin/chapter/CreateChapter.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 const upload = require('../../app/Extesions/uploadCourse');
 
@@ -37,9 +38,11 @@ router.post('/clear-update-flag', authenticateToken, (req, res) => {
     res.sendStatus(200);
 });
 
-router.use('/addLesson', authenticateToken, CourseQuery.addLesson);
+//Route list all Courses & Lessons
 router.use('/listAllCourse', authenticateToken, CourseQuery.listAllCourse);
-router.use('/listAllLesson', authenticateToken, CourseQuery.listAllLesson);
-
+router.get('/listAllChapter/:id', authenticateToken, CourseQuery.listAllChapter);
+router.post('/listAllChapter/:id', authenticateToken, (req, res) => {
+    CreateChapterCommand.Handle(req, res);
+});
 
 module.exports = router;

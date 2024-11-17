@@ -96,6 +96,26 @@ const messages = {
         courseNotFound: "Khóa học không tồn tại.",
         updateError: "Lỗi khi cập nhật Khóa học.",
         updateSuccess: "Khóa học đã được cập nhật thành công.",
+    },
+
+    //Message Create chapters 
+    createChapter: {
+        chapterExist: 'chapter đã tồn tại.'
+    },
+
+    // Message Delete Chapter
+    deleteChapter: {
+        "chapterNotFound": "Không tìm thấy chương học.",
+        "softDeleteSuccess": "Vô hiệu hóa chương học thành công.",
+        "softDeleteError": "Lỗi khi vô hiệu hóa chương học.",
+        "deleteSuccess": "Xóa chương học thành công.",
+        "deleteError": "Lỗi khi xóa chương học."
+    },
+
+    restoreChapter: {
+        "chapterNotFound": "Không tìm thấy chương học.",
+        "restoreSuccess": "Khôi phục chương học thành công.",
+        "restoreError": "Lỗi khi khôi phục chương học."
     }
 };
 
