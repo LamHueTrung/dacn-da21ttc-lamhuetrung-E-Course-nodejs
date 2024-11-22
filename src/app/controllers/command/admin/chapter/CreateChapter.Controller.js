@@ -139,9 +139,6 @@ class CreateChapter {
             console.error(error);
             res.status(500).send('Lỗi server');  // Xử lý lỗi server
         }
-        
-
-        
     }
 }
 

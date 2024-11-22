@@ -103,6 +103,11 @@ const messages = {
         chapterExist: 'chapter đã tồn tại.'
     },
 
+    //Message Update chapters 
+    updateChapter: {
+        chapterExist: 'chapter đã tồn tại.'
+    },
+
     // Message Delete Chapter
     deleteChapter: {
         "chapterNotFound": "Không tìm thấy chương học.",

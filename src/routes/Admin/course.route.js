@@ -5,6 +5,7 @@ const CreateCourseCommand = require('../../app/controllers/command/admin/course/
 const DeleteCourseCommand = require('../../app/controllers/command/admin/course/DeleteCourse.Controller');
 const UpdateCourseCommand = require('../../app/controllers/command/admin/course/UpdateCourse.Controller');
 const CreateChapterCommand = require('../../app/controllers/command/admin/chapter/CreateChapter.Controller');
+const UpdateChapterCommand = require('../../app/controllers/command/admin/chapter/UpdateChapter.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 const upload = require('../../app/Extesions/uploadCourse');
 
@@ -43,6 +44,9 @@ router.use('/listAllCourse', authenticateToken, CourseQuery.listAllCourse);
 router.get('/listAllChapter/:id', authenticateToken, CourseQuery.listAllChapter);
 router.post('/listAllChapter/:id', authenticateToken, (req, res) => {
     CreateChapterCommand.Handle(req, res);
+});
+router.post('/updateChapter/:id', authenticateToken, (req, res) => {
+    UpdateChapterCommand.Handle(req, res);
 });
 
 module.exports = router;

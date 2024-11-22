@@ -22,7 +22,7 @@
                             {{#if this.isDeleted}} Vô hiệu hóa {{else}} Đang hoạt động {{/if}}
                         </td>
                         <td>{{this.chapterOrder}}</td>
-                        <td>{{this.title}}</td>
+                        <td id="chapterName_{{this._id}}">{{this.title}}</td>
                         <td>{{this.lessons.length}}</td>
                         <td>
                             <!-- Dropdown for course actions -->
@@ -43,7 +43,25 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <!-- Edit Chapter -->
-                                    <a class="dropdown-item" href="/admin/course/updateCourse/{{this._id}}"><i class="fa-regular fa-pen-to-square"></i> Edit Chapter</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" 
+                                        class="btn btn-sm btn-outline-success mb-4" 
+                                        data-toggle="modal" 
+                                        data-target="#updateChapterModal" 
+                                        onclick="populateEditModal('{{this._id}}', '{{this.chapterOrder}}', '{{this.title}}')">
+                                        <i class="fa-regular fa-pen-to-square"></i> Edit Chapter
+                                    </a>
+
+                                    <script>
+                                        function populateEditModal(id, chapterOrder, chapterName) {
+                                            document.getElementById('editChapterId').value = id;
+                                            document.getElementById('editChapterOrder').value = chapterOrder;
+                                            document.getElementById('editChapterName').value = chapterName;
+
+                                            const updateForm = document.getElementById('updateChapterForm');
+                                            updateForm.action = `/admin/course/updateChapter/${id}`;
+                                        }
+
+                                    </script>
                                     
                                     <!-- Disable/Restore -->
                                     {{#if this.isDeleted}}
@@ -71,7 +89,7 @@
     <input type="hidden" id="isCreate" name="isCreate" value={{isCreate}}>
 </div>
 
-<Script>
+<script>
     // Mở modal tự động nếu isCreateModal = true
     document.addEventListener('DOMContentLoaded', function () {
         const isCreateModal = {{isCreateModal}};
@@ -81,8 +99,20 @@
             $('#addChapterModal').modal('show');
         }
     });
+</script>
 
-</Script>
+<script>
+    // Mở modal tự động nếu isUpdateModal = true
+    document.addEventListener('DOMContentLoaded', function () {
+        const isUpdateModal = {{isUpdateModal}};
+
+        // Kiểm tra xem isUpdateModal có đúng không
+        if (isUpdateModal) {
+            $('#updateChapterModal').modal('show');
+        }
+    });
+</script>
+
 <!-- Modal Add Chapter -->
 <div class="modal fade" id="addChapterModal" tabindex="-1" role="dialog" aria-labelledby="addChapterModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -117,6 +147,49 @@
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary btn-submit">Submit</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update Chapter -->
+<div class="modal fade" id="updateChapterModal" tabindex="-1" role="dialog" aria-labelledby="updateChapterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateChapterModalLabel">Edit Chapter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Update Chapter Form -->
+                <form id="updateChapterForm" method="POST">
+                    <!-- Hidden input for Chapter ID -->
+                    <input type="hidden" id="editChapterId" name="chapterId" value="{{this.chapterId}}">
+                    <input type="hidden" id="courseId" name="courseId" value="{{id}}">
+
+                    <!-- Chapter Order -->
+                    <div class="mb-3">
+                        <label class="form-label">Chapter Order</label>
+                        <input type="number" class="form-control" name="chapterOrder" id="editChapterOrder" value="{{this.chapterOrder}}" readonly>
+                    </div>
+
+                    <!-- Chapter Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Chapter Name</label>
+                        <input type="text" class="form-control" name="chapterName" id="editChapterName" value="{{this.chapterName}}">
+                        {{#if errors.chapterName}}
+                            <div class="text-danger">{{errors.chapterName}}</div>
+                        {{/if}}
+                    </div>
+
+                    <!-- Submit and Cancel buttons -->
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                        <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Back</button>
                     </div>
                 </form>
             </div>
@@ -189,5 +262,24 @@
             fetch('/admin/chapter/clear-create-flag', { method: 'POST' });
         }
     });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const courseId = document.getElementById('courseId').value;
+        const isUpdate = {{isUpdate}};
+
+        if (isUpdate) {
+            Swal.fire({
+                title: 'Cập nhật chương thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/admin/course/listAllChapter/` + courseId;
+                }
+            });
+            fetch('/admin/chapter/clear-update-flag', { method: 'POST' });
+        }
+    });
 </script>
