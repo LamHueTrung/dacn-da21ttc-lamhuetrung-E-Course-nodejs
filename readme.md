@@ -19,7 +19,7 @@
 ### Thư viện và công cụ bổ sung
 - Chart.js
 - OpenAI API
-- Bcrypt
+- Crypto
 - JSON Web Token (JWT)
 
 ## Chức năng chính
