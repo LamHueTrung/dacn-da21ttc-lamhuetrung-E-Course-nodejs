@@ -19,14 +19,18 @@ const lessonSchema = new mongoose.Schema({
         required: true 
     },
     duration: {
-        type: Number, 
+        type: String, 
         required: true
     },
     lessonOrder: {
         type: Number, 
         required: true
     },
-    status: {
+    isDeleted: {
+        type: Boolean,
+        default: false 
+    }
+    ,status: {
         type: String, 
         default: 'In Progress'
     }

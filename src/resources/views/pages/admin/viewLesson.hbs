@@ -1,0 +1,43 @@
+<div class="row" id="page-top">
+    <div class="col-md-4 text-center">
+        {{#if lesson.videoUrl}}
+            <iframe class="rounded-square img-thumbnail" width="560" height="315" src="{{lesson.videoUrl}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        {{/if}}
+        <p style="color: {{#if lesson.isDeleted}} red !important {{else}} green !important {{/if}}" class="text-muted">{{#if lesson.isDeleted}} Vô hiệu hóa {{else}} Đang hoạt động {{/if}}</p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Chapter information</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Chapter Order: </strong>{{chapter.chapterOrder}}</li>
+                    <li class="list-group-item"><strong>Chapter name: </strong>{{chapter.title}}</li>
+                    <li class="list-group-item"><strong>Created at: </strong>{{chapter.createdAt}}</li>
+                    <li class="list-group-item"><strong>Updated at: </strong>{{chapter.updatedAt}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Lesson information</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Lesson Order: </strong>{{lesson.lessonOrder}}</li>
+                    <li class="list-group-item"><strong>Lesson name: </strong>{{lesson.name}}</li>
+                    <li class="list-group-item"><strong>Description: </strong>{{lesson.description}}</li>
+                    <li class="list-group-item"><strong>Duration: </strong>{{lesson.duration}}</li>
+                    <li class="list-group-item"><strong>Created at: </strong>{{lesson.createdAt}}</li>
+                    <li class="list-group-item"><strong>Updated at: </strong>{{lesson.updatedAt}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-right mt-4 mb-4">
+        <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Back</button>
+    </div>
+</div>

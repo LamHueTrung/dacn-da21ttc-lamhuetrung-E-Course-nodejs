@@ -1,4 +1,4 @@
-<div class="card shadow mb-4">
+<div class="card shadow mb-4" id="page-top">
     <div class="card-header py-3">
         <a href="javascript:void(0);" class="btn btn-sm btn-outline-success mb-4" data-toggle="modal" data-target="#addChapterModal">Add Chapter</a>
         <h6 class="m-0 font-weight-bold text-primary">List all chapters</h6>
@@ -74,7 +74,7 @@
                                     <a class="dropdown-item" onclick="confirmDelete('{{this._id}}')"> <i class="fa-regular fa-trash-can"></i> Delete Chapter</a>
 
                                     <!-- View Lessons -->
-                                    <a class="dropdown-item" href="/admin/course/listAllLesson/{{this._id}}"> <i class="fa-brands fa-openid"></i> View Lesson</a>
+                                    <a class="dropdown-item" href="/admin/chapter/listAllLesson/{{this._id}}"> <i class="fa-brands fa-openid"></i> View Lesson</a>
 
                                 </div>
                             </div>
@@ -189,7 +189,8 @@
                     <!-- Submit and Cancel buttons -->
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                        <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previou">Back</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
                     </div>
                 </form>
             </div>
@@ -215,10 +216,11 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(`/admin/chapter/${action}/${idChapter}`, { method: 'POST' })
-                    .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi thực hiện hành động'))
+                    .then(response => response.json())
                     .then(data => {
                         Swal.fire({
-                            title: data.success ? `Khóa học đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
+                            title: 'Không thể thực hiện hành động!',
+                            text: data.message || 'Đã xảy ra lỗi không xác định.',
                             icon: data.success ? 'success' : 'error',
                             confirmButtonText: 'OK'
                         }).then(() => { if (data.success) location.reload(); });

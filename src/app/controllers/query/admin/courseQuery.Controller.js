@@ -16,18 +16,6 @@ class CourseQuery {
     }
 
     /**
-     * Hiển thị trang thêm bài học cho quản trị viên.
-     * 
-     * @param {Object} req - Đối tượng yêu cầu.
-     * @param {Object} res - Đối tượng phản hồi.
-     * @param {Function} next - Hàm middleware tiếp theo.
-     */
-    addLesson(req, res, next) {
-        const currentYear = new Date().getFullYear();
-        res.render('pages/admin/addLesson', { layout: 'admin', year: currentYear });
-    }
-
-    /**
      * Hiển thị danh sách tất cả các khóa học với thông tin tác giả.
      * Sử dụng `populate` để lấy thông tin của tác giả.
      * 
@@ -61,18 +49,6 @@ class CourseQuery {
             console.error(error);
             res.status(500).send('Lỗi server');  // Xử lý lỗi server
         }
-    }
-
-    /**
-     * Hiển thị danh sách tất cả các bài học cho quản trị viên.
-     * 
-     * @param {Object} req - Đối tượng yêu cầu.
-     * @param {Object} res - Đối tượng phản hồi.
-     * @param {Function} next - Hàm middleware tiếp theo.
-     */
-    listAllLesson(req, res, next) {
-        const currentYear = new Date().getFullYear();
-        res.render('pages/admin/listAllLesson', { layout: 'admin', year: currentYear });
     }
 
     /**
@@ -146,7 +122,7 @@ class CourseQuery {
         const currentYear = new Date().getFullYear();
         const courseId = req.params.id;
         try {
-            const chapters = await Chapter.find();
+            const chapters = await Chapter.find({courseId: courseId});
             const chaptersData = chapters.map(chapter => {
                 return {
                     ...chapter.toObject()

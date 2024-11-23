@@ -1,45 +1,45 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Add New Lesson</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Update Lesson</h6>
     </div>
     <div class="card-body">
-        <form method="POST" action="/admin/lesson/addLesson/{{idChapter}}">
+        <form method="POST" action="/admin/lesson/updateLesson/{{lessonsData._id}}">
             <div class="form-group">
                 <label for="lessonOrder">Lesson Order</label>
-                <input type="number" class="form-control" id="lessonOrder" name="lessonOrder" value="{{lessonsOrder}}" min="1" readonly>
+                <input type="number" class="form-control" id="lessonOrder" name="lessonOrder" value="{{lessonsData.lessonOrder}}" min="1" readonly>
                 {{#if errors.lessonOrder}}
                 <div class="text-danger">{{errors.lessonOrder}}</div>
                 {{/if}}
             </div>
             <div class="form-group">
                 <label for="lessonName">Lesson Name</label>
-                <input type="text" class="form-control" id="lessonName" name="lessonName" value="{{lessonName}}">
+                <input type="text" class="form-control" id="lessonName" name="lessonName" value="{{lessonsData.name}}">
                 {{#if errors.lessonName}}
                 <div class="text-danger">{{errors.lessonName}}</div>
                 {{/if}}
             </div>
             <div class="form-group">
                 <label for="lessonDescription">Description</label>
-                <textarea class="form-control" id="lessonDescription" name="lessonDescription" rows="4">{{lessonDescription}}</textarea>
+                <textarea class="form-control" id="lessonDescription" name="lessonDescription" rows="4">{{lessonsData.description}}</textarea>
                 {{#if errors.lessonDescription}}
                 <div class="text-danger">{{errors.lessonDescription}}</div>
                 {{/if}}
             </div>
             <div class="form-group">
                 <label for="videoUrl">Video URL</label>
-                <input type="url" class="form-control" id="videoUrl" name="videoUrl" value="{{videoUrl}}">
+                <input type="url" class="form-control" id="videoUrl" name="videoUrl" value="{{lessonsData.videoUrl}}">
                 {{#if errors.videoUrl}}
                 <div class="text-danger">{{errors.videoUrl}}</div>
                 {{/if}}
             </div>
             <div class="form-group">
                 <label for="duration">Duration (in minutes)</label>
-                <input type="text" class="form-control" id="duration" name="duration" min="1" value="{{duration}}">
+                <input type="text" class="form-control" id="duration" name="duration" min="1" value="{{lessonsData.duration}}">
                 {{#if errors.duration}}
                 <div class="text-danger">{{errors.duration}}</div>
                 {{/if}}
             </div>
-            <input id="IdChapter" type="hidden" value="{{idChapter}}">
+            <input id="IdChapter" name="IdChapter" type="hidden" value="{{lessonsData.chapterId}}">
             <button type="submit" class="btn btn-primary btn-submit">Submit</button>
             <button type="button" onclick="javascript:history.back()" class="btn btn-secondary btn-previous">Back</button>
         </form>
@@ -48,11 +48,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-         const isCreate = {{isCreate}};
-         const idChapter = document.getElementById('IdChapter').value;
-        if (isCreate) {
+        const isUpdate = {{isUpdate}};
+        const idChapter = document.getElementById('IdChapter');
+        if (isUpdate) {
+            fetch('/admin/lesson/clear-update-flag', { method: 'POST' });
             Swal.fire({
-                title: 'Tạo bài học thành công!',
+                title: 'Cập nhật khóa học thành công!',
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then((result) => {
@@ -60,7 +61,6 @@
                     window.location.href = '/admin/chapter/listAllLesson/' + idChapter;
                 }
             });
-            fetch('/admin/lesson/clear-create-flag', { method: 'POST' });
         }
     });
 </script>

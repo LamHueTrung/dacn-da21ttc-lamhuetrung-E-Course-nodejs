@@ -39,7 +39,7 @@ router.post('/clear-update-flag', authenticateToken, (req, res) => {
     res.sendStatus(200);
 });
 
-//Route list all Courses & Lessons
+//Route list all Courses & Chapters
 router.use('/listAllCourse', authenticateToken, CourseQuery.listAllCourse);
 router.get('/listAllChapter/:id', authenticateToken, CourseQuery.listAllChapter);
 router.post('/listAllChapter/:id', authenticateToken, (req, res) => {

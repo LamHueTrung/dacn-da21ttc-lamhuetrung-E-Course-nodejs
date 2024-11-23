@@ -150,7 +150,7 @@ class Validator {
      */
     static arrayNotEmpty(value, fieldName) {
         if (!Array.isArray(value) || value.length === 0) {
-            return `${fieldName} không được để trống`;
+            return messages.validation.arrayNotEmpty(fieldName);
         }
         return null;  // Trả về null nếu mảng không rỗng
     }
@@ -165,7 +165,7 @@ class Validator {
         const numericValue = parseFloat(value);
         // Kiểm tra nếu value không phải là số hoặc nếu value <= 0
         if (isNaN(numericValue) || typeof numericValue !== 'number' || numericValue <= 0) {
-            return `${fieldName} phải là một số dương`;
+            return messages.validation.isPositiveNumber(fieldName);
         }
         return null;  // Trả về null nếu giá trị hợp lệ
     }
@@ -197,10 +197,60 @@ class Validator {
     static containsVietnamese(value) {
         const vietnameseRegex = /[àáạảãâầấậẩẫêềếệểễôồốộổỗơờớợởỡưừứựửữý]/i;
         if (vietnameseRegex.test(value)) {
-            return 'Chuỗi không được chứa ký tự tiếng Việt.';  // Trả về thông báo lỗi nếu chuỗi có ký tự tiếng Việt
+            return messages.validation.containsVietnamese;  // Trả về thông báo lỗi nếu chuỗi có ký tự tiếng Việt
         }
         return null;  // Trả về null nếu chuỗi không chứa ký tự tiếng Việt
     }
+
+    /**
+     * Kiểm tra URL có hợp lệ hay không.
+     * @param {string} value - Giá trị cần kiểm tra.
+     * @param {string} fieldName - Tên trường cần kiểm tra.
+     * @returns {string|null} - Thông báo lỗi nếu không hợp lệ, null nếu hợp lệ.
+     */
+    static isValidUrl(value, fieldName) {
+        // Regex kiểm tra URL nhúng YouTube
+        const youtubeEmbedRegex = /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
+
+        if (!youtubeEmbedRegex.test(value)) {
+            return messages.validation.invalidUrl(fieldName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Kiểm tra thời lượng có đúng định dạng hh:mm:ss hoặc mm:ss và lớn hơn 0 không.
+     * Tự động chuẩn hóa từ mm:ss thành hh:mm:ss.
+     * @param {string} value - Giá trị cần kiểm tra.
+     * @param {string} fieldName - Tên trường cần kiểm tra.
+     * @returns {Object} - Trả về đối tượng { error: string|null, duration: string }.
+     */
+    static isValidDuration(value, fieldName) {
+        const mmssRegex = /^[0-5]?[0-9]:[0-5][0-9]$/; // Định dạng mm:ss
+        const hhmmssRegex = /^([0-9]{1,2}):([0-5]?[0-9]):([0-5]?[0-9])$/; // Định dạng hh:mm:ss
+
+        // Chuẩn hóa mm:ss thành hh:mm:ss
+        if (mmssRegex.test(value)) {
+            value = `00:${value}`;
+        }
+
+        // Kiểm tra định dạng hh:mm:ss
+        if (!hhmmssRegex.test(value)) {
+            return messages.validation.invalidDurationFormat(fieldName);
+        }
+
+        const [hours, minutes, seconds] = value.split(':').map(Number);
+        const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+        if (totalSeconds <= 0) {
+            return messages.validation.invalidDurationValue(fieldName);
+        }
+
+        // Trả về thời lượng hợp lệ
+        return null;
+    }
+
 }
 
 module.exports = Validator;
