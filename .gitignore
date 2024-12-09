@@ -6,3 +6,4 @@ src/public/js/
 src/public/avatars/
 .vscode
 doc/
+.env

@@ -164,7 +164,7 @@ class Validator {
     static isPositiveNumber(value, fieldName) {
         const numericValue = parseFloat(value);
         // Kiểm tra nếu value không phải là số hoặc nếu value <= 0
-        if (isNaN(numericValue) || typeof numericValue !== 'number' || numericValue <= 0) {
+        if (isNaN(numericValue) || typeof numericValue !== 'number' || numericValue < 0) {
             return messages.validation.isPositiveNumber(fieldName);
         }
         return null;  // Trả về null nếu giá trị hợp lệ
@@ -251,6 +251,21 @@ class Validator {
         return null;
     }
 
+    /**
+     * Kiểm tra hai giá trị có bằng nhau hay không.
+     * @param {any} value1 - Giá trị đầu tiên.
+     * @param {any} value2 - Giá trị thứ hai.
+     * @param {string} fieldName - Tên trường cần kiểm tra.
+     * @returns {string|null} - Thông báo lỗi nếu hai giá trị không bằng nhau, null nếu hợp lệ.
+     */
+    static equals(value1, value2, fieldName) {
+        if (value1 !== value2) {
+            return messages.validation.equals(fieldName);  // Trả về thông báo lỗi nếu không bằng nhau
+        }
+        return null;  // Trả về null nếu hai giá trị bằng nhau
+    }
 }
+
+
 
 module.exports = Validator;

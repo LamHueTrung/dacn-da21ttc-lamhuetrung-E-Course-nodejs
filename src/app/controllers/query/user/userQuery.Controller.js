@@ -1,3 +1,6 @@
+const Courses = require('../../../model/Course');
+const currentYear = new Date().getFullYear();
+
 class SitesQuery {
     
     // Render login page
@@ -20,19 +23,6 @@ class SitesQuery {
         res.render('pages/blogs/home');
     }
 
-    //Home course pages
-    learningCourse(req, res) {
-        res.render('pages/courses/learning', { layout: 'learing'});
-    }
-
-    //Home course pages
-    homeCourse(req, res) {
-        res.render('pages/courses/home');
-    }
-    //Home pages
-    index(req, res) {
-        res.render('pages/home');
-    }
 };
 
 module.exports = new SitesQuery;

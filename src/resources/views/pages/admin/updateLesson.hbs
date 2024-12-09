@@ -49,7 +49,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const isUpdate = {{isUpdate}};
-        const idChapter = document.getElementById('IdChapter');
+        const idChapter = document.getElementById('IdChapter').value;
         if (isUpdate) {
             fetch('/admin/lesson/clear-update-flag', { method: 'POST' });
             Swal.fire({

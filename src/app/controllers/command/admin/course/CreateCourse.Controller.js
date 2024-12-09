@@ -62,8 +62,10 @@ class CreateCourse {
         if (categoryError) errors.category = categoryError;
 
         // Kiểm tra giá mới phải nhỏ hơn giá cũ
-        const priceError = Validator.greaterThan(oldPrice, newPrice, 'Old Price');
-        if (priceError) errors.oldPrice = priceError;
+        if(newPrice > 0) {
+            const priceError = Validator.greaterThan(oldPrice, newPrice, 'Old Price');
+            if (priceError) errors.oldPrice = priceError;
+        }
 
         return errors;
     }

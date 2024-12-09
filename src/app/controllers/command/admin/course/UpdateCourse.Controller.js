@@ -71,9 +71,10 @@ class UpdateCourse {
         if (categoryError) errors.category = categoryError;
 
         // Kiểm tra sự chênh lệch giữa giá cũ và giá mới
-        const priceError = Validator.greaterThan(oldPrice, newPrice, 'Old Price');
-        if (priceError) errors.oldPrice = priceError;
-
+        if(newPrice > 0) {
+            const priceError = Validator.greaterThan(oldPrice, newPrice, 'Old Price');
+            if (priceError) errors.oldPrice = priceError;
+        }
         // Trả về kết quả lỗi và giá trị hợp lệ
         return { errors, values: { courseName, description, benefits, level, oldPrice, newPrice, category } };
     }

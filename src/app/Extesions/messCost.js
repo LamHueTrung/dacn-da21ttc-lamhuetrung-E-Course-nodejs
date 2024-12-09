@@ -17,7 +17,8 @@ const messages = {
         containsVietnamese: 'Chuỗi không được chứa ký tự tiếng Việt.',
         invalidUrl: (fieldName) => `${fieldName} không phải là một URL nhúng YouTube hợp lệ.`,
         invalidDurationFormat: (fieldName) => `${fieldName} phải có định dạng hh:mm:ss.`,
-        invalidDurationValue: (fieldName) => `${fieldName} phải lớn hơn 0.`
+        invalidDurationValue: (fieldName) => `${fieldName} phải lớn hơn 0.`,
+        equals: (fieldName) => `${fieldName} không khớp với nhau.`
     },
 
     // Message Token 
@@ -43,6 +44,7 @@ const messages = {
         usernamesoftDelete: 'Tài khoản đã bị vô hiệu hoá',
         passwordCompaseFailed: 'Mật khẩu không chính xác',
         usernameNotRole: 'Tài khoản không có quyền truy cập',
+        usernameAdminRole: 'Tài khoản này là tài khoản admin',
         loginError: 'Lỗi khi xử lý đăng nhập.'
     },
 

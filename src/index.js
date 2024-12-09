@@ -54,6 +54,20 @@ app.engine('hbs', handlebars.engine({
       const month = ('0' + (d.getMonth() + 1)).slice(-2); // Add leading zero if necessary
       const day = ('0' + d.getDate()).slice(-2); // Add leading zero if necessary
       return `${year}-${month}-${day}`;
+    },
+    isPriceZero: function(price) {
+      return price === 0;
+    },
+    formatDuration: function(duration) {
+        const timeParts = duration.split(':');
+        let hours = parseInt(timeParts[0], 10);
+        let minutes = parseInt(timeParts[1], 10);
+        let seconds = parseInt(timeParts[2], 10);
+
+        if (hours === 0) {
+            return `${minutes} phút ${seconds} giây`;
+        }
+        return `${hours} giờ ${minutes} phút ${seconds} giây`;
     }
 }
 }));

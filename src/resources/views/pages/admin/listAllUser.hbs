@@ -25,9 +25,13 @@
                         <td>{{this.profile.fullName}}</td>
                         <td>{{this.username}}</td>
                         <td>
+                            {{#if this.passwordDecrypted}}
                             <span class="password-hidden" id="password-{{@index}}">********</span>
                             <span class="password-visible" id="password-visible-{{@index}}" style="display: none;">{{this.passwordDecrypted}}</span>
                             <button type="button" onclick="togglePassword({{@index}})" class="btn btn-sm btn-outline-primary">Xem mật khẩu</button>
+                            {{else}}
+                                <span>Bảo mật Google</span>
+                            {{/if}}
                             <script>
                                 function togglePassword(index) {
                                     const hiddenPassword = document.getElementById(`password-${index}`);
@@ -110,11 +114,21 @@
                 fetch(`/admin/user/${action}/${idUser}`, { method: 'POST' })
                     .then(response => response.ok ? response.json() : Promise.reject('Lỗi khi thực hiện hành động'))
                     .then(data => {
-                        Swal.fire({
-                            title: data.success ? `Khóa học đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
-                            icon: data.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        }).then(() => { if (data.success) location.reload(); });
+                        if (data.success) {
+                            Swal.fire({
+                                title: data.success ? `Khóa học đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
+                                icon: data.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            }).then(() => { if (data.success) location.reload(); });
+                        } else {
+                            // Hiển thị thông báo lỗi từ server
+                            Swal.fire({
+                                title: 'Không thể thực hiện hành động!',
+                                text: data.message || 'Đã xảy ra lỗi không xác định.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
                     })
                     .catch(error => Swal.fire({ title: 'Có lỗi xảy ra!', icon: 'error', confirmButtonText: 'OK' }));
             }

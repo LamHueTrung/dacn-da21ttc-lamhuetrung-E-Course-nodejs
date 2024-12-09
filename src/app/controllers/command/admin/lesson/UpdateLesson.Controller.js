@@ -3,6 +3,7 @@ const Chapters = require('../../../../model/Chapter');
 const Lessons = require('../../../../model/Lesson'); 
 const Validator = require('../../../../Extesions/validator'); 
 const messages = require('../../../../Extesions/messCost'); 
+const { convertToSeconds, convertSecondsToTime, sumDurations } = require('../../../../Extesions/timeUtils');
 const currentYear = new Date().getFullYear();
 
 class UpdateLesson {
@@ -112,12 +113,38 @@ class UpdateLesson {
 
             // Cập nhật bài học trong cơ sở dữ liệu
             await Lessons.findByIdAndUpdate(id, updatedData);
+
+            // Lấy courseId từ chapterId của bài học
+            const courseId = chapter.courseId;
+
+            const course = await Courses.findById(courseId);
+            
+            // Lấy tất cả các chương của khóa học
+            const chapters = await Chapters.find({ courseId });
+
+            // Lấy tất cả các bài học trong các chương của khóa học
+            let durations = [];
+            for (let chapter of chapters) {
+                const lessons = await Lessons.find({ chapterId: chapter._id });
+                lessons.forEach(lesson => {
+                    durations.push(lesson.duration); // Lưu lại duration của mỗi bài học
+                });
+            }
+
+            // Tính tổng duration của khóa học
+            const totalDuration = sumDurations(durations);
+
+            // Cập nhật lại trường duration của khóa học
+            course.duration = totalDuration;
+            await course.save();
+
             req.session.isUpdate = true; // Đánh dấu trạng thái cập nhật thành công
 
             // Hiển thị thông báo thành công sau khi cập nhật
             return res.render('pages/admin/updateLesson', {
                 layout: 'admin',
                 isUpdate: req.session.isUpdate, // Gắn cờ thông báo thành công
+                lessonsData: lesson.toObject(),
                 currentYear: currentYear,
             });
             

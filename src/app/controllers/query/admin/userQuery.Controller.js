@@ -129,7 +129,7 @@ class UserQuery {
             // Mã hóa mật khẩu người dùng trước khi hiển thị
             const accountData = accounts.map(account => ({
                 ...account.toObject(),
-                passwordDecrypted: CryptoService.decrypt(account.password)  // Giải mã mật khẩu
+                passwordDecrypted: account.password && CryptoService.decrypt(account.password)  // Giải mã mật khẩu
             }));
 
             res.render('pages/admin/listAllUser', { 

@@ -6,12 +6,6 @@ const DeleteLessonCommand = require('../../app/controllers/command/admin/lesson/
 const UpdateLessonCommand = require('../../app/controllers/command/admin/lesson/UpdateLesson.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 
-// //Route view course
-// router.use('/viewCourse/:id', authenticateToken, CourseQuery.viewsCourse);
-
-// router.get('/addCourse', authenticateToken, CourseQuery.addCourse);
-
-
 //Route Create lesson 
 router.post('/addLesson/:id', authenticateToken, (req, res) => {
     CreateLessonCommand.Handle(req, res);

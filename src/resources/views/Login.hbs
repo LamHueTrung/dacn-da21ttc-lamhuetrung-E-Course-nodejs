@@ -5,18 +5,24 @@
             <span class="text-description">Tạo ra một nền tảng học tập trực tuyến cho phép người dùng tham gia các khóa học,  theo dõi tiến trình học tập, và tương tác với nhau. Hệ thống sẽ cung cấp các công cụ  thống kê và phân tích dữ liệu, đồng thời tích hợp ChatGPT để hỗ trợ người dùng và quản trị viên  trong quá trình học tập.</span>
         </div>
         <div class="col-sm">
-            <form class="form-dangnhap">
+            <form class="form-dangnhap" action="/User/Login" method="POST">
                     <legend class="tendangnhap">Đăng Nhập</legend>
                     <div class="mb-3 fisrt-input">
-                        <input type="text" id="disabledTextInput" class="form-control input-dangnhap" placeholder="Tên đăng nhập">
+                        <input type="text" id="disabledTextInput" class="form-control input-dangnhap" placeholder="Tên đăng nhập" name="userName" id="userName" value="{{userName}}">
+                        {{#if errors.userName}}
+                            <div class="text-white">{{errors.userName}}</div>
+                        {{/if}}
                     </div>
                     <div class="mb-3">
-                        <input type="text" id="disabledTextInput" class="form-control input-dangnhap" placeholder="Mật khẩu">
+                        <input type="password" id="disabledTextInput" class="form-control input-dangnhap" placeholder="Mật khẩu" name="password" id="password" value="{{password}}">
+                        {{#if errors.password}}
+                            <div class="text-white">{{errors.password}}</div>
+                        {{/if}}
                     </div>
                     <button type="submit" class="btn btn-dangnhap">Đăng Nhập</button>
                     <span class="text-or">OR</span>
-                    <button type="submit" class="btn btn-dangnhapgg"><img class="icon" src="./img/google.png" alt=""> Đăng nhập bằng google</button>
-                    <a class="href-formdangnhap" href="">Bạn chưa có tài khoản? Đăng ký ngay</a>
+                    <a href="/LoginGoogle/auth/google" class="btn btn-dangnhapgg"><img class="icon" src="/img/google.png" alt=""> Đăng nhập bằng google</a>
+                    <a class="href-formdangnhap" href="/User/Register">Bạn chưa có tài khoản? Đăng ký ngay</a>
             </form>
         </div>
     </div>

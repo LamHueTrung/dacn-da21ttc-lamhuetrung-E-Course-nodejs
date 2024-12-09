@@ -3,6 +3,7 @@ const Courses = require('../../../../model/Course');
 const Chapters = require('../../../../model/Chapter'); 
 const Validator = require('../../../../Extesions/validator'); 
 const messages = require('../../../../Extesions/messCost'); 
+const { convertToSeconds, convertSecondsToTime, sumDurations } = require('../../../../Extesions/timeUtils');
 const currentYear = new Date().getFullYear();
 
 class CreateLesson {
@@ -112,19 +113,29 @@ class CreateLesson {
             // Lưu bài học vào cơ sở dữ liệu.
             await newLesson.save();
 
-            // Thêm bài học vào danh sách bài học của chương.
-            const chapter = await Chapters.findById(chapterId);
-            if (chapter) {
-                chapter.lessons.push(newLesson._id);
-                await chapter.save();
-            }
+            // Lấy courseId từ chapterId của bài học
+            const courseId = chapters.courseId;
+
+            const course = await Courses.findById(courseId);
             
-            // Cập nhật tổng số bài học trong khóa học.
-            const course = await Courses.findById(chapter.courseId);
-            if (course) {
-                course.totalLessons = course.totalLessons + 1; // Tổng số bài học hiện tại.
-                await course.save();
+            // Lấy tất cả các chương của khóa học
+            const chapters2 = await Chapters.find({ courseId });
+
+            // Lấy tất cả các bài học trong các chương của khóa học
+            let durations = [];
+            for (let chapter of chapters2) {
+                const lessons = await Lessons.find({ chapterId: chapter._id });
+                lessons.forEach(lesson => {
+                    durations.push(lesson.duration); // Lưu lại duration của mỗi bài học
+                });
             }
+
+            // Tính tổng duration của khóa học
+            const totalDuration = sumDurations(durations);
+
+            // Cập nhật lại trường duration của khóa học
+            course.duration = totalDuration;
+            await course.save();
 
             // Lấy danh sách bài học để hiển thị.
             const lessons = await Lessons.find();

@@ -19,11 +19,11 @@ const profileSchema = new mongoose.Schema({
     },
     birthDate: {
         type: Date,
-        required: true
+        // required: true
     },
     specialty: {
         type: String,
-        required: true
+        // required: true
     },
     avatar: {
         type: String,
@@ -31,11 +31,11 @@ const profileSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true
+        // required: true
     },
     phone: {
         type: String,
-        required: true,
+        // required: true,
         match: [/^\d{10,15}$/, 'Số điện thoại không hợp lệ'] 
     },
     degree: [degreeSchema]
@@ -50,7 +50,7 @@ const acountSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        // required: true
     },
     role: {
         type: String,
@@ -58,6 +58,10 @@ const acountSchema = new mongoose.Schema({
         required: true
     },
     profile: profileSchema,
+    googleId: {   // Lưu Google ID để dễ dàng tham chiếu
+        type: String,
+        unique: true
+    },
     isDeleted: {
         type: Boolean,
         default: false 
