@@ -18,7 +18,6 @@ router.use('/User', user);
 
 router.use('/Detail', userQuery.detailBlog);
 router.use('/Blog', userQuery.homeBlog);
-router.use('/Learning', coursesQuery.learningCourse);
 router.use('/', coursesQuery.index);
 
 

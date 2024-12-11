@@ -34,53 +34,16 @@
                 </ul>
             </div>
             {{/each}}
-            {{!-- <div class="dropdown-center">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/img/plus.png" alt="">
-                    <h2>1. Khái niệm kỹ thuật cần biết </h2>
-                    <span>3 bài học</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                </ul>
-            </div>
-            <div class="dropdown-center">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/img/plus.png" alt="">
-                    <h2>1. Khái niệm kỹ thuật cần biết </h2>
-                    <span>3 bài học</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                </ul>
-            </div>
-            <div class="dropdown-center">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/img/plus.png" alt="">
-                    <h2>1. Khái niệm kỹ thuật cần biết </h2>
-                    <span>3 bài học</span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                    <li class="dropdown-item">1. Mô hình Client - Server là gì?</li>
-                </ul>
-            </div> --}}
-
         </div>
     </div>
     <div class="col-sm-5 thongtinkhoahoc">
-        <img src="/img/course-pro.png" alt="">
+        <img src="{{course.image}}" alt="">
         {{#if (isPriceZero course.newPrice)}}
             <h1 class="price">miễn phí</h1>
         {{else}}
             <h1 class="price">{{course.newPrice}}.000 đ</h1>
         {{/if}}
-        <button class="btn">Đăng ký học</button>
+        <button class="btn" id="learn-now-button" data-course-id="{{course._id}}">Đăng ký học</button>
         <ul>
             <li>
                 <img src="/img/level-up.png" alt="">
@@ -92,7 +55,7 @@
             </li>
             <li>
                 <img src="/img/clock.png" alt="">
-                <span>Thời lượng 2 giờ 30 phút</span>
+                <span>Thời lượng {{formatDuration course.duration}}</span>
             </li>
             <li>
                 <img src="/img/continous-improvement.png" alt="">
@@ -101,3 +64,64 @@
         </ul>
     </div>
 </div>
+
+<script>
+    const isLoggedInUser = {{#if isLoggedInUser}}true{{else}}false{{/if}};
+
+     /**
+     * Hàm xử lý nút "Học Ngay"
+     * @param {Event} event - Sự kiện click
+     * @param {string} courseId - ID của khóa học
+     */
+    function handleLearnNow(event, courseId) {
+        event.preventDefault(); // Ngăn hành động mặc định của nút (nếu có)
+
+        if (!isLoggedInUser) {
+            // Nếu người dùng chưa đăng nhập, hiển thị SweetAlert và chuyển hướng đến trang đăng nhập
+            const currentUrl = window.location.href;
+            Swal.fire({
+                title: 'Bạn chưa đăng nhập!',
+                text: 'Bạn cần đăng nhập để đăng ký khóa học.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đăng nhập',
+                cancelButtonText: 'Hủy bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Chuyển hướng đến trang đăng nhập với tham số redirect
+                    window.location.href = `/User/Login/`;
+                }
+            });
+        } else {
+            const url = `/Course/Learning/${courseId}/default`;
+            // Nếu người dùng đã đăng nhập, chuyển hướng đến trang học khóa học
+            window.location.href = url;
+        }
+    }
+
+    // Gán sự kiện click cho tất cả các nút "Học Ngay" sau khi DOM đã tải xong
+    document.addEventListener('DOMContentLoaded', () => {
+        const learnNowButtons = document.querySelectorAll('#learn-now-button');
+
+        learnNowButtons.forEach(button => {
+            const courseId = button.getAttribute('data-course-id');
+            button.addEventListener('click', (e) => handleLearnNow(e, courseId));
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+         const NotFound = {{NotFound}};
+        if (NotFound) {
+            Swal.fire({
+                title: 'Khoá học không tồn tại!',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            })
+            fetch('/user/course/clear-registrantion-error-flag', { method: 'POST' });
+        }
+    });
+</script>

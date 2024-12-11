@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img class="icon-headerLearning" src="/img/back.png" alt=""><span class="tenkhoahoc">Khoá học laravel cơ bản</span></a>
+    <a class="navbar-brand" href="/home"><img class="icon-headerLearning" src="/img/back.png" alt=""><span class="tenkhoahoc">{{course.name}}</span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,7 +8,7 @@
         <div class="end-navbar">
             <div class="baihoc">
                 <img class="icon-headerLearning" src="/img/hourglass.png" alt="">
-                <span><span id="sobaihoc">1/118</span>Bài học</span>
+                <span><span id="sobaihoc">1/{{course.totalLessons}}</span>Bài học</span>
             </div>
             <div class="ghichu">
                 <img class="icon-headerLearning" src="/img/post-it.png" alt="">
@@ -17,4 +17,4 @@
         </div>
     </div>
   </div>
-</nav>
+</nav> 

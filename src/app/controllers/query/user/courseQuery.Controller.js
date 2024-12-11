@@ -2,14 +2,15 @@ const Acounts = require('../../../model/Acount');
 const Courses = require('../../../model/Course');
 const Chapters = require('../../../model/Chapter');
 const Lessons = require('../../../model/Lesson');
+const registrationCourse = require("../../../model/RegistrationCourse");
 const messages = require('../../../Extesions/messCost');
-const authenticateToken = require('../../../middleware/authenticateTokenUser');
 const Chapter = require('../../../model/Chapter');
+const jwt = require('jsonwebtoken');
 const currentYear = new Date().getFullYear();
 
 class CourseQuery {
     //Home course pages
-    async homeCourse(req, res) {
+    async homeCourse(req, res, next) {
         const courseId = req.params.id;
 
         try {
@@ -33,8 +34,26 @@ class CourseQuery {
             }));
 
             if(req.session.tokenUser) {
-                authenticateToken(req, res);
-                const User = await Acounts.findOne({ _id: req.user.id });
+                let IdUser = '';
+                if (req.session.tokenUser) {
+                    try {
+                      const decoded = await jwt.verify(req.session.tokenUser, process.env.JWT_SECRET_KEY);
+                      IdUser = decoded.id;
+                    } catch (err) {
+                      // Nếu token không hợp lệ, yêu cầu đăng nhập lại
+                      return res.redirect("/User/Login");
+                    }
+                }
+                const User = await Acounts.findOne({ _id: IdUser });
+
+                const existingregistration = await registrationCourse.findOne({
+                    userId: IdUser,
+                    courseId: courseId,
+                  });
+                  if (existingregistration) {
+                    res.redirect(`/Course/Learning/${courseId}/default`);
+                  }
+                
                 res.render('pages/courses/home', {
                     year: currentYear,
                     course: course.toObject(),
@@ -50,6 +69,7 @@ class CourseQuery {
 
             res.render('pages/courses/home', {
                 year: currentYear,
+                courseId: courseId,
                 course: course.toObject(),
                 chapters: chaptersData,
                 author: course.author && course.author.profile ? course.author.profile.fullName : 'Unknown', // Xử lý trường hợp không có tác giả
@@ -78,8 +98,15 @@ class CourseQuery {
             });
 
             if(req.session.tokenUser) {
-                authenticateToken(req, res);
-                const User = await Acounts.findOne({ _id: req.user.id });
+                let IdUser = '';
+                jwt.verify(req.session.tokenUser, process.env.JWT_SECRET_KEY, (err, decoded) => {
+                    if (err) {
+                        return res.redirect('/User/Login');
+                    }
+                    
+                    IdUser= decoded.id; 
+                });
+                const User = await Acounts.findOne({ _id: IdUser });
                 res.render('pages/home', {
                     year: currentYear,
                     courses: coursesData,
@@ -109,3 +136,5 @@ class CourseQuery {
 }
 
 module.exports = new CourseQuery;
+
+

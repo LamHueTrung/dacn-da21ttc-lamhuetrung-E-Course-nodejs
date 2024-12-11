@@ -1,32 +1,35 @@
 <div class="col-sm-8 ">
     <div class="video">
-        <iframe width="100%" height="450" src="https://www.youtube.com/embed/NvCROoHBtQk?" title="YouTube video player" frameborder="0" allow=" autoplay" ></iframe>
+        <iframe width="100%" height="450" src="{{lessonData.videoUrl}}" title="YouTube video player" frameborder="0" allow=" autoplay" ></iframe>
     </div>
     <div class="row content-course d-block">
         <div class="col-sm d-flex">
             <div>
-                <h1 class="title-course">Laravel là gì?</h1>
-                <span class="thoigiandang">Cập nhật tháng 11 năm 2022</span>
+                <h1 class="title-course">{{lessonData.name}}</h1>
+                <span class="thoigiandang">
+                    Cập nhật {{ lessonData.updatedAt}} <br></br>
+                    {{lessonData.description}}
+                </span>
             </div>
-            <a>
-                <img class="icon-headerLearning" src="./img/post-it.png" alt="">
+            <a href="#" id="add-note-btn" onclick="DangPhatTrien()">
+                <img class="icon-headerLearning" src="/img/post-it.png" alt="">
                 <span>Thêm ghi chú</span>
             </a>
         </div>
         <div class="col-sm">
             <div class="comments">
                 <div class="d-flex">
-                    <span class="sobinhluan">3</span>
+                    <span class="sobinhluan">1</span>
                     <h1>Comments</h1>
                 </div>
-                <form action="">
-                    <img class="avt-user" src="./img/user-LHT.jpg" alt="">
-                    <button><img class="icon-comment" src="./img/send.png" alt=""></button>
+                <form onsubmit="return DangPhatTrien()">
+                    <img class="avt-user" src="{{dataUser.avatar}}" alt="">
+                    <button type="button" onclick="DangPhatTrien()" id="comment-btn"><img class="icon-comment" src="/img/send.png" alt=""></button>
                     <input type="text" name="" id="" placeholder="Viết nhận xét của bạn">
                 </form>
                 <ul>
                     <li class="d-flex">
-                        <img class="avt-user" src="./img/user-LHT.jpg" alt="./img/user-LHT.jpg">
+                        <img class="avt-user" src="/img/user-LHT.jpg" alt="/img/user-LHT.jpg">
                         <div class="list-comments">
                             <div class="info-user">
                                 <span class="name-user">Lâm Huệ Trung</span>
@@ -42,13 +45,13 @@
                             <div class="row tuongtac-comment">
                                 <div class="col-sm-1">
                                     <a href="">
-                                        <img class="icon" src="./img/facebook-reactions.png" alt="">
+                                        <img class="icon" src="/img/facebook-reactions.png" alt="">
                                     </a>
                                     <span class="number-tuongtac">1000</span>
                                 </div>
                                 <div class="col-sm-1">
                                     <a href="">
-                                        <img class="icon" src="./img/heart.png" alt="">
+                                        <img class="icon" src="/img/heart.png" alt="">
                                     </a>
                                     <span class="number-tuongtac">2000</span>
                                 </div>
@@ -60,7 +63,7 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <form action="">
-                                                    <button><img class="icon-reaplay" src="./img/send.png" alt=""></button>
+                                                    <button><img class="icon-reaplay" src="/img/send.png" alt=""></button>
                                                     <input type="text" name="" id="">
                                                 </form>
                                             </li>
@@ -75,746 +78,35 @@
         </div>
     </div>
 </div>
-<img id="icon-menu-mobile"  src="./img/next.png" alt="" onclick="menuChange('menu-lesson')">
+<img id="icon-menu-mobile"  src="/img/next.png" alt="" onclick="menuChange('menu-lesson')">
 <div id="menu-lesson" class="col-sm-4">
     <ul class="list-group menu-courses">
-        <li class="list-group-item title">Nội dung khoá học <img class="icon-menu" src="./img/back.png" alt="" onclick="menuChange('menu-lesson')"></li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
+        <li class="list-group-item title">Nội dung khoá học <img class="icon-menu" src="/img/back.png" alt="" onclick="menuChange('menu-lesson')"></li>
+        {{#each chaptersData}}
+        <li onclick="change('content-course-{{this.chapterOrder}}', 'icon-chevron-{{this.chapterOrder}}')" class="list-group-item">
+            <div id="course-{{this.chapterOrder}}" class="d-flex over-course">
                 <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
+                <h1><span>{{this.chapterOrder}}. </span>{{this.title}}</h1>
                 <div class="">
-                    <span>1/3 | 5:14</span>
+                    <span>1/{{this.lessons.length}} | {{totalDuration}}</span>
                 </div>
             </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
+            <a><img id="icon-chevron-{{this.chapterOrder}}" src="/img/down-chevron.png" alt=""></a>
             </div>
-            <ul id="content-course-1">
+            <ul id="content-course-{{this.chapterOrder}}">
+                {{#each lessons}}
                 <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
+                        <a style="    color: white !important;" href="/Course/Learning/{{../courseId}}/{{_id}}">
+                            <h1><span>{{../chapterOrder}}.{{lessonOrder}} </span> {{name}} </h1>
+                            <div class="">
+                                <span><img class="icon" src="/img/play.png" alt="">{{duration}}</span>
+                            </div>
+                        </a>
                 </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
+                {{/each}}
             </ul>
         </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
-        <li onclick="change('content-course-1', 'icon-chevron')" class="list-group-item">
-            <div id="course-1" class="d-flex over-course">
-                <div class="">
-                <h1><span>1. </span>Giới thiệu</h1>
-                <div class="">
-                    <span>1/3 | 5:14</span>
-                </div>
-            </div>
-            <a><img id="icon-chevron" src="./img/down-chevron.png" alt=""></a>
-            </div>
-            <ul id="content-course-1">
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="">
-                        <h1><span>1.2 </span> Lời nới đầu tiên </h1>
-                        <div class="">
-                            <span><img class="icon" src="./img/play.png" alt="">1:20</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </li>
+        {{/each}}
     </ul>
 </div>
 
@@ -825,10 +117,10 @@
         
         if (content.style.display === "block") {
             content.style.display = "none";
-            icon.src = "./img/down-chevron.png";
+            icon.src = "/img/down-chevron.png";
         } else {
             content.style.display = "block";
-            icon.src = "./img/up-chevron.png";
+            icon.src = "/img/up-chevron.png";
         }
     }
 
@@ -848,3 +140,33 @@
         }
     }
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+         const isCreate = {{isCreate}};
+        if (isCreate) {
+            Swal.fire({
+                title: 'Đăng ký thành công!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+            fetch('/user/course/clear-registrantion-flag', { method: 'POST' });
+        }
+    });
+    
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function DangPhatTrien() {
+        Swal.fire({
+            title: 'Tính năng đang phát triển!',
+            text: 'Chúng tôi sẽ sớm cập nhật tính năng này.',
+            icon: 'info',
+            confirmButtonText: 'Đóng'
+        });
+        return false; // Ngăn form submit hoặc hành động mặc định
+    }
+</script>
+
+
