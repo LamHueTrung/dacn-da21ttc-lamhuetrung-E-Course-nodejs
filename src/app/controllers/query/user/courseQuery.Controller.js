@@ -3,6 +3,7 @@ const Courses = require('../../../model/Course');
 const Chapters = require('../../../model/Chapter');
 const Lessons = require('../../../model/Lesson');
 const registrationCourse = require("../../../model/RegistrationCourse");
+const ProcessCourses = require("../../../model/ProgressCourse");
 const messages = require('../../../Extesions/messCost');
 const Chapter = require('../../../model/Chapter');
 const jwt = require('jsonwebtoken');
@@ -50,9 +51,23 @@ class CourseQuery {
                     userId: IdUser,
                     courseId: courseId,
                   });
-                  if (existingregistration) {
-                    res.redirect(`/Course/Learning/${courseId}/default`);
-                  }
+
+                if (existingregistration) {
+                    const existingprocess = await ProcessCourses.findOne({registrationId: existingregistration._id})
+                    const completedLessons = existingprocess.chapters
+                        .flatMap(chapter => chapter.lessons)  
+                        .filter(lesson => lesson.status === 'completed');
+
+                    if (completedLessons.length > 0) {
+                        // Tìm bài học có lessonOrder cao nhất
+                        const highestLesson = completedLessons.reduce((maxLesson, currentLesson) => {
+                            return currentLesson.lessonOrder > maxLesson.lessonOrder ? currentLesson : maxLesson;
+                        });
+                
+                        // Bạn có thể sử dụng highestLesson trong logic tiếp theo của mình, ví dụ chuyển hướng đến lesson đó
+                        res.redirect(`/Course/Learning/${courseId}/${highestLesson.lessonId}`);
+                    }
+                } 
                 
                 res.render('pages/courses/home', {
                     year: currentYear,
@@ -132,6 +147,19 @@ class CourseQuery {
     //Home course pages
     learningCourse(req, res) {
         res.render('pages/courses/learning', { layout: 'learing'});
+    }
+
+    //Learning path pages
+    learningPath(req, res) {
+        res.render('pages/courses/learningPath');
+    }
+
+    pathFrontend(req, res) {
+        res.render('pages/courses/frontEndAndDevelopment');
+    }
+
+    pathBackend(req, res) {
+        res.render('pages/courses/backEndAndDevelopment');
     }
 }
 

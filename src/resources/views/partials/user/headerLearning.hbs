@@ -8,7 +8,7 @@
         <div class="end-navbar">
             <div class="baihoc">
                 <img class="icon-headerLearning" src="/img/hourglass.png" alt="">
-                <span><span id="sobaihoc">1/{{course.totalLessons}}</span>Bài học</span>
+                <span><span id="sobaihoc">{{#if totalCompletedLessonsInCourse}} {{totalCompletedLessonsInCourse}} {{else}} 1 {{/if}}/{{course.totalLessons}}</span>Bài học</span>
             </div>
             <div class="ghichu">
                 <img class="icon-headerLearning" src="/img/post-it.png" alt="">

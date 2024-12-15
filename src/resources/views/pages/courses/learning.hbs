@@ -1,7 +1,9 @@
 <div class="col-sm-8 ">
     <div class="video">
-        <iframe width="100%" height="450" src="{{lessonData.videoUrl}}" title="YouTube video player" frameborder="0" allow=" autoplay" ></iframe>
+        <iframe id="player" width="100%" height="450" src="{{lessonData.videoUrl}}?enablejsapi=1" title="YouTube video player" frameborder="0" allow="autoplay" allowfullscreen></iframe>
     </div>
+    <input type="hidden" value="{{IdLesson}}" id="IdLesson">
+    <input type="hidden" value="{{Idregistration}}" id="Idregistration">
     <div class="row content-course d-block">
         <div class="col-sm d-flex">
             <div>
@@ -86,29 +88,130 @@
         <li onclick="change('content-course-{{this.chapterOrder}}', 'icon-chevron-{{this.chapterOrder}}')" class="list-group-item">
             <div id="course-{{this.chapterOrder}}" class="d-flex over-course">
                 <div class="">
-                <h1><span>{{this.chapterOrder}}. </span>{{this.title}}</h1>
+                <h1><span>{{this.chapterOrder}}. </span>{{this.title}}  {{#if this.progress}} {{this.progress}} {{else}} 0 {{/if}}%</h1>
                 <div class="">
-                    <span>1/{{this.lessons.length}} | {{totalDuration}}</span>
+                    <span>{{#if this.completedLessonsInChapter}} {{this.completedLessonsInChapter}} {{else}} 0 {{/if}}/{{this.lessons.length}} | {{totalDuration}}</span>
                 </div>
             </div>
             <a><img id="icon-chevron-{{this.chapterOrder}}" src="/img/down-chevron.png" alt=""></a>
             </div>
             <ul id="content-course-{{this.chapterOrder}}">
                 {{#each lessons}}
-                <li>
-                        <a style="    color: white !important;" href="/Course/Learning/{{../courseId}}/{{_id}}">
-                            <h1><span>{{../chapterOrder}}.{{lessonOrder}} </span> {{name}} </h1>
+                    <li>
+                        {{#if (isCompleted status)}}
+                        <!-- Nếu bài học đã hoàn thành, hiển thị icon done -->
+                        <a style="color: white !important;" href="/Course/Learning/{{../courseId}}/{{_id}}">
+                            <h1><span>{{../chapterOrder}}.{{lessonOrder}} </span> {{name}} <img style="width: 20px;" class="icon" src="/img/done.png" alt="Completed"></h1>
+                            <input type="hidden" id="courseNext" value="{{../courseId}}">
+                            
                             <div class="">
                                 <span><img class="icon" src="/img/play.png" alt="">{{duration}}</span>
                             </div>
                         </a>
-                </li>
+                        {{else}}
+                            {{#if (isInProcess status)}}
+                            <!-- Nếu bài học đang học thì hiển thị-->
+                            <a style="color: white !important;" href="/Course/Learning/{{../courseId}}/{{_id}}">
+                                <h1><span>{{../chapterOrder}}.{{lessonOrder}} </span> {{name}}</h1>
+                                <input type="hidden" id="lessonNext" value="{{lessonId}}">
+                                <input type="hidden" id="courseNext" value="{{../courseId}}">
+                                <div class="">
+                                    <span><img class="icon" src="/img/play.png" alt="">{{duration}}</span>
+                                </div>
+                            </a>
+                            {{else}}
+                        <!-- Nếu bài học chưa hoàn thành, khóa không cho phép click -->
+                        <a href="#" style="color: gray !important; pointer-events: none;">
+                            <h1><span>{{../chapterOrder}}.{{lessonOrder}} </span> {{name}}</h1>
+                            <input type="hidden" id="courseNext" value="{{../courseId}}">
+                            
+                            <div class="">
+                                <span><img class="icon" src="/img/play.png" alt="">{{duration}}</span>
+                            </div>
+                        </a>
+                            {{/if}}
+                        {{/if}}
+                    </li>
                 {{/each}}
+
             </ul>
         </li>
         {{/each}}
     </ul>
 </div>
+
+<script>
+    var player;
+    var totalDuration = 0;  // Tổng thời gian của video
+    var watchedDuration = 0; // Thời gian đã xem
+    const IdLesson = document.getElementById('IdLesson').value;
+    const Idregistration = document.getElementById('Idregistration').value;
+
+    // Load API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+    // Hàm được YouTube API gọi khi sẵn sàng
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+        });
+    }
+
+    function onPlayerReady(event) {
+        totalDuration = player.getDuration();  // Lấy tổng thời gian của video
+    }
+
+    // Khi trạng thái video thay đổi
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) {
+        // Video đang phát, bắt đầu theo dõi thời gian
+        fetch(`/Course/updateLessonStatus/${IdLesson}/${Idregistration}`, { method: 'POST'});
+        watchVideo();
+        }
+    }
+
+    // Hàm theo dõi tiến độ xem video
+    function watchVideo() {
+        var interval = setInterval(function() {
+        watchedDuration = player.getCurrentTime(); // Lấy thời gian đã xem
+
+        // Kiểm tra nếu đã xem đủ 90% video
+        if (watchedDuration >= totalDuration * 0.9) {
+            markLessonAsCompleted();  // Đánh dấu bài học hoàn thành
+            clearInterval(interval);  // Dừng theo dõi
+        }
+        }, 1000); // Kiểm tra mỗi giây
+    }
+    // Đánh dấu bài học hoàn thành
+    function markLessonAsCompleted() {
+
+        fetch(`/Course/updateLessonStatus/${IdLesson}/${Idregistration}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'  // Đảm bảo Content-Type là application/json
+            },
+            body: JSON.stringify({
+                completed: true  // Truyền field completed vào req.body
+            })
+        })
+        .then(response => response.json())  // Xử lý response (nếu có)
+        .then(data => {
+            const LessonIdNext = data.IdLessonNext;
+            const CourseIdNext = document.getElementById('courseNext').value;
+
+            window.location.href = `/Course/Learning/${CourseIdNext}/${LessonIdNext}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
 
 <script>
     function change(id, imgId) {
@@ -150,13 +253,12 @@
                 icon: 'success',
                 confirmButtonText: 'OK'
             })
-            fetch('/user/course/clear-registrantion-flag', { method: 'POST' });
+            fetch('/Course/clear-registrantion-flag', { method: 'POST' });
         }
     });
     
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function DangPhatTrien() {
         Swal.fire({
@@ -168,5 +270,3 @@
         return false; // Ngăn form submit hoặc hành động mặc định
     }
 </script>
-
-

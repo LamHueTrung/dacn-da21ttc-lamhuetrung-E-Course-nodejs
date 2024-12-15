@@ -73,18 +73,9 @@ class Registration {
         })
       );
 
-      // Kiểm tra nếu IdLesson là 'default' hay không
+      // Kiểm tra nếu IdLesson 
       let lessonData;
-
-      if (IdLesson === 'default') {
-        // Nếu IdLesson là 'default', lấy bài học đầu tiên trong chương đầu tiên
-        if (chapters.length > 0 && chapters[0].lessons.length > 0) {
-          lessonData = await Lessons.findOne({ _id: chapters[0].lessons[0] }).lean();
-        }
-      } else {
-        // Nếu có IdLesson cụ thể, tìm bài học theo IdLesson
-        lessonData = await Lessons.findOne({ _id: IdLesson }).lean();
-      }
+      lessonData = await Lessons.findOne({ _id: IdLesson }).lean();
 
       // Kiểm tra đăng ký
       const existingregistration = await registrationCourse.findOne({
@@ -92,7 +83,7 @@ class Registration {
         courseId: IdCourse,
       });
       if (!existingregistration) {
-        // Tạo và lưu khóa học mới vào cơ sở dữ liệu
+        
         const newData = new registrationCourse({
           userId: IdUser,
           courseId: IdCourse,
@@ -101,7 +92,10 @@ class Registration {
 
         // Lưu vào cơ sở dữ liệu
         req.session.isCreate = true;
-
+        const registration = await registrationCourse.findOne({
+          userId: IdUser,
+          courseId: IdCourse,
+        });
         // Phản hồi sau khi lưu thành công
         return res.render("pages/courses/learning", {
           layout: "learing",
@@ -109,6 +103,7 @@ class Registration {
           chaptersData: chaptersData,
           course: existingCourse.toObject(),
           lessonData: lessonData,
+          Idregistration: registration._id,
           IdLesson: IdLesson,
           dataUser: {
             id: existingUser._id,
@@ -133,6 +128,7 @@ class Registration {
             chaptersData: chaptersData,
             course: existingCourse.toObject(),
             IdLesson: IdLesson,
+            Idregistration: existingregistration._id,
             dataUser: {
                 id: existingUser._id,
                 fullName: existingUser.profile.fullName,
@@ -142,12 +138,48 @@ class Registration {
             currentYear: currentYear,
           });
         } else {
+          const updatedChaptersData = chaptersData.map(chapter => {
+            const processChapter = existingprocess.chapters.find(c => c.chapterId.toString() === chapter._id.toString());
+            if (processChapter) {
+              // map các lesson trong chapter
+              const updatedLessons = chapter.lessons.map(lesson => {
+                const processLesson = processChapter.lessons.find(l => l.lessonId.toString() === lesson._id.toString());
+                if (processLesson) {
+                  // Thêm status và progress vào lesson
+                  return {
+                    ...lesson,
+                    status: processLesson.status,
+                    progress: processChapter.progress,
+                  };
+                }
+                return lesson; // Nếu không có progress thì giữ nguyên
+              });
+
+              // Tính số bài học đã hoàn thành trong chapter
+              const completedLessonsInChapter = updatedLessons.filter(lesson => lesson.status === "completed").length;
+
+              return {
+                ...chapter,
+                lessons: updatedLessons,
+                progress: processChapter.progress, // Thêm progress cho chương
+                completedLessonsInChapter
+              };
+            }
+            return chapter;
+          });
+
+          // Tính tổng số bài học đã hoàn thành của course
+          const totalCompletedLessonsInCourse = updatedChaptersData.reduce((total, chapter) => {
+            return total + chapter.completedLessonsInChapter;
+          }, 0);
 
           return res.render("pages/courses/learning", {
             layout: "learing",
             isCreate: req.session.isCreate,
-            chaptersData: chaptersData,
+            chaptersData: updatedChaptersData,
             IdLesson: IdLesson,
+            ProcessData: existingprocess,
+            Idregistration: existingregistration._id,
             course: existingCourse.toObject(),
             dataUser: {
                 id: existingUser._id,
@@ -156,6 +188,7 @@ class Registration {
             },
             lessonData: lessonData,
             currentYear: currentYear,
+            totalCompletedLessonsInCourse
           });
         }
       }

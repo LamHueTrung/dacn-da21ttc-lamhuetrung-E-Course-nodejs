@@ -1,3 +1,15 @@
+<style>
+    /* Điều chỉnh tốc độ và kiểu chuyển slide */
+    .carousel-item {
+        transition: transform 1s ease; /* Thêm hiệu ứng mượt mà */
+    }
+
+    /* Cải thiện hiệu ứng chuyển động từ trái sang phải */
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        background-color: black; /* Đổi màu biểu tượng chuyển */
+    }
+
+</style>
 <div id="carouselExampleIndicators" class="carousel slide slideshow">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -74,6 +86,24 @@
 </div>
 
 <div class="container cousrse">
+    <div class="cousrse-title">
+        <form class="d-flex form-search" role="search" action="/Search" method="get">
+            <select class="form-control filter" name="level">
+                <option value="">Tất cả trình độ</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <select class="form-control filter" name="category">
+                <option value="">Tất cả lĩnh vực</option>
+                <option value="Programming">Programming</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+            </select>
+            <button class="btn btn-outline-search" type="submit">Tìm kiếm</button>
+        </form>
+
+    </div>
     <div class="cousrse-title">
         <h1 class="text-course">Khoá học Pro</h1>
         <img class="img-course" src="/img/new.png" alt="">
@@ -176,6 +206,18 @@
 
     // Gán sự kiện click cho tất cả các nút "Học Ngay" sau khi DOM đã tải xong
     document.addEventListener('DOMContentLoaded', () => {
+        // Lấy phần tử carousel
+        const carouselElement = document.getElementById('carouselExampleIndicators');
+        
+        // Tạo một interval để chuyển slide tự động sau 3 giây (3000ms)
+        setInterval(() => {
+            const carousel = new bootstrap.Carousel(carouselElement, {
+                interval: 3000,  // thời gian chuyển slide
+                ride: 'carousel'  // tự động chạy carousel khi trang được tải
+            });
+            
+            carousel.next(); // Chuyển sang slide tiếp theo
+        }, 3000); // Mỗi 3 giây
         const learnNowButtons = document.querySelectorAll('.slideshow-button');
 
         learnNowButtons.forEach(button => {

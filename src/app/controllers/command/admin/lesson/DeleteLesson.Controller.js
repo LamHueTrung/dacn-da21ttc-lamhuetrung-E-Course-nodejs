@@ -103,10 +103,20 @@ class DeleteLesson {
                 await lessonsInChapter[i].save(); // Lưu cập nhật
             }
 
+            const courseId = chapter.courseId;
+            const chapters2 = await Chapters.find({courseId});
+
+            let totalLessonsCount = 0;
+            chapters2.forEach(chapter => {
+                totalLessonsCount += chapter.lessons.length;  
+            });
+
+            
+
             // Cập nhật tổng số bài học trong khóa học liên quan
             const course = await Courses.findById(chapter.courseId);
             if (course) {
-                course.totalLessons = chapter.lessons.length; // Cập nhật tổng số bài học
+                course.totalLessons = totalLessonsCount; // Cập nhật tổng số bài học
                 await course.save(); // Lưu cập nhật khóa học
             }
 

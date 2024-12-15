@@ -29,6 +29,9 @@
                 </button>
                 <ul class="dropdown-menu">
                     {{#each lessons}}
+                    {{#if @first}} <!-- Kiểm tra nếu đây là bài học đầu tiên -->
+                    <input type="hidden" id="lessonId" value="{{_id}}">
+                    {{/if}}
                     <li class="dropdown-item">{{lessonOrder}}. {{name}}</li>
                     {{/each}}
                 </ul>
@@ -73,7 +76,7 @@
      * @param {Event} event - Sự kiện click
      * @param {string} courseId - ID của khóa học
      */
-    function handleLearnNow(event, courseId) {
+    function handleLearnNow(event, courseId, lessonId) {
         event.preventDefault(); // Ngăn hành động mặc định của nút (nếu có)
 
         if (!isLoggedInUser) {
@@ -95,7 +98,7 @@
                 }
             });
         } else {
-            const url = `/Course/Learning/${courseId}/default`;
+            const url = `/Course/Learning/${courseId}/${lessonId}`;
             // Nếu người dùng đã đăng nhập, chuyển hướng đến trang học khóa học
             window.location.href = url;
         }
@@ -107,7 +110,8 @@
 
         learnNowButtons.forEach(button => {
             const courseId = button.getAttribute('data-course-id');
-            button.addEventListener('click', (e) => handleLearnNow(e, courseId));
+            const lessonId = document.getElementById('lessonId').value;
+            button.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId));
         });
     });
 </script>

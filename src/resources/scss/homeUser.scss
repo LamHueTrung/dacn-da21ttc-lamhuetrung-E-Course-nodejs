@@ -8,6 +8,43 @@
     margin-top: 3%;
 }
 
+.filter { 
+    width: 35%;
+    border: none !important;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 5%;
+    font-size: 16px;
+    background: #0C5776;
+    color: white;
+    box-shadow: 2px 2px #001C44;
+}
+
+.filter:hover {
+    cursor: pointer;
+    background: #2D99AE;
+    color: #ffff;
+}
+
+.btn-outline-search {
+    width: 130px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    box-shadow: 2px 2px #001C44;
+    background: #0C5776;
+    color: #FFF;
+    font-family: inherit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-right: 15px;
+}
+.btn-outline-search:hover {
+    background: #2D99AE;
+    color: #ffff;
+}
 .slideshow .slideshow-row {
     margin-left: 10%;
 }

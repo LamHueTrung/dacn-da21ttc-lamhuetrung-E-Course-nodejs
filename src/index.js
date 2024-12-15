@@ -68,6 +68,12 @@ app.engine('hbs', handlebars.engine({
             return `${minutes} phút ${seconds} giây`;
         }
         return `${hours} giờ ${minutes} phút ${seconds} giây`;
+    },
+    isCompleted: function(status) {
+      return status === 'completed'; 
+    },
+    isInProcess: function(status) {
+      return status === 'in_progress'; 
     }
 }
 }));

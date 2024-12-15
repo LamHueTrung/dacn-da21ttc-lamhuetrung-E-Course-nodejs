@@ -24,7 +24,6 @@ const progressSchema = new Schema({
             enum: ["not_started", "in_progress", "completed"],
             default: "not_started",
           }, // Trạng thái của bài học
-          completionPercentage: { type: Number, min: 0, max: 100, default: 0 }, // Phần trăm hoàn thành bài học
         },
       ],
       progress: { type: Number, min: 0, max: 100, default: 0 }, 
