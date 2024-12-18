@@ -1,0 +1,9 @@
+const mongoose = require('mongoose');
+
+const visitSchema = new mongoose.Schema({
+  route: { type: String, required: true },
+  count: { type: Number, default: 0 },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Liên kết với người dùng
+});
+
+module.exports = mongoose.model('Visit', visitSchema);
