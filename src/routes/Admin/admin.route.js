@@ -24,7 +24,7 @@ router.use('/user', userRoute);
 //Admin route
 router.get('/api/visits', adminQuery.Visit);
 //Admin statistic route
-router.use('/statistic', authenticateToken, statisticRoute);
+router.use('/statistic', statisticRoute);
 
 router.use('/home', authenticateToken, adminQuery.Index);
 router.post('/logout', authenticateToken, adminQuery.Logout);

@@ -1,0 +1,223 @@
+<div class="row">
+  <style>
+        .chart-area {
+        height: 400px; /* Đặt chiều cao tối đa cố định cho biểu đồ */
+        max-height: 400px; /* Đảm bảo chiều cao tối đa */
+        overflow: hidden; /* Ẩn phần dư thừa nếu có */
+        }
+        .card-body {
+        max-height: 500px; /* Chiều cao tối đa của thẻ card */
+        overflow-y: auto; /* Kích hoạt cuộn dọc */
+        }
+
+    </style>
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Khoá học được đăng ký</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="registrationChart"></canvas>
+          </div>
+      </div>
+  </div>
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Thống kê thời lượng và bài học</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="courseStatsChart"></canvas>
+          </div>
+      </div>
+  </div>
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Tiến trình học tập</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="progressChart"></canvas>
+          </div>
+      </div>
+  </div>
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Thống kê theo tác giả</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="authorStatsChart"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API
+    fetch('/admin/statistic/courses/registrations')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.courseName);
+            const values = data.map(item => item.totalRegistrations);
+            const ctx = document.getElementById('registrationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie', // Biểu đồ tròn
+                data: {
+                labels: labels, // Loại người dùng
+                datasets: [{
+                    label: 'Total Registrations',
+                    data: values, // Dữ liệu phân loại
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu sắc
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+                },
+                options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching user overview:', error));
+    });  
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API
+    fetch('/admin/statistic/courses/course-duration')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.courseName); // Tên khóa học
+            const lessonCounts = data.map(item => item.totalLessons); // Tổng số bài học
+            const durations = data.map(item => item.totalDurationMinutes); // Tổng thời lượng (phút)
+
+            const ctx = document.getElementById('courseStatsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+            data: {
+                labels: labels, // Tên khóa học
+                datasets: [
+                    {
+                        label: 'Total Lessons',
+                        data: lessonCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Total Duration (mins)',
+                        data: durations,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+                options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching user overview:', error));
+    });  
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API
+    fetch('/admin/statistic/courses/progress')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.courseName);
+            const progressValues = data.map(item => item.averageProgress);
+            const studentCounts = data.map(item => item.totalStudents);
+
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                labels: labels, // Loại người dùng
+                datasets: [
+                        {
+                            label: 'Average Progress (%)',
+                            data: progressValues, // Tiến độ trung bình
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Total Students',
+                            data: studentCounts, // Tổng số học viên
+                            type: 'line', // Dạng biểu đồ đường
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching user overview:', error));
+    });  
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API
+    fetch('/admin/statistic/courses/authors')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.authorName);
+            const courseCounts = data.map(item => item.totalCourses);
+            const revenues = data.map(item => item.totalRevenue);
+
+            const ctx = document.getElementById('authorStatsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                labels: labels, // Loại người dùng
+                datasets: [
+                        {
+                            label: 'Total Courses',
+                            data: courseCounts, // Số lượng khóa học
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Total Revenue ($)',
+                            data: revenues, // Tổng doanh thu
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching user overview:', error));
+    });  
+</script>

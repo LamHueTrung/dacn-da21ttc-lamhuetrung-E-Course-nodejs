@@ -1,5 +1,4 @@
 const Acount = require('../../../../model/Acount');
-const Visit = require('../../../../model/Visit');
 
 class UserStatistic {
     Overview = async (req, res, next) => {
