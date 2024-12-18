@@ -1,0 +1,266 @@
+.video {
+  text-align: center;
+  background: #000; }
+
+.content-course {
+  padding: 5%; }
+
+.content-course .col-sm:first-child {
+  justify-content: space-between; }
+
+.content-course .col-sm:first-child a span {
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal; }
+
+.title-course {
+  color: #000;
+  font-family: inherit;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal; }
+
+.thoigiandang {
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: normal; }
+
+.comments div:first-child span, .comments div:first-child h1 {
+  color: #000;
+  font-family: inherit;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal; }
+
+.comments div:first-child span {
+  margin-right: 5px; }
+
+.avt-user {
+  width: 40px;
+  border-radius: 50%;
+  height: 40px; }
+
+.comments form input {
+  border: 1px solid #0C5776;
+  background: #0C5776;
+  box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  width: 90%;
+  height: 40px;
+  color: white;
+  padding-left: 10px;
+  padding-right: 50px; }
+
+.comments form input::placeholder {
+  color: #d2d0d0;
+  padding-left: 10px; }
+
+.comments form {
+  position: relative; }
+
+.comments form button {
+  position: absolute;
+  border: none;
+  top: 7px;
+  right: 60px;
+  background: #faebd700; }
+
+.comments form .icon-comment {
+  width: 25px;
+  z-index: 5; }
+
+.comments ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0px; }
+
+.comments .icon {
+  width: 30px;
+  margin: 0;
+  display: block; }
+
+.comments ul li img {
+  margin-right: 10px; }
+
+.name-user {
+  font-size: 16px !important;
+  font-weight: 500 !important; }
+
+.times-comment {
+  font-size: 16px !important;
+  font-weight: 400 !important; }
+
+.content-comments {
+  font-size: 16px;
+  width: 100%;
+  display: block; }
+
+.list-comments {
+  display: block;
+  width: 100%; }
+
+.tuongtac-comment .number-tuongtac {
+  font-size: 12px !important;
+  text-align: center;
+  font-weight: 400 !important;
+  padding-top: 8px; }
+
+a {
+  text-decoration: none; }
+
+button.reaplay {
+  text-align: center;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 500;
+  background: none;
+  color: #000;
+  border: none; }
+
+button.reaplay::after {
+  display: none; }
+
+button.reaplay:hover {
+  background-color: #f0f8ff00;
+  color: #000; }
+
+.tuongtac-comment .col-sm-1 {
+  width: auto;
+  display: flex; }
+
+.dropdown-menu.show {
+  transform: translate3d(-170px, 28.8px, 0px) !important;
+  margin-top: 5px !important;
+  width: 700px;
+  border: none; }
+
+.dropdown-menu.show li input {
+  width: 100%;
+  height: 35px;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #0C5776;
+  background: #0C5776;
+  box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: white;
+  padding-left: 10px;
+  padding-right: 50px; }
+
+.dropdown-menu.show button {
+  top: 5;
+  right: -5px; }
+
+.icon-reaplay {
+  width: 20px; }
+
+.menu-courses {
+  background: #0C5776;
+  box-shadow: -15px 0px 4px 0px rgba(12, 87, 118, 0.78); }
+
+.menu-courses .list-group-item {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer; }
+
+.menu-courses .list-group-item.title {
+  color: #FFF;
+  font-family: inherit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-bottom: 1px solid;
+  padding: 5px 10px; }
+
+.over-course {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  border-bottom: 1px solid #fff !important;
+  border-top: 1px solid #fff !important;
+  padding: 5px 10px; }
+
+.over-course:hover, .list-group-item ul li:hover {
+  background-color: #237383; }
+
+.over-course h1 {
+  color: #FFF;
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0; }
+
+.over-course div div span {
+  color: #FFF;
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal; }
+
+.over-course img {
+  width: 25px;
+  height: 25px; }
+
+.over-course img:hover {
+  cursor: pointer; }
+
+.open {
+  display: block; }
+
+.list-group-item ul {
+  color: white;
+  font-size: 16px;
+  list-style: none;
+  display: none;
+  padding: 0; }
+
+.list-group-item ul li {
+  padding: 5px 15px; }
+
+.list-group-item ul li h1 {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 0px; }
+
+.list-group-item ul li div span {
+  font-size: 14px;
+  margin: 0; }
+
+.list-group-item ul li div span .icon {
+  width: 20px;
+  height: 20px; }
+
+.button-down {
+  display: none; }
+
+.icon-menu {
+  width: 25px;
+  float: right;
+  display: none; }
+
+#icon-menu-mobile {
+  float: left;
+  position: fixed;
+  z-index: 100;
+  width: 60px;
+  display: none; }
+
+.col-sm-8, .col-sm-4 {
+  margin-bottom: 2rem; }
+
+@media (max-width: 575px) {
+  #menu-lesson {
+    position: fixed; }
+  .icon-menu {
+    display: block; } }

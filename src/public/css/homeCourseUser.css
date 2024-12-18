@@ -1,0 +1,172 @@
+@charset "UTF-8";
+.trangchitietkhoahoc {
+  margin-top: 2%;
+  margin-bottom: 5%;
+  padding: 0; }
+
+.trangchitietkhoahoc .col-sm-7 {
+  padding-left: 5%; }
+
+.trangchitietkhoahoc .title {
+  color: #000;
+  font-family: inherit;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal; }
+
+.trangchitietkhoahoc .short-description {
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal; }
+
+.loiichkhoahoc span {
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal; }
+
+.noidungkhoahoc span {
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal; }
+
+ul li {
+  list-style: none; }
+
+ul {
+  padding: 0; }
+
+.loiichkhoahoc ul li img {
+  width: 30px; }
+
+.noidungkhoahoc .dropdown-toggle::after {
+  display: none; }
+
+.noidungkhoahoc .dropdown-toggle {
+  border-radius: 10px;
+  background: #0C5776;
+  box-shadow: 5px 6px 4px 0px #2D99AE;
+  width: 90%;
+  margin: 2% 0 2%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between; }
+
+.noidungkhoahoc .dropdown-toggle img {
+  width: 30px;
+  margin-top: 4px;
+  margin-right: 10px; }
+
+.noidungkhoahoc .dropdown-toggle h2 {
+  font-size: 18px;
+  margin-top: 6px; }
+
+.noidungkhoahoc .dropdown-toggle span {
+  color: white;
+  font-size: 18px;
+  margin-top: 5px; }
+
+.noidungkhoahoc .dropdown-menu {
+  position: absolute;
+  inset: 0px auto auto 0px;
+  margin: 0px;
+  transform: translate3d(0, 50px, 0px);
+  width: 90%;
+  border-radius: 8px;
+  background: #2D99AE; }
+
+.noidungkhoahoc .dropdown-toggle:hover {
+  box-shadow: inset -4px -6px 4px 0px #136676;
+  background: #2D99AE; }
+
+.noidungkhoahoc .dropdown-menu .dropdown-item {
+  color: white;
+  font-size: 18px; }
+
+.noidungkhoahoc .dropdown-menu .dropdown-item:hover {
+  background-color: #f0ffff36; }
+
+.thongtinkhoahoc img {
+  border-radius: 42px; }
+
+.thongtinkhoahoc .price {
+  margin-top: 5%;
+  color: #EC320C;
+  font-family: inherit;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase; }
+
+.thongtinkhoahoc {
+  text-align: center; }
+
+.thongtinkhoahoc button {
+  border-radius: 29px;
+  background: #0C5776;
+  width: 200px;
+  font-size: 18px;
+  color: white;
+  font-weight: 500;
+  box-shadow: inset -3px -3px 4px 0px #0b1066; }
+
+.thongtinkhoahoc button:hover {
+  background: #0C5776;
+  color: white;
+  box-shadow: inset 3px 3px 4px 0px #0b1066; }
+
+.thongtinkhoahoc ul li img {
+  width: 40px; }
+
+.thongtinkhoahoc ul li span {
+  color: #000;
+  font-family: inherit;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: normal; }
+
+.thongtinkhoahoc ul {
+  text-align: left;
+  margin-top: 5%; }
+
+.thongtinkhoahoc img {
+  width: 100%; }
+
+/* Điện thoại vừa và lớn */
+@media (max-width: 768px) {
+  .noidungkhoahoc .dropdown-toggle {
+    width: 100%; } }
+
+@media (max-width: 641px) {
+  .thongtinkhoahoc {
+    display: none; } }
+
+/* Điện thoại nhỏ */
+@media (max-width: 426px) {
+  .noidungkhoahoc .dropdown-toggle h2, .noidungkhoahoc .dropdown-toggle span {
+    font-size: 16px; }
+  .noidungkhoahoc .dropdown-toggle img {
+    width: 20px;
+    margin-top: 8px;
+    margin-right: 0px; } }
+
+@media (max-width: 376px) {
+  .noidungkhoahoc .dropdown-toggle img {
+    display: none; } }
+
+@media (max-width: 320px) {
+  .noidungkhoahoc .dropdown-toggle img {
+    display: none; }
+  .noidungkhoahoc .dropdown-toggle {
+    justify-content: center; } }

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+.slidebar {
+  padding: 0;
+  background: #001C44;
+  border-radius: 0;
+  z-index: 1;
+  height: auto; }
+
+.list-group-item {
+  background: none;
+  border: none;
+  text-align: center; }
+
+.list-group-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80%;
+  height: 1px;
+  background-color: #FFF;
+  text-align: center;
+  margin: 0 10%; }
+
+.list-group-item:hover {
+  background: #ffffff14; }
+
+.icon-slidebar {
+  width: 40px;
+  margin: 5px 25%;
+  display: block;
+  text-decoration: none; }
+
+.name-slidebar {
+  display: block;
+  font-family: inherit;
+  text-decoration: none !important;
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 5px; }
+
+.slideshow-row .col-sm-4 img {
+  margin: 10%; }
+
+/* Màn hình rất lớn */
+@media (min-width: 1921px) {
+  .icon-slidebar {
+    margin: 5px 40%; } }
+
+/* Máy tính bảng */
+@media (max-width: 1024px) {
+  .icon-slidebar {
+    margin: 0px 12%; }
+  .slidebar {
+    width: 100% !important;
+    flex: none;
+    display: block;
+    height: 80px !important;
+    position: fixed;
+    top: unset;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0; }
+  .slidebar ul {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%; }
+  .col-sm-11 {
+    width: 100%; } }
+
+/* Điện thoại vừa và lớn */
+@media (max-width: 768px) {
+  .slideshow-row .col-sm-6 {
+    width: 85%; }
+  .slideshow-row .col-sm-4 {
+    display: none; } }
+
+@media (min-width: 425px) and (max-width: 641px) {
+  .col-sm-11 {
+    margin-left: 3%;
+    padding: 0; } }
+
+/* Điện thoại nhỏ */
