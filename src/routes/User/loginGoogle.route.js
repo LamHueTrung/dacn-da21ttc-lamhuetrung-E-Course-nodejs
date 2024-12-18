@@ -1,8 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const router  = express.Router();
-const userQuery = require('../../app/controllers/query/user/userQuery.Controller');
 const userLoginCommand = require('../../app/controllers/command/user/LoginGoogle.Controller'); 
+const trackVisits = require('../../app/middleware/trackVisits');
 
 // Route để bắt đầu quá trình đăng nhập với Google
 router.get('/auth/google', passport.authenticate('google', {
@@ -10,7 +10,7 @@ router.get('/auth/google', passport.authenticate('google', {
 }));
 
 // Route callback sau khi Google trả về
-router.use('/auth/google/callback', passport.authenticate('google', {
+router.use('/auth/google/callback', trackVisits, passport.authenticate('google', {
     failureRedirect: '/User/Login'
 }),(req, res) => userLoginCommand.Handle(req, res));
 

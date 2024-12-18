@@ -5,8 +5,9 @@ const RegisterCommand = require('../../app/controllers/command/user/Register.Con
 const LoginCommand = require('../../app/controllers/command/user/Login.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 const upload = require('../../app/Extesions/uploadAvatar');
+const trackVisits = require('../../app/middleware/trackVisits');
 
-router.post('/Login', (req, res) => {
+router.post('/Login', trackVisits, (req, res) => {
     LoginCommand.Handle(req, res);
 });
 router.post('/clear-create-flag', authenticateToken, (req, res) => {

@@ -7,6 +7,7 @@ const user = require('./user.route');
 const searchQuery = require('../../app/controllers/query/user/Search.Controller');
 const userQuery = require('../../app/controllers/query/user/userQuery.Controller');
 const coursesQuery = require('../../app/controllers/query/user/courseQuery.Controller');
+const trackVisits = require('../../app/middleware/trackVisits');
 
 //Course route
 router.use('/Course', course);
@@ -28,7 +29,7 @@ router.use('/LearningPath', coursesQuery.learningPath);
 router.use('/Detail', userQuery.detailBlog);
 router.use('/Blog', userQuery.homeBlog);
 
-router.use('/', coursesQuery.index);
+router.use('/', trackVisits, coursesQuery.index);
 
 
 

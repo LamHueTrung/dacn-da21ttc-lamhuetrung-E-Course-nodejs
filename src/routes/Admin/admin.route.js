@@ -6,6 +6,7 @@ const userRoute = require('./user.route');
 const courseRoute = require('./course.route');
 const lessonRoute = require('./lesson.route');
 const chapterRoute = require('./chapter.route');
+const statisticRoute = require('./statistic.route');
 const authenticateToken = require('../../app/middleware/authenticateTokenAdmin');
 
 //Lesson route
@@ -21,6 +22,10 @@ router.use('/course', courseRoute);
 router.use('/user', userRoute);
 
 //Admin route
+router.get('/api/visits', adminQuery.Visit);
+//Admin statistic route
+router.use('/statistic', authenticateToken, statisticRoute);
+
 router.use('/home', authenticateToken, adminQuery.Index);
 router.post('/logout', authenticateToken, adminQuery.Logout);
 router.post('/', (req, res) => adminCommand.Handle(req, res));

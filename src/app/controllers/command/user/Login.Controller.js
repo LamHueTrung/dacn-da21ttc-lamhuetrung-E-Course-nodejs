@@ -122,7 +122,6 @@ class Login {
             const token = jwt.sign({ id: existingAccount._id, role: existingAccount.role }, jwtSecretKey, { expiresIn: '5h' });
             req.session.tokenUser = token;  // Lưu token vào session
             req.session.isLoggedInUser = true;  // Đánh dấu là đã đăng nhập
-
             // Truy vấn tất cả các khóa học và sử dụng populate để lấy thông tin tác giả
             const courses = await Courses.find().populate('author', 'profile');
                 

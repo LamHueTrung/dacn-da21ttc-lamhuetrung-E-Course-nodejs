@@ -1,0 +1,113 @@
+<div class="row">
+  <style>
+        .chart-area {
+        height: 400px; /* Đặt chiều cao tối đa cố định cho biểu đồ */
+        max-height: 400px; /* Đảm bảo chiều cao tối đa */
+        overflow: hidden; /* Ẩn phần dư thừa nếu có */
+        }
+        .card-body {
+        max-height: 500px; /* Chiều cao tối đa của thẻ card */
+        overflow-y: auto; /* Kích hoạt cuộn dọc */
+        }
+
+    </style>
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Phân loại người dùng</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="userPieChart"></canvas>
+          </div>
+      </div>
+  </div>
+
+  <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Số người đăng ký mới theo thời gian</h6>
+      </div>
+      <div class="card-body">
+          <div class="chart-area">
+              <canvas id="userLineChart"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  // Fetch data from the API
+  fetch('/admin/statistic/users/overview')
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('userPieChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie', // Biểu đồ tròn
+        data: {
+          labels: ['Guest Users', 'Google Users', 'Sub Admin'], // Loại người dùng
+          datasets: [{
+            label: 'Phân loại người dùng',
+            data: [data.regularUsers, data.googleUsers, data.subAdmins], // Dữ liệu phân loại
+            backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'], // Màu sắc
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+        }
+      });
+    })
+    .catch(error => console.error('Error fetching user overview:', error));
+});
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  // Fetch data from the API
+  fetch('/admin/statistic/users/registration/timeline')
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('userLineChart').getContext('2d');
+      const labels = data.map(item => item._id); // Thời gian (vd: "2023-11", "2023-12")
+      const counts = data.map(item => item.count); // Số người đăng ký
+
+      new Chart(ctx, {
+        type: 'line', // Biểu đồ đường
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Số người đăng ký',
+            data: counts,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true // Tô màu dưới đường
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Thời gian (tháng)',
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Số lượng'
+              }
+            }
+          }
+        }
+      });
+    })
+    .catch(error => console.error('Error fetching registration timeline:', error));
+});
+
+</script>

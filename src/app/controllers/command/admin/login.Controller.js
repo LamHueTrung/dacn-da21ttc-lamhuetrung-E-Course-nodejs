@@ -4,6 +4,7 @@ const messages = require('../../../Extesions/messCost');
 const CryptoService = require('../../../Extesions/cryptoService');
 const jwt = require('jsonwebtoken');
 const Courses = require('../../../model/Course');
+const Visits = require('../../../model/Visit');
 
 class LoginAdmin {
     
@@ -115,9 +116,18 @@ class LoginAdmin {
             // Lấy số lượng người dùng từ cơ sở dữ liệu
             const userCount = await Acounts.countDocuments({});
             const courseCount = await Courses.countDocuments({});
+            const result = await Visits.aggregate([
+                {
+                  $group: {
+                    _id: null, // Không cần nhóm theo bất kỳ trường nào
+                    totalCount: { $sum: "$count" }, // Tổng tất cả các trường `count`
+                  },
+                },
+              ]);
+            const totalVisits = result.length > 0 ? result[0].totalCount : 0;
 
             // Trả về trang chính của quản trị viên với token và trạng thái đăng nhập
-            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn, currentYear: currentYear, userCount: userCount, courseCount: courseCount });
+            return res.render('pages/admin/main', { layout: 'admin', token: token, isLoggedIn: req.session.isLoggedIn, currentYear: currentYear, userCount: userCount, courseCount: courseCount, visitCount: totalVisits });
         } catch (error) {
             // Xử lý lỗi nếu có
             console.error(messages.login.loginError, error);

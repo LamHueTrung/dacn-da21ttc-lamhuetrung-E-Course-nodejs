@@ -46,7 +46,7 @@ class LoginGoogle {
                 tokenUser: req.session.tokenUser, 
                 isLoggedInUser: req.session.isLoggedInUser, 
                 currentYear: currentYear,
-                dataUser: dataUser
+                dataUser: dataUser,
             });
         } catch (error) {
             console.error(messages.login.loginError, error);

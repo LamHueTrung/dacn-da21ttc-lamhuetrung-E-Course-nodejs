@@ -5,7 +5,6 @@ const CourseRegistrationCommand = require('../../app/controllers/command/user/co
 const UpdateLessonStatusCommand = require('../../app/controllers/command/user/course/Progress.Controller');
 const authenticateToken = require('../../app/middleware/authenticateTokenUser');
 
-
 router.use('/updateLessonStatus/:IdLesson/:Idregistration', authenticateToken, (req, res) => UpdateLessonStatusCommand.Handle(req, res));
 router.use('/Learning/:idCourse/:idLesson', authenticateToken, (req, res) => CourseRegistrationCommand.Handle(req, res));
 router.post('/clear-registrantion-flag', authenticateToken, (req, res) => {

@@ -2,9 +2,19 @@ const jwt = require('jsonwebtoken');
 const messages = require('../../../Extesions/messCost');
 const Acounts = require('../../../model/Acount');
 const Courses = require('../../../model/Course');
+const Visits = require('../../../model/Visit');
 
 class AdminQuery {
-    
+    Visit = async (req, res, next) => {
+        try {
+            const visits = await Visits.find({}, { route: 1, count: 1, _id: 0 });
+            res.json(visits); // Trả về JSON
+          } catch (error) {
+            console.error("Error fetching visit data:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+          }
+    }
+
     /**
      * Hàm Logout: Xử lý quá trình đăng xuất của quản trị viên.
      * - Xóa session và cookie liên quan đến đăng nhập.
@@ -64,6 +74,15 @@ class AdminQuery {
         try {
             const userCount = await Acounts.countDocuments({});
             const courseCount = await Courses.countDocuments({});
+            const result = await Visits.aggregate([
+                {
+                  $group: {
+                    _id: null, // Không cần nhóm theo bất kỳ trường nào
+                    totalCount: { $sum: "$count" }, // Tổng tất cả các trường `count`
+                  },
+                },
+              ]);
+            const totalVisits = result.length > 0 ? result[0].totalCount : 0;
 
             // Trả về trang chủ với thông tin người dùng và các dữ liệu khác
             res.render('pages/admin/main', { 
@@ -72,7 +91,8 @@ class AdminQuery {
                 token: req.session.token,  // Token người dùng từ session
                 isLoggedIn: req.session.isLoggedIn,  // Trạng thái đăng nhập từ session
                 userCount: userCount,  // Số lượng người dùng
-                courseCount: courseCount // Số lượng khóa học
+                courseCount: courseCount, // Số lượng khóa học
+                visitCount: totalVisits
             });
         } catch (error) {
             console.error('Lỗi khi lấy số lượng người dùng:', error);
