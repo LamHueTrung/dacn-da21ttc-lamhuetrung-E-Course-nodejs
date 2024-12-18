@@ -19,14 +19,17 @@ async function trackVisits(req, res, next) {
   try {
     // Tìm bản ghi theo route
     let visit = await Visit.findOne({ route });
-
+    
     if (!visit) {
       // Nếu không tìm thấy bản ghi, tạo mới
-      visit = new Visit({
-        route,
-        count: 1,
-        userId: userId ? [userId] : [], // Khởi tạo mảng userId nếu có userId
-      });
+      if(route == '/' || route == '/LoginGoogle/auth/google/callback/' || route == '/User/Login' || route == '/home') {
+        visit = new Visit({
+          route,
+          count: 1,
+          userId: userId ? [userId] : [], // Khởi tạo mảng userId nếu có userId
+        });
+      } else {
+      }
     } else {
       // Nếu tìm thấy, cập nhật số lượt truy cập và mảng userId
       visit.count += 1;

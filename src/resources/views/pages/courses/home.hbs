@@ -106,10 +106,10 @@
 
     // Gán sự kiện click cho tất cả các nút "Học Ngay" sau khi DOM đã tải xong
     document.addEventListener('DOMContentLoaded', () => {
-        const learnNowButtons = document.querySelectorAll('#learn-now-button');
+        const learnNowButtons = document.getElementById('#learn-now-button');
 
         learnNowButtons.forEach(button => {
-            const courseId = button.getAttribute('data-course-id');
+            const courseId = learnNowButtons.getAttribute('data-course-id');
             const lessonId = document.getElementById('lessonId').value;
             button.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId));
         });

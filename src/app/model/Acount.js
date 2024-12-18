@@ -60,7 +60,6 @@ const acountSchema = new mongoose.Schema({
     profile: profileSchema,
     googleId: {   // Lưu Google ID để dễ dàng tham chiếu
         type: String,
-        unique: true
     },
     isDeleted: {
         type: Boolean,
