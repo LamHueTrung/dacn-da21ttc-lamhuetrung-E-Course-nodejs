@@ -110,7 +110,7 @@
 
             const courseId = learnNowButtons.getAttribute('data-course-id');
             const lessonId = document.getElementById('lessonId').value;
-            button.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId));
+            learnNowButtons.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId));
     });
 </script>
 
