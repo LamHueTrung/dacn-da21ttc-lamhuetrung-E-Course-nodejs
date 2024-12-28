@@ -4,8 +4,6 @@ const Chapters = require('../../../model/Chapter');
 const Lessons = require('../../../model/Lesson');
 const registrationCourse = require("../../../model/RegistrationCourse");
 const ProcessCourses = require("../../../model/ProgressCourse");
-const messages = require('../../../Extesions/messCost');
-const Chapter = require('../../../model/Chapter');
 const jwt = require('jsonwebtoken');
 const currentYear = new Date().getFullYear();
 
@@ -150,15 +148,63 @@ class CourseQuery {
     }
 
     //Learning path pages
-    learningPath(req, res) {
+    async learningPath(req, res) {
+        if(req.session.tokenUser) {
+            let IdUser = '';
+            jwt.verify(req.session.tokenUser, process.env.JWT_SECRET_KEY, (err, decoded) => {
+                if (err) {
+                    return res.redirect('/User/Login');
+                }
+                
+                IdUser= decoded.id; 
+            });
+            const User = await Acounts.findOne({ _id: IdUser });
+            res.render('pages/courses/learningPath', {dataUser: {
+                id: User._id,
+                fullName: User.profile.fullName,
+                avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
+            }});
+        }
         res.render('pages/courses/learningPath');
     }
 
-    pathFrontend(req, res) {
+    async pathFrontend(req, res) {
+        if(req.session.tokenUser) {
+            let IdUser = '';
+            jwt.verify(req.session.tokenUser, process.env.JWT_SECRET_KEY, (err, decoded) => {
+                if (err) {
+                    return res.redirect('/User/Login');
+                }
+                
+                IdUser= decoded.id; 
+            });
+            const User = await Acounts.findOne({ _id: IdUser });
+            res.render('pages/courses/frontEndAndDevelopment', {dataUser: {
+                id: User._id,
+                fullName: User.profile.fullName,
+                avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
+            }});
+        }
         res.render('pages/courses/frontEndAndDevelopment');
     }
 
-    pathBackend(req, res) {
+    async pathBackend(req, res) {
+        if(req.session.tokenUser) {
+            let IdUser = '';
+            jwt.verify(req.session.tokenUser, process.env.JWT_SECRET_KEY, (err, decoded) => {
+                if (err) {
+                    return res.redirect('/User/Login');
+                }
+                
+                IdUser= decoded.id; 
+            });
+            const User = await Acounts.findOne({ _id: IdUser });
+            res.render('pages/courses/backEndAndDevelopment', {dataUser: {
+                id: User._id,
+                fullName: User.profile.fullName,
+                avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
+            }});
+        }
         res.render('pages/courses/backEndAndDevelopment');
     }
 }
