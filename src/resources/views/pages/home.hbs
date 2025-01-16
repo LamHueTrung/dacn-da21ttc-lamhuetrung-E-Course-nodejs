@@ -226,3 +226,31 @@
         });
     });
 </script>
+
+<script>
+    function DangPhatTrien() {
+        Swal.fire({
+            title: 'Tính năng đang phát triển!',
+            text: 'Huệ Trung sẽ sớm cập nhật tính năng này.',
+            icon: 'info',
+            confirmButtonText: 'Đóng'
+        });
+        return false; // Ngăn form submit hoặc hành động mặc định
+    }
+    document.addEventListener("DOMContentLoaded", function () { 
+        const isDeletedCourse = {{#if isDeletedCourse}}true{{else}}false{{/if}};
+        if(isDeletedCourse) {
+            Swal.fire({
+                title: 'Khóa học đã bị vô hiệu hóa!',
+                text: 'Khóa học đã bị vô hiệu hóa, vui lòng quay lại sau.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                history.back();
+            }
+        });
+        }
+    });
+</script>
+

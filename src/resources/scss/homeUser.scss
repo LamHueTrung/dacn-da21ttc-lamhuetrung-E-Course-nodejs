@@ -17,12 +17,14 @@
     font-size: 16px;
     background: #0C5776;
     color: white;
-    box-shadow: 2px 2px #001C44;
+    box-shadow: 4px 5px 4px 1px #001c44c7;
 }
 
-.filter:hover {
+.filter:hover, .filter:focus {
     cursor: pointer;
-    background: #2D99AE;
+    transform: translateY(3px);
+    box-shadow: inset 3px 3px 6px #001C44;
+    background: #0C5776;
     color: #ffff;
 }
 
@@ -31,7 +33,7 @@
     height: 35px;
     flex-shrink: 0;
     border-radius: 5px;
-    box-shadow: 2px 2px #001C44;
+    box-shadow: 4px 5px 4px 1px #001c44c7;
     background: #0C5776;
     color: #FFF;
     font-family: inherit;
@@ -42,7 +44,10 @@
     margin-right: 15px;
 }
 .btn-outline-search:hover {
-    background: #2D99AE;
+    cursor: pointer;
+    transform: translateY(3px);
+    box-shadow: inset 3px 3px 6px #001C44;
+    background: #0C5776;
     color: #ffff;
 }
 .slideshow .slideshow-row {
@@ -106,7 +111,7 @@
 }
 
 .cousrse .text-course {
-    color: #000;
+    color: #ffff;
     font-family: inherit;
     font-size: 25px;
     font-style: normal;

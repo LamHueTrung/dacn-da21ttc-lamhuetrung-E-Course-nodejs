@@ -169,6 +169,7 @@
 
     // Khi trạng thái video thay đổi
     function onPlayerStateChange(event) {
+        console.log(event.data);
         if (event.data == YT.PlayerState.PLAYING) {
         // Video đang phát, bắt đầu theo dõi thời gian
         fetch(`/Course/updateLessonStatus/${IdLesson}/${Idregistration}`, { method: 'POST'});
@@ -183,6 +184,7 @@
 
         // Kiểm tra nếu đã xem đủ 90% video
         if (watchedDuration >= totalDuration * 0.9) {
+            console.log('Đã xem đủ 10% video');
             markLessonAsCompleted();  // Đánh dấu bài học hoàn thành
             clearInterval(interval);  // Dừng theo dõi
         }

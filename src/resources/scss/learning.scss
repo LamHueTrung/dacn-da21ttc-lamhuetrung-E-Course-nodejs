@@ -1,6 +1,6 @@
 .video {
     text-align: center;
-    background: #000;
+    background: #ffff;
 }
 
 .content-course {
@@ -10,7 +10,7 @@
     justify-content: space-between;
 }
 .content-course .col-sm:first-child  a span{
-    color: #000;
+    color: #ffff;
     font-family: inherit;
     font-size: 18px;
     font-style: normal;
@@ -18,7 +18,7 @@
     line-height: normal;
 } 
 .title-course {
-    color: #000;
+    color: #fff;
     font-family: inherit;
     font-size: 25px;
     font-style: normal;
@@ -26,7 +26,7 @@
     line-height: normal;
 }
 .thoigiandang {
-    color: #000;
+    color: #ffff;
     font-family: inherit;
     font-size: 16px;
     font-style: italic;
@@ -34,7 +34,7 @@
     line-height: normal;
 }
 .comments div:first-child span, .comments div:first-child h1 {
-    color: #000;
+    color: #ffff;
     font-family: inherit;
     font-size: 25px;
     font-style: normal;
@@ -113,6 +113,7 @@
     font-size: 16px;
     width: 100%;
     display: block;
+    color: #fff;
 }
 
 .list-comments {
@@ -125,6 +126,7 @@
     text-align: center;
     font-weight: 400 !important;
     padding-top: 8px;
+    color: #fff;
 }
 
 a {
@@ -137,7 +139,7 @@ button.reaplay {
     font-size: 16px;
     font-weight: 500;
     background: none;
-    color: #000;
+    color: #ffff;
     border: none;
 }
 
@@ -147,7 +149,7 @@ button.reaplay::after {
 
 button.reaplay:hover {
     background-color: #f0f8ff00;
-    color: #000;
+    color: #ffff;
 }
 .tuongtac-comment .col-sm-1 {
     width: auto;

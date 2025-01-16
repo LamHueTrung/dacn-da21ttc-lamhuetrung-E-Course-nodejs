@@ -1,6 +1,6 @@
 @charset "UTF-8";
 body.LoginRegister {
-  background: linear-gradient(270deg, #681DC5 6.1%, #5817A7 27.6%, #341084 54.1%, #2F0F7F 76.1%, #020752 92.1%); }
+  background: linear-gradient(270deg, #2D99AE 15.6%, #1D7993 34.1%, #0C5776 77.1%); }
 
 .container-fluid {
   padding: 0 !important;
@@ -47,6 +47,7 @@ body.LoginRegister {
   margin-bottom: 10%; }
 
 .input-dangnhap {
+  border: none;
   margin: 0px 10%;
   width: 350px !important;
   height: 50px !important;
@@ -231,7 +232,6 @@ header {
 
 .navbar {
   background: #001C44 !important;
-  box-shadow: 0px 7px 0px 0px rgba(0, 28, 68, 0.73);
   height: 66px !important; }
 
 .navbar-brand {
@@ -286,7 +286,7 @@ header {
   height: 35px;
   flex-shrink: 0;
   border-radius: 30px;
-  background: #2D99AE;
+  background: #0C5776;
   color: #FFF;
   font-family: inherit;
   font-size: 16px;
@@ -296,17 +296,18 @@ header {
   margin-right: 15px; }
 
 .btn-outline-dangnhap:hover {
-  box-shadow: inset 2px 2px #001C44;
+  box-shadow: inset 3px 3px 6px #001C44;
   background: #0C5776;
-  color: #ffff; }
+  color: #ffff;
+  border: none; }
 
 .btn-outline-dangky {
   width: 130px;
   height: 35px;
   flex-shrink: 0;
   border-radius: 23px;
-  background: #FFF;
-  color: #000;
+  background: #0C5776;
+  color: #ffff;
   font-family: inherit;
   font-size: 16px;
   font-style: normal;
@@ -314,9 +315,10 @@ header {
   line-height: normal; }
 
 .btn-outline-dangky:hover {
-  box-shadow: inset 2px 2px #0C5776;
-  background: #2D99AE;
-  color: #ffff; }
+  box-shadow: inset 3px 3px 6px #001C44;
+  background: #0C5776;
+  color: #ffff;
+  border: none; }
 
 /* Màn hình rất lớn */
 @media (min-width: 1921px) {

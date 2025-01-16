@@ -1,5 +1,5 @@
 body.LoginRegister {
-    background: linear-gradient(270deg, #681DC5 6.1%, #5817A7 27.6%, #341084 54.1%, #2F0F7F 76.1%, #020752 92.1%);
+    background: linear-gradient(270deg, #2D99AE 15.6%, #1D7993 34.1%, #0C5776 77.1%);
 }
 .container-fluid {
     padding: 0 !important;
@@ -47,6 +47,7 @@ body.LoginRegister {
     margin-bottom: 10%;
 }
 .input-dangnhap {
+    border: none;
     margin: 0px 10%;
     width: 350px !important;
     height: 50px !important;

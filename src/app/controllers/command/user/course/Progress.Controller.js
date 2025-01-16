@@ -9,7 +9,7 @@ class Progress {
     try {
       const IdLesson = req.params.IdLesson;
       const Idregistration = req.params.Idregistration;
-
+      const completed = req.body.completed;
       // Kiểm tra đăng ký khóa học
       const existingRegistration = await registrationCourse.findOne({ _id: Idregistration });
       if (!existingRegistration) {
@@ -55,13 +55,27 @@ class Progress {
         let existingChapter = progress.chapters.find(
           (ch) => ch.chapterId.toString() === chapter._id.toString()
         );
-      
+        
         if (!existingChapter) {
           existingChapter = {
             chapterId: chapter._id,
             lessons: [],
             progress: 0,
           };
+          for (let lessonIndex in chapter.lessons) {
+            const lessonId = chapter.lessons[lessonIndex];
+            if(lessonId.toString() === IdLesson) {
+              existingChapter.lessons.push({
+                lessonId: lessonId,
+                status: "in_progress",
+              });
+            } else {
+              existingChapter.lessons.push({
+                lessonId: lessonId,
+                status: "not_started",
+              });
+            }
+          }
           progress.chapters.push(existingChapter);
         }
       
@@ -73,25 +87,9 @@ class Progress {
             (ls) => ls.lessonId.toString() === lessonId.toString()
           );
       
-          // Nếu bài học chưa tồn tại, gán trạng thái là "not_started"
-          if (!existingLesson) {
-            // Nếu bài học chưa tồn tại, kiểm tra trạng thái của nó
-            if (!existingChapter.lessons.some(ls => ls.lessonId.toString() === lessonId.toString() && ls.status === "in_progress")) {
-              existingChapter.lessons.push({
-                lessonId: lessonId,
-                status: "not_started",
-              });
-            }
-            // Tìm lại bài học sau khi đã thêm
-            existingLesson = existingChapter.lessons.find(
-              (ls) => ls.lessonId.toString() === lessonId.toString()
-            );
-          }
-
           // Cập nhật trạng thái của bài học nếu đã hoàn thành
-          if (lessonId.toString() === IdLesson && req.body.completed === true) {
+          if (lessonId.toString() === IdLesson ) {
             existingLesson.status = "completed";
-
             // Sau khi bài học hiện tại hoàn thành, tiến hành kiểm tra bài học tiếp theo
             if (parseInt(lessonIndex) + 1 < chapter.lessons.length) {
               // Nếu có bài học tiếp theo trong chương hiện tại, set trạng thái của nó là "in_progress"

@@ -11,15 +11,16 @@ const port = 3000;
 // Kết nối tới MongoDB
 connectDB();
 CreateAdmin.CreateAdmin();
-
-//Đinh tuyến đường dẫn file tĩnh
-app.use(express.static(path.join(__dirname, 'public')));  
-
 //Middleware
 app.use(express.urlencoded({
   extended: true
 }));
 app.use(express.json());
+
+//Đinh tuyến đường dẫn file tĩnh
+app.use(express.static(path.join(__dirname, 'public')));  
+
+
 
 // Http logger
 app.use(morgan('combined'));

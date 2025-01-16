@@ -74,9 +74,9 @@ class Registration {
       );
 
       // Kiểm tra nếu IdLesson 
-      let lessonData;
+      let lessonData; 
       lessonData = await Lessons.findOne({ _id: IdLesson }).lean();
-
+      console.log(lessonData);
       // Kiểm tra đăng ký
       const existingregistration = await registrationCourse.findOne({
         userId: IdUser,
@@ -89,13 +89,20 @@ class Registration {
           courseId: IdCourse,
         });
         await newData.save();
-
+        
         // Lưu vào cơ sở dữ liệu
         req.session.isCreate = true;
         const registration = await registrationCourse.findOne({
           userId: IdUser,
           courseId: IdCourse,
         });
+
+        const newDataProcess = new ProcessCourses({
+          registrationId: registration._id,
+          chapters: [],
+          overallProgress: 0,
+        });
+        await newDataProcess.save();
         // Phản hồi sau khi lưu thành công
         return res.render("pages/courses/learning", {
           layout: "learing",
@@ -120,6 +127,8 @@ class Registration {
         if (!existingprocess) {
           const newDataProcess = new ProcessCourses({
             registrationId: existingregistration._id,
+            chapters: [],
+            overallProgress: 0,
           });
           await newDataProcess.save();
           return res.render("pages/courses/learning", {

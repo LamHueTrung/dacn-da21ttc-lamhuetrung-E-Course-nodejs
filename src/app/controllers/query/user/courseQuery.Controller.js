@@ -5,6 +5,7 @@ const Lessons = require('../../../model/Lesson');
 const registrationCourse = require("../../../model/RegistrationCourse");
 const ProcessCourses = require("../../../model/ProgressCourse");
 const jwt = require('jsonwebtoken');
+const { session } = require('passport');
 const currentYear = new Date().getFullYear();
 
 class CourseQuery {
@@ -49,44 +50,64 @@ class CourseQuery {
                     userId: IdUser,
                     courseId: courseId,
                   });
-
-                if (existingregistration) {
-                    const existingprocess = await ProcessCourses.findOne({registrationId: existingregistration._id})
-                    const completedLessons = existingprocess.chapters
-                        .flatMap(chapter => chapter.lessons)  
-                        .filter(lesson => lesson.status === 'completed');
-
-                    if (completedLessons.length > 0) {
-                        // Tìm bài học có lessonOrder cao nhất
-                        const highestLesson = completedLessons.reduce((maxLesson, currentLesson) => {
-                            return currentLesson.lessonOrder > maxLesson.lessonOrder ? currentLesson : maxLesson;
+                
+                if (existingregistration) 
+                {
+                    if(course.isDeleted === true) {
+                        req.session.isDeletedCourse = true;
+                        res.render('pages/home', {
+                            year: currentYear,
+                            course: course.toObject(),
+                            chapters: chaptersData,
+                            author: course.author && course.author.profile ? course.author.profile.fullName : 'Unknown', // Xử lý trường hợp không có tác giả
+                            dataUser: {
+                                id: User._id,
+                                fullName: User.profile.fullName,
+                                avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
+                            },
+                            isDeletedCourse: req.session.isDeletedCourse,
                         });
-                
-                        // Bạn có thể sử dụng highestLesson trong logic tiếp theo của mình, ví dụ chuyển hướng đến lesson đó
-                        res.redirect(`/Course/Learning/${courseId}/${highestLesson.lessonId}`);
+                    } else {
+                        const existingprocess = await ProcessCourses.findOne({registrationId: existingregistration._id})
+                        const completedLessons = existingprocess.chapters
+                            .flatMap(chapter => chapter.lessons)  
+                            .filter(lesson => lesson.status === 'completed');
+    
+                        if (completedLessons.length > 0) {
+                            // Tìm bài học có lessonOrder cao nhất
+                            const highestLesson = completedLessons.reduce((maxLesson, currentLesson) => {
+                                return currentLesson.lessonOrder > maxLesson.lessonOrder ? currentLesson : maxLesson;
+                            });
+                    
+                            res.redirect(`/Course/Learning/${courseId}/${highestLesson.lessonId}`);
+                        } else {
+                            res.redirect(`/Course/Learning/${courseId}/${chaptersData[0].lessons[0]._id}`);
+                        }
                     }
-                } 
-                
+
+                } else {
+                    res.render('pages/courses/home', {
+                        year: currentYear,
+                        course: course.toObject(),
+                        chapters: chaptersData,
+                        author: course.author && course.author.profile ? course.author.profile.fullName : 'Unknown', // Xử lý trường hợp không có tác giả
+                        dataUser: {
+                            id: User._id,
+                            fullName: User.profile.fullName,
+                            avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
+                        }
+                    });
+                }
+            } else {
                 res.render('pages/courses/home', {
                     year: currentYear,
+                    courseId: courseId,
                     course: course.toObject(),
                     chapters: chaptersData,
                     author: course.author && course.author.profile ? course.author.profile.fullName : 'Unknown', // Xử lý trường hợp không có tác giả
-                    dataUser: {
-                        id: User._id,
-                        fullName: User.profile.fullName,
-                        avatar: User.profile.avatar ? User.profile.avatar : '/avatars/user.png',
-                    }
                 });
             }
 
-            res.render('pages/courses/home', {
-                year: currentYear,
-                courseId: courseId,
-                course: course.toObject(),
-                chapters: chaptersData,
-                author: course.author && course.author.profile ? course.author.profile.fullName : 'Unknown', // Xử lý trường hợp không có tác giả
-            });
             
         } catch (error) {
             console.error(error);

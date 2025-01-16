@@ -46,7 +46,7 @@
         {{else}}
             <h1 class="price">{{course.newPrice}}.000 đ</h1>
         {{/if}}
-        <button class="btn" id="learn-now-button" data-course-id="{{course._id}}">Đăng ký học</button>
+        <button class="btn" id="learn-now-button" data-course-id="{{course._id}}" data-course-status="{{course.isDeleted}}">Đăng ký học</button>
         <ul>
             <li>
                 <img src="/img/level-up.png" alt="">
@@ -76,31 +76,39 @@
      * @param {Event} event - Sự kiện click
      * @param {string} courseId - ID của khóa học
      */
-    function handleLearnNow(event, courseId, lessonId) {
+    function handleLearnNow(event, courseId, lessonId, courseStatus) {
         event.preventDefault(); // Ngăn hành động mặc định của nút (nếu có)
-
-        if (!isLoggedInUser) {
-            // Nếu người dùng chưa đăng nhập, hiển thị SweetAlert và chuyển hướng đến trang đăng nhập
-            const currentUrl = window.location.href;
+        if(courseStatus === "true") {
             Swal.fire({
-                title: 'Bạn chưa đăng nhập!',
-                text: 'Bạn cần đăng nhập để đăng ký khóa học.',
+                title: 'Khoá học đang cập nhật, vui lòng quay lại sau!',
                 icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đăng nhập',
-                cancelButtonText: 'Hủy bỏ'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Chuyển hướng đến trang đăng nhập với tham số redirect
-                    window.location.href = `/User/Login/`;
-                }
+                confirmButtonText: 'OK'
             });
+            return;
         } else {
-            const url = `/Course/Learning/${courseId}/${lessonId}`;
-            // Nếu người dùng đã đăng nhập, chuyển hướng đến trang học khóa học
-            window.location.href = url;
+            if (!isLoggedInUser) {
+                // Nếu người dùng chưa đăng nhập, hiển thị SweetAlert và chuyển hướng đến trang đăng nhập
+                const currentUrl = window.location.href;
+                Swal.fire({
+                    title: 'Bạn chưa đăng nhập!',
+                    text: 'Bạn cần đăng nhập để đăng ký khóa học.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đăng nhập',
+                    cancelButtonText: 'Hủy bỏ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Chuyển hướng đến trang đăng nhập với tham số redirect
+                        window.location.href = `/User/Login/`;
+                    }
+                });
+            } else {
+                const url = `/Course/Learning/${courseId}/${lessonId}`;
+                // Nếu người dùng đã đăng nhập, chuyển hướng đến trang học khóa học
+                window.location.href = url;
+            }
         }
     }
 
@@ -109,8 +117,9 @@
         const learnNowButtons = document.getElementById('learn-now-button');
 
             const courseId = learnNowButtons.getAttribute('data-course-id');
+            const courseStatus = learnNowButtons.getAttribute('data-course-status');
             const lessonId = document.getElementById('lessonId').value;
-            learnNowButtons.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId));
+            learnNowButtons.addEventListener('click', (e) => handleLearnNow(e, courseId, lessonId, courseStatus));
     });
 </script>
 

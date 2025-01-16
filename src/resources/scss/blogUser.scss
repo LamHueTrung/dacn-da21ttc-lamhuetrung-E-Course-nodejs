@@ -1,5 +1,5 @@
 .title-blog{
-    color: #000;
+    color: #ffff;
     font-family: inherit;
     font-size: 30px;
     font-style: normal;
@@ -11,6 +11,7 @@
 }
 
 .short-desc {
+    color: #ffff;
     padding-left: 30px;
     font-size: 16px;
     font-weight: 500;
@@ -52,6 +53,7 @@
     box-shadow: 5px 5px 4px 0px #2D99AE;
     padding: 10px;
     margin-bottom: 10px;
+    border: 2px solid #fff;
 }
 
 .save .dropdown-toggle {
@@ -125,8 +127,7 @@
 }
 
 .list-blog ul li:hover {
-    box-shadow: inset 5px 5px 4px 0px #2D99AE;
-    background: #0C5776;
+    background: #0c5776d4;
     cursor: pointer;
 
 }
@@ -137,11 +138,11 @@
 
 .suggest-blog .title {
     font-size: 18px;
-    color: #333333c2;
+    color: #ffff;
 }
 
 .suggest-blog button {
-    background: #0000001c;
+    background: #ffff;
     border-radius: 30px;
     font-size: 15px;
     font-weight: 600;
@@ -163,6 +164,7 @@
     width: 100%;
     margin-bottom: 5%;
     margin-top: 10%;
+    box-shadow: 7px 6px 10px #333;
 }
 
 @media (max-width: 576px) {
