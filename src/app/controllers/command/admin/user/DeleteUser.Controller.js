@@ -76,15 +76,15 @@ class DeleteUser {
             if (!result) {
                 return res.status(400).json({ success: false, message: messages.deleteUser.deleteError });
             }
-
-            // Xác định đường dẫn đến ảnh đại diện của người dùng
-            const avatarPath = path.join(__dirname, '../../../../../public', result.profile.avatar);
-    
-            // Kiểm tra và xóa file ảnh đại diện nếu tồn tại
-            if (fs.existsSync(avatarPath)) {
-                fs.unlinkSync(avatarPath); 
-            } else {
-                console.log("Avatar file does not exist, skipping deletion.");
+            if(result.profile.avatar){ 
+                // Xác định đường dẫn đến ảnh đại diện của người dùng
+                const avatarPath = path.join(__dirname, '../../../../../public', result.profile.avatar);
+                // Kiểm tra và xóa file ảnh đại diện nếu tồn tại
+                if (fs.existsSync(avatarPath)) {
+                    fs.unlinkSync(avatarPath); 
+                } else {
+                    console.log("Avatar file does not exist, skipping deletion.");
+                }
             }
 
             return res.json({ success: true, message: messages.deleteUser.deleteSuccess });
