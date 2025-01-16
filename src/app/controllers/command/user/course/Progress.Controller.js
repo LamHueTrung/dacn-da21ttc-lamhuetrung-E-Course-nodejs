@@ -78,7 +78,7 @@ class Progress {
           }
           progress.chapters.push(existingChapter);
         }
-      
+      console.log('progress', progress.lessons);
         // Duyệt qua từng bài học trong chương
         for (let lessonIndex in chapter.lessons) {
           const lessonId = chapter.lessons[lessonIndex];
@@ -94,7 +94,7 @@ class Progress {
             if (parseInt(lessonIndex) + 1 < chapter.lessons.length) {
               // Nếu có bài học tiếp theo trong chương hiện tại, set trạng thái của nó là "in_progress"
               const nextLessonId = chapter.lessons[parseInt(lessonIndex) + 1];
-              IdLessonNext = nextLessonId;
+              IdLessonNext = nextLessonId; 
 
               let nextLesson = existingChapter.lessons.find(
                 (ls) => ls.lessonId.toString() === nextLessonId.toString()
@@ -126,7 +126,9 @@ class Progress {
         const completedLessons = existingChapter.lessons.filter(
           (ls) => ls.status === "completed"
         ).length;
-        existingChapter.progress = (completedLessons / existingChapter.lessons.length) * 100;
+          if(completedLessons !== 0) {
+          existingChapter.progress = (completedLessons / existingChapter.lessons.length) * 100;
+          }
       }
 
       // Tính tiến độ tổng thể

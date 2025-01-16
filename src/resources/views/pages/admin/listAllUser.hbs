@@ -98,9 +98,9 @@
     // Common function for confirming actions
     function confirmAction(action, idUser) {
         const messages = {
-            disable: 'Vô hiệu hóa khóa học này?',
-            restore: 'Khôi phục khóa học này?',
-            delete: 'Xóa khóa học này?'
+            disable: 'Vô hiệu hóa người dùng này?',
+            restore: 'Khôi phục người dùng này?',
+            delete: 'Xóa người dùng này?'
         };
 
         Swal.fire({
@@ -116,7 +116,7 @@
                     .then(data => {
                         if (data.success) {
                             Swal.fire({
-                                title: data.success ? `Khóa học đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
+                                title: data.success ? `người dùng đã được ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'}!` : `Không thể ${action === 'delete' ? 'xóa' : action === 'disable' ? 'vô hiệu hóa' : 'khôi phục'} khóa học!`,
                                 icon: data.success ? 'success' : 'error',
                                 confirmButtonText: 'OK'
                             }).then(() => { if (data.success) location.reload(); });
